@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <g id="ic_search" transform="translate(-1822 -69)">
+    <g id="Group_423" data-name="Group 423" transform="translate(-6)">
+      <g id="Group_422" data-name="Group 422" transform="translate(0 0.286)">
+        <g id="Group_417" data-name="Group 417" transform="translate(1828 68.714)">
+          <path id="Path_269" data-name="Path 269" d="M0,0H75V75H0Z" fill="#fff"/>
+        </g>
+      </g>
+      <g id="Group_413" data-name="Group 413" transform="translate(37.691 -1.714)">
+        <g id="Group_411" data-name="Group 411" transform="translate(-13.128 -30.001)">
+          <path id="Path_86" data-name="Path 86" d="M24,0A24,24,0,0,1,48,24c0,13.255-15.4,26.645-24,31.079C13.872,50.453,0,37.255,0,24A24,24,0,0,1,24,0Z" transform="translate(1817.437 110.715)" fill="#e4e5e6"/>
+          <ellipse id="Ellipse_4" data-name="Ellipse 4" cx="8.368" cy="8.368" rx="8.368" ry="8.368" transform="translate(1833.754 125.996)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

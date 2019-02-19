@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <g id="ic_polygon" transform="translate(-1746 -69)">
+    <path id="Path_268" data-name="Path 268" d="M0,0H75V75H0Z" transform="translate(1746 69)" fill="#fff"/>
+    <g id="Group_412" data-name="Group 412" transform="translate(30 1.286)">
+      <g id="Group_409" data-name="Group 409" transform="translate(7.25 6)">
+        <path id="Path_264" data-name="Path 264" d="M0,0,19.085,18.131,37.216,0V36.262H0Z" transform="translate(1719.404 99.521) rotate(-45)" fill="#e4e5e6"/>
+        <g id="Symbol_2_14" data-name="Symbol 2 – 14" transform="translate(184.795 14.003)">
+          <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+            <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+            <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+          </g>
+          <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+          <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+        </g>
+        <g id="Symbol_3_29" data-name="Symbol 3 – 29" transform="translate(156 -7.189)">
+          <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+        </g>
+        <g id="Symbol_3_30" data-name="Symbol 3 – 30" transform="translate(180.811 -32)">
+          <circle id="Ellipse_39-2" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+        </g>
+        <g id="Symbol_3_31" data-name="Symbol 3 – 31" transform="translate(180.811 17.621)">
+          <circle id="Ellipse_39-3" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+        </g>
+        <circle id="Ellipse_39-4" data-name="Ellipse 39" cx="2.863" cy="2.863" r="2.863" transform="translate(1742.561 96.524)" fill="#898989"/>
+      </g>
+    </g>
+  </g>
+</svg>

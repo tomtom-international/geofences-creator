@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Geofences creator</title>
+    <link rel="stylesheet" type="text/css" href="sdk/map.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+	<script src="sdk/tomtom.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+  </head>
+
+  <body>
+    <div id="map">
+      <div id="inputs" class="fence-choice">
+        <span class="fence-choice__label">Choose a fence type and start drawing</span>
+        <div class="fence-choice__content">
+          <input type="button" id="circle-button" class="btn btn--circle" value="Circle">
+          <input type="button" id="rectangle-button" class="btn btn--rectangle" value="Rectangle">
+          <input type="button" id="corridor-button" class="btn btn--corridor" value="Corridor">
+          <input type="button" id="polygon-button" class="btn btn--polygon" value="Polygon">
+          <input type="button" id="search-button" class="btn btn--search" value="Search">
+        </div>
+        <div id="search-form" class="form form--search">
+          <div class="form__row -background-gray">
+            <label class="form__label">Search query: <input type="text" id="search-text" class="form__input" value="San Francisco Airport"></label>
+            <label class="form__label">Add buffer to polygon (meters): <input type="text" id="buffer-text" class="form__input" value="0"></label>
+          </div>
+          <div class="form__row">
+          <input type="button" id="search-action-button" class="btn-submit btn-submit--search" value="Execute">
+          </div>
+        </div>
+        <div id="corridor-form" class="form">
+          <div class="form__row">
+            <label class="form__label">Corridor radius (meters): <input type="text" id="corridor-radius" class="form__input" value="30"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modal" class="modal">
+      <div id="modal-content" class="modal__text -background-gray"></div>
+    </div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

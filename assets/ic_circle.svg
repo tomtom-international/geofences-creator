@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <g id="ic_circle" transform="translate(-1465 -69)">
+    <g id="Group_416" data-name="Group 416" transform="translate(4 1)">
+      <g id="Group_408" data-name="Group 408" transform="translate(-61.333 4)">
+        <path id="Path_265" data-name="Path 265" d="M0,0H75V75H0Z" transform="translate(1522.333 64)" fill="#fff"/>
+        <circle id="Ellipse_37" data-name="Ellipse 37" cx="24.833" cy="24.833" r="24.833" transform="translate(1534.333 76)" fill="#e4e5e6"/>
+        <g id="Symbol_3_23" data-name="Symbol 3 – 23" transform="translate(-5.206 -6.252)">
+          <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+        </g>
+        <g id="Symbol_2_11" data-name="Symbol 2 – 11" transform="translate(-6.844 -0.384)">
+          <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+            <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+            <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+          </g>
+          <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+          <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

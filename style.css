@@ -1,0 +1,205 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+}
+
+#map {
+    height: 100vh;
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    width: 100vw;
+}
+
+#search-form, #corridor-form {
+	display: none;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip,
+.tomtom-control-panel {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 7px;
+}
+
+.tomtom-control-panel {
+    border-radius: 0;
+}
+
+.leaflet-right .leaflet-control {
+    padding: 0;
+}
+
+.fence-choice {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.fence-choice__content {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0 8px 6px -6px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 8px 6px -6px;
+    padding: 10px 23px 10px 23px;
+    z-index: 1;
+}
+
+.fence-choice__label {
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    font-size: 1.23em;
+    padding: 13px 0 0 23px;
+    color: #707070;
+}
+
+.btn-submit,
+.tomtom-foldable input[type=button].btn-submit {
+    background: #BDD731;
+    border: none;
+    -webkit-box-shadow: rgba(0,0,0,0.14) 0 3px 6px;
+    box-shadow: rgba(0,0,0,0.14) 0 3px 6px;
+    border-radius: 33px;
+    color: #fff;
+    height: 30px !important;
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    width: 200px;
+}
+
+.btn,
+.tomtom-foldable input[type=button].btn {
+    background: #fff no-repeat top center;
+    border: none;
+    border-radius: 0;
+    color: #000;
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+    font-size: 0.95em;
+    height: 100px !important;
+    margin-top: 0;
+    padding-top: 75px;
+    -webkit-transition: -webkit-box-shadow 0.3s ease-out;
+    transition: -webkit-box-shadow 0.3s ease-out;
+    transition: box-shadow 0.3s ease-out;
+    transition: box-shadow 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+    width: 75px;
+}
+
+.tomtom-foldable input[type=button].btn:hover {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
+    box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
+}
+
+.tomtom-foldable input[type=button].btn:active {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
+}
+
+.tomtom-foldable input[type=button].btn--circle {
+    background-image: url("assets/ic_circle.svg");
+}
+
+.tomtom-foldable input[type=button].btn--corridor {
+    background-image: url("assets/ic_corridor.svg");
+}
+
+.tomtom-foldable input[type=button].btn--rectangle {
+    background-image: url("assets/ic_rectangle.svg");
+}
+
+.tomtom-foldable input[type=button].btn--search {
+    background-image: url("assets/ic_search.svg");
+}
+
+.tomtom-foldable input[type=button].btn--polygon {
+    background-image: url("assets/ic_polygon.svg");
+}
+
+.btn-submit--remove {
+    background-color: #D73131;
+}
+
+.btn-submit--search {
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}
+
+
+.form {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-size: 1.23em;
+}
+
+.form__row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 23px;
+}
+
+.form__row--compact {
+    padding: 5px;
+}
+
+.form__input {
+    border: 1px solid #DDD;
+    display: block;
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: lighter;
+    margin-top: 5px;
+    padding: 10px 15px;
+    width: 90%;
+}
+
+.form__label {
+    color: #707070;
+    padding-bottom: 15px;
+}
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+}
+
+.modal__text {
+    border: 1px solid #888;
+    color: #555;
+    font-family: Gotham, Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    margin: 15% auto;
+    padding: 20px;
+    text-align: center;
+    width: 20%;
+}
+
+.-background-gray {
+    background: #F4F6F8;
+}

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <g id="ic_corridor" transform="translate(-1647 -69)">
+    <g id="Group_419" data-name="Group 419" transform="translate(-2)">
+      <g id="Group_414" data-name="Group 414" transform="translate(21 3.286)">
+        <g id="Group_410" data-name="Group 410" transform="translate(25.25 3)">
+          <path id="Path_267" data-name="Path 267" d="M0,0H75V75H0Z" transform="translate(1602.75 62.714)" fill="#fff"/>
+          <path id="Path_262" data-name="Path 262" d="M1615,115.345,1632.117,85l8.559,18.674,11.671-10.893,10.374,14.265" transform="translate(-0.499 -0.507)" fill="none" stroke="#e4e5e6" stroke-linejoin="round" stroke-width="5"/>
+          <g id="Symbol_3_25" data-name="Symbol 3 – 25" transform="translate(50.2 7.788)">
+            <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+          </g>
+          <g id="Symbol_3_26" data-name="Symbol 3 – 26" transform="translate(67.339 -21)">
+            <circle id="Ellipse_39-2" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+          </g>
+          <g id="Symbol_3_27" data-name="Symbol 3 – 27" transform="translate(75.898 -4.214)">
+            <circle id="Ellipse_39-3" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+          </g>
+          <g id="Symbol_3_28" data-name="Symbol 3 – 28" transform="translate(87.569 -13.219)">
+            <circle id="Ellipse_39-4" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#898989"/>
+          </g>
+          <g id="Symbol_2_13" data-name="Symbol 2 – 13" transform="translate(78.307 22.721)">
+            <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+              <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+              <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+            </g>
+            <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+            <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
