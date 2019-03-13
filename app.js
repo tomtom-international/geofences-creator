@@ -486,7 +486,7 @@ document.getElementById("corridor-button").addEventListener("click", function() 
       this.geometry = {
         type: "LineString",
         shapeType: "Corridor",
-        radius: document.getElementById("corridor-radius").value,
+        radius: parseInt(document.getElementById("corridor-radius").value),
         coordinates: [
           [event.latlng.lng, event.latlng.lat],
           [event.latlng.lng, event.latlng.lat]
