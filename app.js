@@ -1,20 +1,10 @@
-// Monkey patch Evented.off() so that it works the same as Leaflet Evented.off(), removing
-// all registered listeners if no listener provided
-var originalEventedOff = tt.Evented.prototype.off;
-tt.Evented.prototype.off = function(type, listener) {
-  if (listener) {
-    originalEventedOff.call(this, type, listener);
-  } else {
-    this._listeners[type] = [];
-  }
-};
-
 var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
 tt.setProductInfo("Fence manager", "2.0");
 var map = tt.map({
   container: "map",
   key: apiKey,
+  basePath: "https://api.tomtom.com/maps-sdk-for-web/5.x/5.22.0/examples/sdk",
   theme: {
     style: "main",
     layer: "basic",
@@ -240,6 +230,7 @@ var shape = {
     var self = this;
     map.off("mousemove");
     map.off("click");
+
     this.geoJson
       .bindPopup(inputPopup)
       .on("popupopen", function() {
@@ -317,7 +308,7 @@ function saveButtonHandler(polygon, geometry) {
       },
       polygon
     );
-    polygon.closePopup().off("popupopen");
+    polygon.closePopup();
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -339,16 +330,22 @@ function saveFence(fenceData, polygon) {
       fenceData
     )
     .then(function(response) {
-      polygon
+      polygon.remove();
+
+      /*
+      var newPolygon = new Polygon(response.data.id, response.data)
+        .addTo(map)
         .bindPopup(detailsPopup(response.data))
         .on("popupopen", function() {
           document
             .getElementById("remove-button-" + response.data.id)
             .addEventListener("click", function() {
-              geoJson.remove();
+              newPolygon.remove();
               removeFence(response.data.id);
             });
         });
+        */
+      displayFence(response.data);
     })
     .catch(function(err) {
       displayModal(
@@ -404,16 +401,21 @@ function displayPolygonOnTheMap(additionalDataResult) {
   var bounds = getFitBounds(geometry);
   map.fitBounds(bounds, { animate: false });
 
-  var polygon = new Polygon(polygonId, geometry)
+  var polygon;
+
+  function onPopupOpen() {
+    document
+      .getElementById("save-button")
+      .addEventListener("click", function() {
+        polygon.off("popupopen", onPopupOpen);
+        saveButtonHandler(polygon, geometry);
+      });
+  }
+
+  polygon = new Polygon(polygonId, geometry)
     .addTo(map)
     .bindPopup(inputPopup, popupOptions)
-    .on("popupopen", function() {
-      document
-        .getElementById("save-button")
-        .addEventListener("click", function() {
-          saveButtonHandler(polygon, geometry);
-        });
-    })
+    .on("popupopen", onPopupOpen)
     .openPopup();
 
   document.onkeydown = function(event) {

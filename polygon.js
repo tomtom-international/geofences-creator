@@ -72,9 +72,12 @@ Polygon.prototype.remove = function() {
   }
 
   if (this._map) {
+    this._map.off("click", this.id + "_fill", this.handleClick);
+
     this.options.style.stroke && this._map.removeLayer(this.id + "_line");
     this._map.removeLayer(this.id + "_fill");
     this._map.removeSource(this.id);
+
     this._map = null;
   }
 
