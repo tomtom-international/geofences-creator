@@ -14,7 +14,7 @@ function Polygon(id, data, options) {
   };
 
   this.id = id;
-  this.data = data;
+  this.data = data || turf.featureCollection([]);
   this.options = Object.assign({}, defaultOptions, options);
 
   this.handleClick = this.handleClick.bind(this);
@@ -28,7 +28,7 @@ Polygon.prototype.addTo = function(map) {
 
   map.addSource(this.id, {
     type: "geojson",
-    data: this.data
+    data: this.data || {}
   });
 
   if (style.stroke) {
@@ -81,12 +81,15 @@ Polygon.prototype.remove = function() {
   return this;
 };
 
-Polygon.prototype.addData = function(data) {
+Polygon.prototype.setData = function(data) {
+  this.data = data;
+
   if (this._map) {
     var source = this._map.getSource(this.id);
     source.setData(data);
-    this.data = data;
   }
+
+  return this;
 };
 
 Polygon.prototype.handleClick = function(event) {
