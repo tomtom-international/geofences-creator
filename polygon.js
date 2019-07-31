@@ -1,4 +1,4 @@
-function Polygon(id, data, options) {
+function Polygon(data, options) {
   tt.Evented.call(this);
 
   var defaultOptions = {
@@ -13,7 +13,7 @@ function Polygon(id, data, options) {
     }
   };
 
-  this.id = id;
+  this.id = uuidv4();
   this.data = data || turf.featureCollection([]);
   this.options = Object.assign({}, defaultOptions, options);
 
@@ -82,6 +82,10 @@ Polygon.prototype.remove = function() {
   }
 
   return this;
+};
+
+Polygon.prototype.getData = function() {
+  return this.data;
 };
 
 Polygon.prototype.setData = function(data) {
