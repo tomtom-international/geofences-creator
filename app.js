@@ -155,14 +155,14 @@ function displayFence(data) {
     }
   }
 
-  var fence = new Fence(data.id, geoJsonData)
+  var polygon = new Polygon(data.id, geoJsonData)
     .addTo(map)
     .bindPopup(detailsPopup(geoJsonData), popupOptions)
     .on("popupopen", function() {
       document
         .getElementById("remove-button-" + data.id)
         .addEventListener("click", function() {
-          fence.remove();
+          polygon.remove();
           removeFence(data.id);
         });
     });
@@ -292,7 +292,7 @@ function cancelDrawing(geoJson) {
   document.onkeydown = null;
 }
 
-function saveButtonHandler(fence, geometry) {
+function saveButtonHandler(polygon, geometry) {
   var name = document.getElementById("input-name").value;
   try {
     var properties = JSON.parse(
@@ -305,9 +305,9 @@ function saveButtonHandler(fence, geometry) {
         geometry: geometry,
         properties: properties
       },
-      fence
+      polygon
     );
-    fence.closePopup();
+    polygon.closePopup();
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -316,7 +316,7 @@ function saveButtonHandler(fence, geometry) {
   }
 }
 
-function saveFence(fenceData, fence) {
+function saveFence(fenceData, polygon) {
   axios
     .post(
       geofencingApiURL +
@@ -329,14 +329,16 @@ function saveFence(fenceData, fence) {
       fenceData
     )
     .then(function(response) {
-      fence.bindPopup(detailsPopup(response.data)).on("popupopen", function() {
-        document
-          .getElementById("remove-button-" + response.data.id)
-          .addEventListener("click", function() {
-            geoJson.remove();
-            removeFence(response.data.id);
-          });
-      });
+      polygon
+        .bindPopup(detailsPopup(response.data))
+        .on("popupopen", function() {
+          document
+            .getElementById("remove-button-" + response.data.id)
+            .addEventListener("click", function() {
+              geoJson.remove();
+              removeFence(response.data.id);
+            });
+        });
     })
     .catch(function(err) {
       displayModal(
@@ -392,21 +394,26 @@ function displayPolygonOnTheMap(additionalDataResult) {
   var bounds = getFitBounds(geometry);
   map.fitBounds(bounds, { animate: false });
 
-  var fence = new Fence(polygonId, geometry)
+  var polygon;
+
+  function onPopupOpen() {
+    document
+      .getElementById("save-button")
+      .addEventListener("click", function() {
+        polygon.off("popupopen", onPopupOpen);
+        saveButtonHandler(polygon, geometry);
+      });
+  }
+
+  polygon = new Polygon(polygonId, geometry)
     .addTo(map)
     .bindPopup(inputPopup, popupOptions)
-    .on("popupopen", function() {
-      document
-        .getElementById("save-button")
-        .addEventListener("click", function() {
-          saveButtonHandler(fence, geometry);
-        });
-    })
+    .on("popupopen", onPopupOpen)
     .openPopup();
 
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
-      fence.remove();
+      polygon.remove();
       document.onkeydown = null;
     }
   };
