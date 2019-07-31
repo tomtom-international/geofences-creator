@@ -1,49 +1,53 @@
-var geofencingApiURL = 'https://api.tomtom.com/geofencing/1/';
+var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
-tomtom.setProductInfo("Fence manager", "1.0");
-var map = tomtom.L.map("map", {
-  key: apiKey
+tt.setProductInfo("Fence manager", "2.0");
+var map = tt.map({
+  container: "map",
+  key: apiKey,
+  theme: {
+    style: "main",
+    layer: "basic",
+    source: "vector"
+  },
+  attributionControlPosition: "bottom-left"
 });
 
-map.once(L.Map.Events.ATTRIBUTION_LOAD_END, function(event) {
-  var attributions = [
-    '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
-  ];
-  map.attributionControl.removeAttribution(event.data);
-  attributions.unshift(event.data);
-  map.attributionControl.addAttribution(attributions.join(' | '));
-});
+var attributions = [
+  '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
+];
+map.getAttributionControl().addAttribution(attributions);
 
-map.locate({ setView: true, maxZoom: 13 });
+map.addControl(new tt.NavigationControl(), "top-left");
 
-tomtom
-  .controlPanel({
-    position: "topright",
-    collapsed: false,
-    closeOnMapClick: false,
-    close: null
-  })
-  .addTo(map)
-  .addContent(document.getElementById("inputs"));
+new Foldable(".js-foldable", "top-right");
 
 var inputPopup =
   '<div class="form">' +
   '<div class="form__row form__row--compact">' +
   '<label class="form__label">Name <input type="text" id="input-name" class="form__input"></label>' +
-  '</div>' +
+  "</div>" +
   '<div class="form__row form__row--compact">' +
   '<label class="form__label">Additional JSON properties (optional)' +
   '<textarea id="input-properties" class="form__input" cols="40" rows="5">{}</textarea></label>' +
-  '</div>' +
+  "</div>" +
   '<div class="form__row form__row--compact">' +
   '<input type="button" id="save-button" class="btn-submit btn-submit--save" value="Save">' +
-  '</div>' +
-  '</div>';
+  "</div>" +
+  "</div>";
 
-var geoJsonOptions = {
-  style: {
-    color: "#2FAAFF",
-    opacity: 0.8
+var fenceStyle = {
+  fillPaint: {
+    "fill-color": "#2FAAFF",
+    "fill-opacity": 0.2
+  },
+  linePaint: {
+    "line-color": "#2FAAFF",
+    "line-opacity": 0.8,
+    "line-width": 3
+  },
+  lineLayout: {
+    "line-join": "round",
+    "line-cap": "round"
   }
 };
 
@@ -102,7 +106,7 @@ function detailsPopup(data) {
     '<div class="form">' +
     '<div class="form__row form__row--compact">' +
     "Name: " +
-    data.name +
+    data.properties.name +
     "</div>" +
     '<div class="form__row form__row--compact">' +
     "Id: " +
@@ -124,7 +128,7 @@ function detailsPopup(data) {
 function displayFence(data) {
   var geoJsonData;
   if (data.geometry.type == "Polygon" || data.geometry.type == "MultiPolygon") {
-    geoJsonData = data.geometry;
+    geoJsonData = data;
   } else {
     switch (data.geometry.shapeType) {
       case "Circle":
@@ -146,21 +150,21 @@ function displayFence(data) {
         break;
     }
   }
-  var fenceGeoJson = tomtom.L.geoJson(geoJsonData, geoJsonOptions)
-    .addTo(map)
-    .bindPopup(detailsPopup(data))
-    .on("popupopen", function() {
-      document
-        .getElementById("remove-button-" + data.id)
-        .addEventListener("click", function() {
-          fenceGeoJson.remove();
-          removeFence(data.id);
-        });
-    });
+
+  geoJsonData.properties = Object.assign({}, geoJsonData.properties, {
+    name: data.name
+  });
+
+  drawPolygon(data.id, geoJsonData, onFenceClick);
+}
+
+function onFenceClick(e) {
+  var feature = e.features[0];
+  openDetailsPopup(feature);
 }
 
 function removeFence(id) {
-  axios
+  return axios
     .delete(
       geofencingApiURL +
         "fences/" +
@@ -170,12 +174,21 @@ function removeFence(id) {
         "&adminKey=" +
         geofencingAdminKey
     )
-    .then(console.log("Fence deleted"))
+    .then(function() {
+      removeMapFeature(id);
+      map.off("click", fillLayerId, onFenceClick);
+    })
     .catch(function(err) {
       displayModal(
         "There was an error while deleting fence: " + err.response.data.message
       );
     });
+}
+
+function removeMapFeature(id) {
+  map.removeLayer(id + "_line");
+  map.removeLayer(id + "_fill");
+  map.removeSource(id);
 }
 
 function drawHandler(activeForm, onMouseMove, startDrawing, isPolygon) {
@@ -283,23 +296,18 @@ function cancelDrawing(geoJson) {
   document.onkeydown = null;
 }
 
-function saveButtonHandler(geoJson, geometry) {
+function saveButtonHandler(geometry) {
   var name = document.getElementById("input-name").value;
   try {
     var properties = JSON.parse(
       document.getElementById("input-properties").value
     );
-    saveFence(
-      {
-        name: name,
-        type: "Feature",
-        geometry: geometry,
-        properties: properties
-      },
-      geoJson
-    );
-    geoJson.closePopup().off("popupopen");
-    map.off("keypress");
+    saveFence({
+      name: name,
+      type: "Feature",
+      geometry: geometry,
+      properties: properties
+    });
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -308,7 +316,7 @@ function saveButtonHandler(geoJson, geometry) {
   }
 }
 
-function saveFence(fenceData, geoJson) {
+function saveFence(fenceData) {
   axios
     .post(
       geofencingApiURL +
@@ -321,16 +329,11 @@ function saveFence(fenceData, geoJson) {
       fenceData
     )
     .then(function(response) {
-      geoJson
-        .bindPopup(detailsPopup(response.data))
-        .on("popupopen", function() {
-          document
-            .getElementById("remove-button-" + response.data.id)
-            .addEventListener("click", function() {
-              geoJson.remove();
-              removeFence(response.data.id);
-            });
-        });
+      const geoJson = response.data;
+      geoJson.properties = Object.assign({}, geoJson.properties, {
+        name: fenceData.name
+      });
+      openDetailsPopup(response.data);
     })
     .catch(function(err) {
       displayModal(
@@ -347,26 +350,23 @@ function findGeometry() {
 }
 
 function fuzzySearch(query) {
-  return tomtom
-    .fuzzySearch()
-    .query(query)
-    .go()
-    .then(function(result) {
-      return result;
-    });
+  return tt.services
+    .fuzzySearch({
+      key: apiKey,
+      query: query
+    })
+    .go();
 }
 
-function getAdditionalData(fuzzySearchResults) {
-  var geometryId = fuzzySearchResults[0].dataSources.geometry.id;
-  return tomtom
+function getAdditionalData(response) {
+  var geometryId = response.results[0].dataSources.geometry.id;
+  return tt.services
     .additionalData({
+      key: apiKey,
       geometries: [geometryId],
       geometriesZoom: 12
     })
-    .go()
-    .then(function(additionalData) {
-      return additionalData;
-    });
+    .go();
 }
 
 function processAdditionalDataResponse(additionalDataResponse) {
@@ -379,29 +379,109 @@ function processAdditionalDataResponse(additionalDataResponse) {
 }
 
 function displayPolygonOnTheMap(additionalDataResult) {
+  var polygonId = additionalDataResult.providerID;
   var geometry = additionalDataResult.geometryData.features[0].geometry;
   var buffer = parseInt(document.getElementById("buffer-text").value);
   if (buffer != 0) {
     geometry = turf.buffer(geometry, buffer, turfOptions).geometry;
   }
-  var geoJson = tomtom.L.geoJson(geometry, geoJsonOptions)
-    .addTo(map)
-    .bindPopup(inputPopup)
-    .on("popupopen", function() {
-      document
-        .getElementById("save-button")
-        .addEventListener("click", function() {
-          saveButtonHandler(geoJson, geometry);
-        });
-    })
-    .openPopup();
+
+  var bounds = getFitBounds(geometry);
+  map.fitBounds(bounds, { animate: false });
+
+  drawPolygon(polygonId, geometry, onSearchPolygonClick);
+
+  var popup = openInputPopup(geometry);
+
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
-      geoJson.remove();
-      geoJson = tomtom.L.geoJson();
+      popup.remove();
+      removeMapFeature(polygonId);
       document.onkeydown = null;
     }
   };
+}
+
+function openInputPopup(geometry) {
+  var centroid = turf.centroid(geometry);
+  var popup = new tt.Popup({ maxWidth: "300px" })
+    .setLngLat(centroid.geometry.coordinates)
+    .setHTML(inputPopup);
+
+  popup.on("open", function() {
+    document
+      .getElementById("save-button")
+      .addEventListener("click", function() {
+        saveButtonHandler(geometry);
+        popup.remove();
+      });
+  });
+
+  return popup.addTo(map);
+}
+
+function openDetailsPopup(geoJson) {
+  // Mapbox GL does not preserve non-integer feature IDs. If the popup is being opened in
+  // response to a map click the ID will need to be obtained from the feature's 'source' property.
+  if (!geoJson.id) {
+    geoJson.id = geoJson.source;
+  }
+  var centroid = turf.centroid(geoJson);
+  var html = detailsPopup(geoJson);
+
+  var popup = new tt.Popup({ maxWidth: "300px" })
+    .setLngLat(centroid.geometry.coordinates)
+    .setHTML(html);
+
+  popup.on("open", function() {
+    document
+      .getElementById("remove-button-" + geoJson.id)
+      .addEventListener("click", function() {
+        removeFence(geoJson.id);
+        popup.remove();
+      });
+  });
+
+  return popup.addTo(map);
+}
+
+function onSearchPolygonClick(e) {
+  var feature = e.features[0].toJSON();
+  openInputPopup(feature.geometry);
+}
+
+function drawPolygon(id, geoJson, onClick) {
+  var lineLayerId = id + "_line";
+  var fillLayerId = id + "_fill";
+
+  map.addSource(id, {
+    type: "geojson",
+    data: geoJson
+  });
+
+  map.addLayer({
+    id: lineLayerId,
+    type: "line",
+    source: id,
+    layout: fenceStyle.lineLayout,
+    paint: fenceStyle.linePaint
+  });
+
+  map.addLayer({
+    id: fillLayerId,
+    type: "fill",
+    source: id,
+    layout: {},
+    paint: fenceStyle.fillPaint
+  });
+
+  map.on("click", fillLayerId, onClick);
+}
+
+function getFitBounds(geoJson) {
+  var envelope = turf.envelope(geoJson);
+  var coordinates = envelope.geometry.coordinates;
+  return [coordinates[0][0], coordinates[0][2]];
 }
 
 function displayModal(message) {
@@ -409,12 +489,25 @@ function displayModal(message) {
   modal.style.display = "block";
 }
 
-getFences().then(function(fences) {
-  for (var i = 0; i < fences.length; i++) {
-    var fence = fences[i];
-    getFenceDetails(fence).then(displayFence);
-  }
-});
+getFences()
+  .then(function(fences) {
+    return Promise.all(
+      fences.map(function(fence) {
+        return getFenceDetails(fence);
+      })
+    );
+  })
+  .then(function(fences) {
+    var geoJson = turf.featureCollection(fences);
+    var bounds = getFitBounds(geoJson);
+    map.fitBounds(bounds, { animate: false });
+    return fences;
+  })
+  .then(function(fences) {
+    fences.forEach(function(fence) {
+      displayFence(fence);
+    });
+  });
 
 document.getElementById("circle-button").addEventListener("click", function() {
   drawHandler(
@@ -443,63 +536,67 @@ document.getElementById("circle-button").addEventListener("click", function() {
   );
 });
 
-document.getElementById("rectangle-button").addEventListener("click", function() {
-  drawHandler(
-    null,
-    function(e) {
-      this.geometry.coordinates[1] = [e.latlng.lng, e.latlng.lat];
-      var features = turf.featureCollection([
-        turf.point(this.geometry.coordinates[0]),
-        turf.point(this.geometry.coordinates[1])
-      ]);
-      var geoJsonData = turf.envelope(features);
-      this.redraw(geoJsonData);
-    },
-    function(event) {
-      this.geometry = {
-        type: "MultiPoint",
-        shapeType: "Rectangle",
-        coordinates: [[event.latlng.lng, event.latlng.lat]]
-      };
-      this.setOneClickMapListeners();
-    }
-  );
-});
+document
+  .getElementById("rectangle-button")
+  .addEventListener("click", function() {
+    drawHandler(
+      null,
+      function(e) {
+        this.geometry.coordinates[1] = [e.latlng.lng, e.latlng.lat];
+        var features = turf.featureCollection([
+          turf.point(this.geometry.coordinates[0]),
+          turf.point(this.geometry.coordinates[1])
+        ]);
+        var geoJsonData = turf.envelope(features);
+        this.redraw(geoJsonData);
+      },
+      function(event) {
+        this.geometry = {
+          type: "MultiPoint",
+          shapeType: "Rectangle",
+          coordinates: [[event.latlng.lng, event.latlng.lat]]
+        };
+        this.setOneClickMapListeners();
+      }
+    );
+  });
 
-document.getElementById("corridor-button").addEventListener("click", function() {
-  drawHandler(
-    "corridor-form",
-    function(e) {
-      this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-        e.latlng.lng,
-        e.latlng.lat
-      ];
-      var geoJsonData = turf.buffer(
-        this.geometry,
-        this.geometry.radius,
-        turfOptions
-      );
-      this.redraw(geoJsonData);
-    },
-    function(event) {
-      var self = this;
-      this.geometry = {
-        type: "LineString",
-        shapeType: "Corridor",
-        radius: parseFloat(document.getElementById("corridor-radius").value),
-        coordinates: [
-          [event.latlng.lng, event.latlng.lat],
-          [event.latlng.lng, event.latlng.lat]
-        ]
-      };
-      this.setDblClickMapListeners();
-      map.on("dblclick", function() {
-        self.geometry.coordinates.pop();
-        self.endDrawing(self.geometry, self.geoJson);
-      });
-    }
-  );
-});
+document
+  .getElementById("corridor-button")
+  .addEventListener("click", function() {
+    drawHandler(
+      "corridor-form",
+      function(e) {
+        this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
+          e.latlng.lng,
+          e.latlng.lat
+        ];
+        var geoJsonData = turf.buffer(
+          this.geometry,
+          this.geometry.radius,
+          turfOptions
+        );
+        this.redraw(geoJsonData);
+      },
+      function(event) {
+        var self = this;
+        this.geometry = {
+          type: "LineString",
+          shapeType: "Corridor",
+          radius: parseFloat(document.getElementById("corridor-radius").value),
+          coordinates: [
+            [event.latlng.lng, event.latlng.lat],
+            [event.latlng.lng, event.latlng.lat]
+          ]
+        };
+        this.setDblClickMapListeners();
+        map.on("dblclick", function() {
+          self.geometry.coordinates.pop();
+          self.endDrawing(self.geometry, self.geoJson);
+        });
+      }
+    );
+  });
 
 document.getElementById("polygon-button").addEventListener("click", function() {
   drawHandler(
@@ -530,7 +627,9 @@ document.getElementById("polygon-button").addEventListener("click", function() {
   );
 });
 
-document.getElementById("search-button").addEventListener("click", searchHandler);
+document
+  .getElementById("search-button")
+  .addEventListener("click", searchHandler);
 
 var modal = document.getElementById("modal");
 var modalContent = document.getElementById("modal-content");

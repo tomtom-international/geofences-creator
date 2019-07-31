@@ -1,3 +1,3 @@
-var apiKey = '';
-var geofencingAdminKey = '';
-var geofencingProjectId = '';
+var apiKey = "";
+var geofencingAdminKey = "";
+var geofencingProjectId = "";
