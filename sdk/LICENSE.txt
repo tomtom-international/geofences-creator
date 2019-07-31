@@ -1,236 +1,91 @@
+WEB SDK LICENSE AGREEMENT (“AGREEMENT”)
 
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+By downloading, accessing this Maps Software Development Kit for Web (the “Web SDK”) you are entering into a binding agreement with TomTom Global Content B.V. (“TomTom”). Your agreement with TomTom includes the following terms and conditions and the Privacy Policy ( https://www.tomtom.com/en_gb/privacy/ ). You should not use the Web SDK if you cannot agree to this Agreement and the Privacy Policy.
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+You may not use the Web SDK and may not accept the Agreement if you are a person barred from receiving the Web SDK under the laws of the United States or other countries, including the country in which you are resident or from which you use the Web SDK. If you agree to be bound by the Agreement on behalf of your employer or other entity, you represent and warrant that you have full legal authority to bind your employer or such entity to the Agreement. If you do not have the requisite authority, you may not accept the Agreement or use the Web SDK on behalf of your employer or other entity.
 
-   1. Definitions.
+1. GRANT OF LICENSE: Subject to and conditional upon your compliance at all times with this Agreement, TomTom grants to you a limited, non-exclusive, non-transferable and non-sublicensable, revocable, royalty-free license during the Term (as defined in Clause 10) to use the Web SDK in connection with the development of web based applications to be used in connection with the TomTom Maps APIs and, in addition, third party online APIs (“Permitted Applications”). For the avoidance of doubt, you must use the TomTom Maps APIs in connection with the Web SDK. Any such Permitted Application and use of the TomTom Maps APIs shall be subject to TomTom’s standard terms of use applicable to the TomTom Maps APIs as made available on the TomTom developer portal or any other specific written agreement that you and TomTom have executed regarding the use of the TomTom Maps APIs.
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
+2. PROHIBITED PARTIES: You are not entitled to provide a Permitted Application which utilizes the TomTom Maps APIs or the Web SDK to the following parties: Addison Lee, AlloCab, Amazon (excluding consumer products or enterprise services not related to delivery or a Fleet Management Solution, e.g., Kindle, Fire, Amazon Web Services), Cabify, Careem, Chauffeur Prive, Club Chauffeur, Didi-Dache, Djump, Drive, Easy Taxi, Ecocab, Flywheel, GetTaxi, Google, Go Taxi, GrabTaxi, GreenTomatoCars, Hailo Network Limited, Heetch, Kabbee, Kuaidi-Dache, LeCab, Lyft, MiniCabster, Meru Cabs, MyTaxi, Olacabs, OneTaxi, Quadi, Ridelabs LLC (Summon), SideCar, SnapCar, Taxibeat, TaxiForSure, Yaxi Taxi, Yidao, Yongche and #TAXI. The foregoing shall not apply to the extent the TomTom Maps APIs and/or the Web SDK are integrated into the Permitted Application in a manner that prohibits any modification or customization of the same by a third party.
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+3. UPDATES AND CHANGES TO THE WEB SDK AND THIS AGREEMENT: TomTom reserves the right, with or without notice and at its sole discretion, to discontinue, update, modify, upgrade and supplement any of the Web SDK or any features within the Web SDK and to modify this Agreement. You agree that future versions of the Web SDK may be incompatible with applications that were developed on previous versions of the Web SDK.
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+4. YOUR FURTHER OBLIGATIONS:
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
+4.1. You agree to use the Web SDK only for purposes that are permitted by (a) this Agreement and (b) any applicable law, regulation or generally accepted practices or guidelines in the relevant jurisdictions (including any laws regarding the export of data or software to and from the United States or other relevant countries).
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+4.2. Other than as permitted by applicable legislation, you are prohibited from copying (except for backup purposes), modifying, adapting, (re)distributing, renting, lending, publicly presenting, decompiling, reverse engineering, disassembling, or creating derivative works of the Web SDK or any part of the Web SDK.
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+4.3. You may not use the Web SDK in connection with any illegal, fraudulent, dishonest or unethical activity or behaviour.
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+4.4. You shall be permitted to display TomTom Maps APIs results (“Results”) on third party content or map data provided that nothing shall entitle you to add or incorporate Results into the OSM or any other open source database. You shall also be permitted to display Results from third party content or map data on a TomTom map as a separate layer.
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+4.5. The Web SDK may include data which TomTom licenses from third parties or open source software. You shall comply with all requirements and restrictions which such third parties may require TomTom to impose on you (and as may be updated and amended by TomTom from time to time). All applicable OSS Licenses are included within the Web SDK download package. It shall be your responsibility to check, review and comply with any updated or amended terms that would apply to the Web SDK licensed to you under this Agreement. For the avoidance of doubt, any such software is made available to you under the terms and conditions of the applicable licenses.
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+5. PRIVACY: In order to improve the TomTom Developer Portal and Web SDK, TomTom may collect certain usage related information from the software including but not limited to the general SDK and product identifiers, version numbers, and information on which tools and/or services in the Web SDK are being used and how they are being used by you. In addition, TomTom may collect your unique identifier and associated IP address for legitimate business reasons (such as without limitation the processing of invoices). This data will be retained for a maximum period of 120 days. The information collected is maintained in accordance with our Privacy Policy.
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+6. INTELLECTUAL PROPERTY RIGHTS AND COPYRIGHT NOTICES:
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+6.1. All intellectual property rights related to the Web SDK and to the TomTom Maps APIs are owned by TomTom and/or its licensors and suppliers. However, TomTom agrees that it obtains no intellectual property rights under this Agreement in or to any Permitted Application that you develop using the Web SDK and the TomTom Maps APIs.
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
+6.2. Your use of any trade names, logos, trademarks, service marks and other marks of TomTom is subject to TomTom’s prior written approval. Any goodwill arising out of the use thereof shall inure to the benefit of TomTom. In addition, you agree not to remove, obscure, mask or change any logo and/or copyright notice placed on or automatically generated by the Web SDK or the TomTom Maps APIs.
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+7. WARRANTIES:
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+7.1. YOU ACKNOWLEDGE THAT THE WEB SDK HAS NOT BEEN DEVELOPED TO MEET YOUR INDIVIDUAL REQUIREMENTS AND THAT IT IS THEREFORE YOUR RESPONSIBILITY TO ENSURE THAT THE FACILITIES AND FUNCTIONS OF THE WEB SDK MEET YOUR REQUIREMENTS. TOMTOM DOES NOT AND CANNOT WARRANT THAT THE WEB SDK OPERATES UNINTERRUPTED OR ERROR-FREE. TOMTOM DOES NOT WARRANT THAT THE WEB SDK IS CAPABLE OF INTEROPERATING WITH ANY OTHER SYSTEM, DEVICE OR PRODUCT (EITHER SOFTWARE OR HARDWARE).
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+7.2. YOUR USE OF THE WEB SDK AND ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEB SDK IS AT YOUR OWN DISCRETION AND RISK AND YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR OTHER DEVICES OR ANY LOSS OF DATA THAT RESULTS FROM SUCH USE.
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+7.3. WITHOUT LIMITING CLAUSES 7.1 AND 7.2 ABOVE, THE WEB SDK IS PROVIDED ON AN “AS IS” AND WITH “ALL FAULTS BASIS” AND TOMTOM EXPRESSLY DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, SATISFACTORY QUALITY, ACCURACY, TITLE AND FITNESS FOR A PARTICULAR PURPOSE.
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+7.4. THE PROVISIONS OF THIS CLAUSE DO NOT AFFECT ANY OF YOUR LEGAL RIGHTS UNDER APPLICABLE MANDATORY NATIONAL LEGISLATION, INCLUDING BUT NOT LIMITED TO ANY MANDATORY STATUTORY WARRANTIES. IF ANY PART OF THIS LIMITED WARRANTY IS HELD TO BE INVALID OR UNENFORCEABLE, THE REMAINDER OF THE LIMITED WARRANTY SHALL NONETHELESS REMAIN IN FULL FORCE AND EFFECT.
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+8. LIMITATION OF LIABILITY:
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+8.1. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, NEITHER TOMTOM NOR ITS LICENSORS, SUPPLIERS, OFFICERS, DIRECTORS OR EMPLOYEES SHALL BE LIABLE TO YOU OR TO ANY THIRD PARTY FOR ANY DAMAGES, WHETHER DIRECT, SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL (INCLUDING BUT NOT LIMITED TO DAMAGES FOR THE INABILITY TO USE OR ACCESS THE WEB SDK OR TOMTOM MAPS APIS, LOSS OF DATA, LOSS OF BUSINESS, LOSS OF PROFITS, BUSINESS INTERRUPTION OR THE LIKE) ARISING OUT OF OR RELATED TO THE USE OF, THE INABILITY TO USE OR ACCESS, OR OTHERWISE THE PERFORMANCE OF THE WEB SDK, EVEN IF TOMTOM HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+8.2. TO THE EXTENT TOMTOM IS NOT PERMITTED UNDER APPLICABLE LAW TO EXCLUDE ITS LIABILITY PURSUANT TO CLAUSE 8.1 ABOVE, TOMTOM’S TOTAL AGGREGATE LIABILITY TO YOU SHALL BE LIMITED TO THE AMOUNT OF US $100.00.
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+8.3. THE ABOVE LIMITATIONS OF LIABILITY UNDER THIS CLAUSE 8 DO NOT: (I) AFFECT YOUR RIGHTS UNDER ANY APPLICABLE MANDATORY NATIONAL LEGISLATION; (II) EXCLUDE OR LIMIT ANY LIABILITY THAT CANNOT BE EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
+9. IPR INDMENITY: To the maximum extent permitted by law, you agree to defend, indemnify and hold TomTom and its respective directors, officers, employees, affiliates, agents and suppliers harmless from and against any and all claims, actions, suits or proceedings, as well as any and all losses, liabilities, damages, costs and expenses (including reasonable attorney’s fees) arising out of or accruing from (a) your use of the Web SDK, (b) any application you develop on the Web SDK that infringes any copyright, trademark, trade secret, trade dress, patent or other intellectual property right of any person or defames any person or violates their rights of publicity or privacy, and (c) any non-compliance by you with this Agreement.
 
-   END OF TERMS AND CONDITIONS
+10. TERM AND TERMINATION AND DIRECT ENFORCEMENT:
 
-   APPENDIX: How to apply the Apache License to your work.
+10.1. This Agreement begins on either (a) the date you demonstrate your acceptance of the terms and conditions of this Agreement or (b) when you first use the Web SDK and shall continue until terminated (jointly the “Term”) by either TomTom or you subject to and in accordance with this Agreement. The provisions of this Agreement, which by their nature are intended to survive termination, will remain in effect after termination of this Agreement. Furthermore, you agree that TomTom may directly enforce these provisions against you.
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+10.2. Without prejudice to any other rights, TomTom may immediately terminate this Agreement if (i) you fail to comply with any of its terms and conditions, or (ii) the agreement governing the use of TomTom Maps APIs between you and TomTom you has terminated, or (iii) TomTom decides to no longer provide the Web SDK or certain parts of the Web SDK either entirely or in certain territories related to your use.
 
-   Copyright 2016 TomTom International B.V.
+10.3. You may terminate this Agreement by ceasing your use of the Web SDK at any time.
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+11. GOVERNING LAW AND DISPUTE RESOLUTION:
 
-       http://www.apache.org/licenses/LICENSE-2.0
+11.1. If you, your employer or the entity on whose behalf you act is incorporated in the United States, then this Agreement and any dispute arising under or in connection with it, including any non-contractual claims and disputes, shall be governed by and construed in accordance with the laws of the State of New York. The applicability of the United Nations Convention on Contracts for the International Sale of Goods is explicitly excluded. You and TomTom hereby irrevocably submit to the exclusive jurisdiction of the courts of the State of New York in New York, New York in respect of any dispute arising under or in connection with this Agreement, including any non-contractual claims or disputes.
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+11.2. If you, your employer or the entity on whose behalf you act is incorporated in the European Union then this Agreement and any dispute arising under or in connection with it, including any non-contractual claims and disputes, shall be governed by and construed in accordance with the laws of the Netherlands. The applicability of the United Nations Convention on Contracts for the International Sale of Goods is explicitly excluded. You and TomTom hereby irrevocably submit to the exclusive jurisdiction of the courts of Amsterdam, the Netherlands in respect of any dispute arising under or in connection with this Agreement, including any non-contractual claims or disputes.
+
+11.3. If you, your employer or the entity on whose behalf you act is incorporated outside of the United States or European Union, then this Agreement and any dispute arising under or in connection with it, including any non-contractual claims and disputes, shall be governed by and construed in accordance with the laws of the Netherlands. All disputes arising in connection with the Agreement, including any non-contractual claims or disputes, shall be settled in accordance with the Arbitration Rules of the Netherlands Arbitration Institute. The arbitral tribunal shall be composed of three (3) arbitrators. The place or arbitration shall be Amsterdam and the language of the arbitration shall be English. Consolidation of the arbitral proceedings with other arbitral proceedings, as provided for in Article 1046 of the Dutch Code of Civil Procedure and Article 39 of the Arbitration Rules of the Netherlands Arbitration Institute, is excluded.
+
+11.4. Notwithstanding this, TomTom shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
+
+12. OTHER LEGAL TERMS:
+
+12.1. No failure or delay by TomTom to exercise any right or remedy provided under this Agreement or by law shall constitute a waiver of that or any other right or remedy, nor shall it preclude or restrict the further exercise of that or any other right or remedy. No single or partial exercise of such right or remedy shall preclude or restrict the further exercise of that or any other right or remedy.
+
+12.2. Should for any reason, or to any extent, any provision of this Agreement be held invalid or unenforceable, such invalidity or enforceability shall not affect or render invalid or unenforceable the remaining provisions of this Agreement and the application of that provision shall be enforced to the extent permitted by law.
+
+12.3. The rights granted to you in this Agreement may not be assigned or transferred by you without TomTom’s prior written approval.
+
+12.4. The TomTom Maps APIs and Web SDK are provided as “Commercial Computer Software” or “restricted computer software”. Use, duplication, or disclosure by the U.S. Government or U.S. Government subcontractor is subject to the restrictions set forth in 48.C.F.R. Section 12.212 or 48 C.F.R.227.2702, as applicable or successor provisions. In respect of the Map API and Search API, the manufacturer is Uber Technologies, Inc., San Francisco, CA, 94103.
+
 
 --------------
 
-The Maps SDK for Web uses the following open source technologies:
+The Maps SDK for Web Map uses the following open source technologies:
 
-- almond, which is licensed under the MIT license. See: https://github.com/jrburke/almond/
 
-    MIT License
-    -----------
-
-    Copyright (c) 2010-2011, The Dojo Foundation
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-
-- aja, which is licensed under the MIT license. See: https://github.com/krampstudio/aja.js/.
+- aja, which is licensed under the MIT license. See: https://github.com/krampstudio/aja.js
 
     The MIT License (MIT)
 
@@ -254,57 +109,48 @@ The Maps SDK for Web uses the following open source technologies:
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-- Leaflet, See https://github.com/Leaflet/Leaflet/
+- axios. See: https://github.com/axios/axios
 
-    Copyright (c) 2010-2013, Vladimir Agafonkin
-    Copyright (c) 2010-2011, CloudMade
-    All rights reserved.
+    Copyright (c) 2014-present Matt Zabriskie
 
-    Redistribution and use in source and binary forms, with or without modification, are
-    permitted provided that the following conditions are met:
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-       1. Redistributions of source code must retain the above copyright notice, this list of
-          conditions and the following disclaimer.
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
 
-       2. Redistributions in binary form must reproduce the above copyright notice, this list
-          of conditions and the following disclaimer in the documentation and/or other materials
-          provided with the distribution.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- whatwg-fetch See: https://github.com/whatwg/fetch
 
+   Copyright © 2018 WHATWG (Apple, Google, Mozilla, Microsoft).
+   This work is licensed under a Creative Commons Attribution 4.0 International License:
 
-- markercluster Leaflet plugin, See https://github.com/Leaflet/Leaflet.markercluster
+   Attribution 4.0 International
 
-    Copyright 2012 David Leaver
+   =======================================================================
 
-    Permission is hereby granted, free of charge, to any person obtaining
-    a copy of this software and associated documentation files (the
-    "Software"), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to
-    the following conditions:
+   Creative Commons Corporation ("Creative Commons") is not a law firm and
+   does not provide legal services or legal advice. Distribution of
+   Creative Commons public licenses does not create a lawyer-client or
+   other relationship. Creative Commons makes its licenses and related
+   information available on an "as-is" basis. Creative Commons gives no
+   warranties regarding its licenses, any material licensed under their
+   terms and conditions, or any related information. Creative Commons
+   disclaims all liability for damages resulting from their use to the
+   fullest extent possible.
 
-    The above copyright notice and this permission notice shall be
-    included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-- t.js, See https://github.com/jasonmoo/t.js
+- t.js, which is licensed under the MIT license. See: https://stash.tomtomgroup.com/projects/JSSDK/repos/t.js
 
     Copyright 2012 Jason Mooberry http://jasonmooberry.com
 
@@ -327,11 +173,64 @@ The Maps SDK for Web uses the following open source technologies:
     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-- es6-promise-polyfill, which is licensed under the MIT license. See: https://github.com/lahmatiy/es6-promise-polyfill
+- regenerator-runtime, which is licensed under the MIT license. See: https://github.com/facebook/regenerator
 
-    (The MIT License)
+   MIT License
 
-    Copyright (c) 2014 Roman Dvornov
+   Copyright (c) 2014-present, Facebook, Inc.
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+- core-js, which is licensed under the MIT license. See: https://github.com/zloirock/core-js
+
+   Copyright (c) 2014-2019 Denis Pushkarev
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+
+- lodash, which is licensed under the MIT license. See: https://github.com/lodash/lodash
+
+    The MIT License
+
+    Based on Underscore.js, copyright Jeremy Ashkenas,
+    DocumentCloud and Investigative Reporters & Editors <http://underscorejs.org/>
+
+    This software consists of voluntary contributions made by many
+    individuals. For exact contribution history, see the revision history
+    available at https://github.com/lodash/lodash
+
+    Copyright JS Foundation and other contributors <https://js.foundation/>
 
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -352,45 +251,61 @@ The Maps SDK for Web uses the following open source technologies:
     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-- Array.indexOf() polyfill, See https://gist.github.com/atk/1034425
+- mapbox-gl-rtl-text. See: https://github.com/mapbox/mapbox-gl-rtl-text
 
-    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-    Version 2, December 2004
+    mapbox-gl-rtl-text copyright (c) 2017 Mapbox.
 
-    Copyright (C) 2011 Alex Kloss <alexthkloss@web.de>
+    Redistribution and use in source and binary forms, with or without modification,
+    are permitted provided that the following conditions are met:
 
-    Everyone is permitted to copy and distribute verbatim or modified
-    copies of this license document, and changing it is allowed as long
-    as the name is changed.
+    Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
 
-    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-    0. You just DO WHAT THE FUCK YOU WANT TO.
+    This source code is derived from the International Components for Unicode (ICU) library,
+    available from http://site.icu-project.org/. ICU C++ code original license as follows:
 
-- Quickhull, retrieved from: http://en.literateprograms.org/Quickhull_(Javascript)?oldid=18434
-    Copyright (c) 2012 the authors listed at the following URL, and/or
-    the authors of referenced articles or incorporated external code:
-    http://en.literateprograms.org/Quickhull_(Javascript)?action=history&offset=20120410175256
+    COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
 
-    Permission is hereby granted, free of charge, to any person obtaining
-    a copy of this software and associated documentation files (the
-    "Software"), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to
-    the following conditions:
+    Copyright © 1991-2016 Unicode, Inc. All rights reserved. Distributed under the Terms of Use
+    in http://www.unicode.org/copyright.html
 
-    The above copyright notice and this permission notice shall be
-    included in all copies or substantial portions of the Software.
+    Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode
+    data files and any associated documentation (the "Data Files") or Unicode software and any
+    associated documentation (the "Software") to deal in the Data Files or Software without
+    restriction, including without limitation the rights to use, copy, modify, merge, publish,
+    distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom
+    the Data Files or Software are furnished to do so, provided that either (a) this copyright
+    and permission notice appear with all copies of the Data Files or Software, or (b) this
+    copyright and permission notice appear in associated Documentation.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+    IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE
+    FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+    CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+
+    Except as contained in this notice, the name of a copyright holder shall
+    not be used in advertising or otherwise to promote the sale, use or other
+    dealings in these Data Files or Software without prior written authorization
+    of the copyright holder.
 
 - Mapbox GL JS retrieved from: https://www.mapbox.com/mapbox-gl-js/
     Copyright (c) 2016, Mapbox
@@ -477,112 +392,9 @@ The Maps SDK for Web uses the following open source technologies:
 
     -------------------------------------------------------------------------------
 
- -  Leaflet.Pancontrol, See https://github.com/kartena/Leaflet.Pancontrol/
+    Noto Fonts
 
-    Copyright (c) 2012, Kartena AB
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice, this
-       list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice,
-       this list of conditions and the following disclaimer in the documentation
-       and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    Noto is a trademark of Google Inc. Noto fonts are open source.
+    All Noto fonts are published under the SIL Open Font License, Version 1.1.
 
     -------------------------------------------------------------------------------
-
- -  Leaflet.zoomslider, See https://github.com/kartena/Leaflet.zoomslider
-
-    Copyright (c) 2012-2014, Kartena AB, Mattias Bengtsson
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice, this
-       list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice,
-       this list of conditions and the following disclaimer in the documentation
-       and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-    -------------------------------------------------------------------------------
- -  Leaflet-MiniMap, See https://github.com/Norkart/Leaflet-MiniMap
-
-    Copyright (c) 2012, Norkart AS
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without modification, are
-    permitted provided that the following conditions are met:
-
-       1. Redistributions of source code must retain the above copyright notice, this list of
-          conditions and the following disclaimer.
-
-       2. Redistributions in binary form must reproduce the above copyright notice, this list
-          of conditions and the following disclaimer in the documentation and/or other materials
-          provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-    -------------------------------------------------------------------------------
-
- -  Leaflet.PolylineMeasure, See https://github.com/ppete2/Leaflet.PolylineMeasure
-    Used partial source code.
-
-    BSD 2-Clause License
-
-    Copyright (c) 2012-2013, Jürgen Treml
-    Copyright (c) 2017, PPete
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-    * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
