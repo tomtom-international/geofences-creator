@@ -3,6 +3,7 @@ function Fence(id, data, options) {
 
   var defaultOptions = {
     style: {
+      stroke: true,
       color: "#2FAAFF",
       opacity: 0.8,
       fillOpacity: 0.2,
@@ -30,20 +31,22 @@ Fence.prototype.addTo = function(map) {
     data: this.data
   });
 
-  map.addLayer({
-    id: this.id + "_line",
-    type: "line",
-    source: this.id,
-    layout: {
-      "line-join": style.lineJoin,
-      "line-cap": style.lineCap
-    },
-    paint: {
-      "line-color": style.color,
-      "line-opacity": style.opacity,
-      "line-width": style.weight
-    }
-  });
+  if (this.options.stroke) {
+    map.addLayer({
+      id: this.id + "_line",
+      type: "line",
+      source: this.id,
+      layout: {
+        "line-join": style.lineJoin,
+        "line-cap": style.lineCap
+      },
+      paint: {
+        "line-color": style.color,
+        "line-opacity": style.opacity,
+        "line-width": style.weight
+      }
+    });
+  }
 
   map.addLayer({
     id: this.id + "_fill",
@@ -69,7 +72,7 @@ Fence.prototype.remove = function() {
   }
 
   if (this._map) {
-    this._map.removeLayer(this.id + "_line");
+    this.options.stroke && this._map.removeLayer(this.id + "_line");
     this._map.removeLayer(this.id + "_fill");
     this._map.removeSource(this.id);
     this._map = null;
