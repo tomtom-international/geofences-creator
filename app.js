@@ -156,7 +156,7 @@ function displayFence(data) {
     }
   }
 
-  var polygon = new Polygon(data.id, geoJsonData)
+  var polygon = new Polygon(geoJsonData)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
     .on("popupopen", function() {
@@ -193,7 +193,7 @@ function drawHandler(activeForm, onMouseMove, startDrawing, isPolygon) {
   map.off("click");
   map.on("click", function(event) {
     var drawnShape = Object.create(shape);
-    drawnShape.geoJson = new Polygon("temp").addTo(map);
+    drawnShape.geoJson = new Polygon().addTo(map);
     drawnShape.onMouseMove = onMouseMove;
     drawnShape.startDrawing = startDrawing;
     drawnShape.startDrawing(event, isPolygon);
@@ -330,11 +330,7 @@ function saveFence(fenceData, polygon) {
       fenceData
     )
     .then(function(response) {
-      polygon.remove();
-
-      /*
-      var newPolygon = new Polygon(response.data.id, response.data)
-        .addTo(map)
+      polygon
         .bindPopup(detailsPopup(response.data))
         .on("popupopen", function() {
           document
@@ -344,8 +340,6 @@ function saveFence(fenceData, polygon) {
               removeFence(response.data.id);
             });
         });
-        */
-      displayFence(response.data);
     })
     .catch(function(err) {
       displayModal(
@@ -391,7 +385,6 @@ function processAdditionalDataResponse(additionalDataResponse) {
 }
 
 function displayPolygonOnTheMap(additionalDataResult) {
-  var polygonId = additionalDataResult.providerID;
   var geometry = additionalDataResult.geometryData.features[0].geometry;
   var buffer = parseInt(document.getElementById("buffer-text").value);
   if (buffer != 0) {
@@ -412,7 +405,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
       });
   }
 
-  polygon = new Polygon(polygonId, geometry)
+  polygon = new Polygon(geometry)
     .addTo(map)
     .bindPopup(inputPopup, popupOptions)
     .on("popupopen", onPopupOpen)
