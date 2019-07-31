@@ -56,6 +56,10 @@ var turfOptions = {
   units: "meters"
 };
 
+var popupOptions = {
+  maxWidth: "300px"
+};
+
 function getFences() {
   return axios
     .get(
@@ -106,7 +110,7 @@ function detailsPopup(data) {
     '<div class="form">' +
     '<div class="form__row form__row--compact">' +
     "Name: " +
-    data.properties.name +
+    data.name +
     "</div>" +
     '<div class="form__row form__row--compact">' +
     "Id: " +
@@ -151,16 +155,17 @@ function displayFence(data) {
     }
   }
 
-  geoJsonData.properties = Object.assign({}, geoJsonData.properties, {
-    name: data.name
-  });
-
-  drawPolygon(data.id, geoJsonData, onFenceClick);
-}
-
-function onFenceClick(e) {
-  var feature = e.features[0];
-  openDetailsPopup(feature);
+  var fence = new Fence(data.id, geoJsonData)
+    .addTo(map)
+    .bindPopup(detailsPopup(geoJsonData), popupOptions)
+    .on("popupopen", function() {
+      document
+        .getElementById("remove-button-" + data.id)
+        .addEventListener("click", function() {
+          fence.remove();
+          removeFence(data.id);
+        });
+    });
 }
 
 function removeFence(id) {
@@ -174,21 +179,12 @@ function removeFence(id) {
         "&adminKey=" +
         geofencingAdminKey
     )
-    .then(function() {
-      removeMapFeature(id);
-      map.off("click", fillLayerId, onFenceClick);
-    })
+    .then(console.log("Fence deleted"))
     .catch(function(err) {
       displayModal(
         "There was an error while deleting fence: " + err.response.data.message
       );
     });
-}
-
-function removeMapFeature(id) {
-  map.removeLayer(id + "_line");
-  map.removeLayer(id + "_fill");
-  map.removeSource(id);
 }
 
 function drawHandler(activeForm, onMouseMove, startDrawing, isPolygon) {
@@ -296,7 +292,7 @@ function cancelDrawing(geoJson) {
   document.onkeydown = null;
 }
 
-function saveButtonHandler(polygonId, geometry) {
+function saveButtonHandler(fence, geometry) {
   var name = document.getElementById("input-name").value;
   try {
     var properties = JSON.parse(
@@ -309,8 +305,9 @@ function saveButtonHandler(polygonId, geometry) {
         geometry: geometry,
         properties: properties
       },
-      polygonId
+      fence
     );
+    fence.closePopup();
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -319,7 +316,7 @@ function saveButtonHandler(polygonId, geometry) {
   }
 }
 
-function saveFence(fenceData, polygonId) {
+function saveFence(fenceData, fence) {
   axios
     .post(
       geofencingApiURL +
@@ -332,13 +329,14 @@ function saveFence(fenceData, polygonId) {
       fenceData
     )
     .then(function(response) {
-      const geoJson = response.data;
-      geoJson.properties = Object.assign({}, geoJson.properties, {
-        name: fenceData.name
+      fence.bindPopup(detailsPopup(response.data)).on("popupopen", function() {
+        document
+          .getElementById("remove-button-" + response.data.id)
+          .addEventListener("click", function() {
+            geoJson.remove();
+            removeFence(response.data.id);
+          });
       });
-      removeMapFeature(polygonId);
-      displayFence(geoJson);
-      openDetailsPopup(geoJson);
     })
     .catch(function(err) {
       displayModal(
@@ -394,93 +392,24 @@ function displayPolygonOnTheMap(additionalDataResult) {
   var bounds = getFitBounds(geometry);
   map.fitBounds(bounds, { animate: false });
 
-  drawPolygon(polygonId, geometry, onSearchPolygonClick);
-
-  var popup = openInputPopup(polygonId, geometry);
+  var fence = new Fence(polygonId, geometry)
+    .addTo(map)
+    .bindPopup(inputPopup, popupOptions)
+    .on("popupopen", function() {
+      document
+        .getElementById("save-button")
+        .addEventListener("click", function() {
+          saveButtonHandler(fence, geometry);
+        });
+    })
+    .openPopup();
 
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
-      popup.remove();
-      removeMapFeature(polygonId);
+      fence.remove();
       document.onkeydown = null;
     }
   };
-}
-
-function openInputPopup(polygonId, geometry) {
-  var centroid = turf.centroid(geometry);
-  var popup = new tt.Popup({ maxWidth: "300px" })
-    .setLngLat(centroid.geometry.coordinates)
-    .setHTML(inputPopup);
-
-  popup.on("open", function() {
-    document
-      .getElementById("save-button")
-      .addEventListener("click", function() {
-        saveButtonHandler(polygonId, geometry);
-        popup.remove();
-      });
-  });
-
-  return popup.addTo(map);
-}
-
-function openDetailsPopup(geoJson) {
-  // Mapbox GL does not preserve non-integer feature IDs. If the popup is being opened in
-  // response to a map click the ID will need to be obtained from the feature's 'source' property.
-  if (!geoJson.id) {
-    geoJson.id = geoJson.source;
-  }
-  var centroid = turf.centroid(geoJson);
-  var html = detailsPopup(geoJson);
-
-  var popup = new tt.Popup({ maxWidth: "300px" })
-    .setLngLat(centroid.geometry.coordinates)
-    .setHTML(html);
-
-  popup.on("open", function() {
-    document
-      .getElementById("remove-button-" + geoJson.id)
-      .addEventListener("click", function() {
-        removeFence(geoJson.id);
-        popup.remove();
-      });
-  });
-
-  return popup.addTo(map);
-}
-
-function onSearchPolygonClick(e) {
-  var feature = e.features[0].toJSON();
-  openInputPopup(feature.source, feature.geometry);
-}
-
-function drawPolygon(id, geoJson, onClick) {
-  var lineLayerId = id + "_line";
-  var fillLayerId = id + "_fill";
-
-  map.addSource(id, {
-    type: "geojson",
-    data: geoJson
-  });
-
-  map.addLayer({
-    id: lineLayerId,
-    type: "line",
-    source: id,
-    layout: fenceStyle.lineLayout,
-    paint: fenceStyle.linePaint
-  });
-
-  map.addLayer({
-    id: fillLayerId,
-    type: "fill",
-    source: id,
-    layout: {},
-    paint: fenceStyle.fillPaint
-  });
-
-  map.on("click", fillLayerId, onClick);
 }
 
 function getFitBounds(geoJson) {
@@ -517,10 +446,10 @@ getFences()
 document.getElementById("circle-button").addEventListener("click", function() {
   drawHandler(
     null,
-    function(e) {
+    function(event) {
       this.geometry.radius = turf.distance(
         this.geometry.coordinates,
-        [e.latlng.lng, e.latlng.lat],
+        [event.lngLat.lng, event.lngLat.lat],
         { units: "meters" }
       );
       var geoJsonData = turf.circle(
@@ -534,7 +463,7 @@ document.getElementById("circle-button").addEventListener("click", function() {
       this.geometry = {
         type: "Point",
         shapeType: "Circle",
-        coordinates: [event.latlng.lng, event.latlng.lat]
+        coordinates: [event.lngLat.lng, event.lngLat.lat]
       };
       this.setOneClickMapListeners();
     }
