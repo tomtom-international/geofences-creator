@@ -1,4 +1,4 @@
-function Fence(id, data, options) {
+function Polygon(id, data, options) {
   tt.Evented.call(this);
 
   var defaultOptions = {
@@ -20,10 +20,10 @@ function Fence(id, data, options) {
   this.handleClick = this.handleClick.bind(this);
 }
 
-Object.setPrototypeOf(Fence.prototype, tt.Evented.prototype);
-Object.setPrototypeOf(Fence, tt.Evented);
+Object.setPrototypeOf(Polygon.prototype, tt.Evented.prototype);
+Object.setPrototypeOf(Polygon, tt.Evented);
 
-Fence.prototype.addTo = function(map) {
+Polygon.prototype.addTo = function(map) {
   var style = this.options.style;
 
   map.addSource(this.id, {
@@ -31,7 +31,7 @@ Fence.prototype.addTo = function(map) {
     data: this.data
   });
 
-  if (this.options.stroke) {
+  if (style.stroke) {
     map.addLayer({
       id: this.id + "_line",
       type: "line",
@@ -66,13 +66,13 @@ Fence.prototype.addTo = function(map) {
   return this;
 };
 
-Fence.prototype.remove = function() {
+Polygon.prototype.remove = function() {
   if (this._popup) {
     this.closePopup();
   }
 
   if (this._map) {
-    this.options.stroke && this._map.removeLayer(this.id + "_line");
+    this.options.style.stroke && this._map.removeLayer(this.id + "_line");
     this._map.removeLayer(this.id + "_fill");
     this._map.removeSource(this.id);
     this._map = null;
@@ -81,7 +81,7 @@ Fence.prototype.remove = function() {
   return this;
 };
 
-Fence.prototype.addData = function(data) {
+Polygon.prototype.addData = function(data) {
   if (this._map) {
     var source = this._map.getSource(this.id);
     source.setData(data);
@@ -89,7 +89,7 @@ Fence.prototype.addData = function(data) {
   }
 };
 
-Fence.prototype.handleClick = function(event) {
+Polygon.prototype.handleClick = function(event) {
   if (this._popup) {
     this.openPopup(event.lngLat);
   }
@@ -102,20 +102,20 @@ Fence.prototype.handleClick = function(event) {
   });
 };
 
-Fence.prototype.getPopup = function() {
+Polygon.prototype.getPopup = function() {
   return this._popup;
 };
 
-Fence.prototype.bindPopup = function(content, popupOptions) {
+Polygon.prototype.bindPopup = function(content, popupOptions) {
   this._popup = new tt.Popup(popupOptions).setHTML(content);
   return this;
 };
 
-Fence.prototype.isPopupOpen = function() {
+Polygon.prototype.isPopupOpen = function() {
   return this._popup && this._popup.isOpen();
 };
 
-Fence.prototype.openPopup = function(lngLat) {
+Polygon.prototype.openPopup = function(lngLat) {
   if (this._popup && this._map) {
     lngLat = lngLat || turf.centroid(this.data).geometry.coordinates;
 
@@ -133,7 +133,7 @@ Fence.prototype.openPopup = function(lngLat) {
   return this;
 };
 
-Fence.prototype.closePopup = function() {
+Polygon.prototype.closePopup = function() {
   if (this._popup) {
     this._popup.remove();
     this.fire({
@@ -144,7 +144,7 @@ Fence.prototype.closePopup = function() {
   return this;
 };
 
-Fence.prototype.togglePopup = function() {
+Polygon.prototype.togglePopup = function() {
   if (this._popup && !this._popup.isOpen()) {
     this.openPopup();
   } else {
@@ -153,7 +153,7 @@ Fence.prototype.togglePopup = function() {
   return this;
 };
 
-Fence.prototype.setPopupContent = function(content) {
+Polygon.prototype.setPopupContent = function(content) {
   this._popup && this._popup.setHTML(content);
   return this;
 };
