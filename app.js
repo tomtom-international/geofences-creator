@@ -296,18 +296,21 @@ function cancelDrawing(geoJson) {
   document.onkeydown = null;
 }
 
-function saveButtonHandler(geometry) {
+function saveButtonHandler(polygonId, geometry) {
   var name = document.getElementById("input-name").value;
   try {
     var properties = JSON.parse(
       document.getElementById("input-properties").value
     );
-    saveFence({
-      name: name,
-      type: "Feature",
-      geometry: geometry,
-      properties: properties
-    });
+    saveFence(
+      {
+        name: name,
+        type: "Feature",
+        geometry: geometry,
+        properties: properties
+      },
+      polygonId
+    );
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -316,7 +319,7 @@ function saveButtonHandler(geometry) {
   }
 }
 
-function saveFence(fenceData) {
+function saveFence(fenceData, polygonId) {
   axios
     .post(
       geofencingApiURL +
@@ -333,7 +336,9 @@ function saveFence(fenceData) {
       geoJson.properties = Object.assign({}, geoJson.properties, {
         name: fenceData.name
       });
-      openDetailsPopup(response.data);
+      removeMapFeature(polygonId);
+      displayFence(geoJson);
+      openDetailsPopup(geoJson);
     })
     .catch(function(err) {
       displayModal(
@@ -391,7 +396,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
 
   drawPolygon(polygonId, geometry, onSearchPolygonClick);
 
-  var popup = openInputPopup(geometry);
+  var popup = openInputPopup(polygonId, geometry);
 
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
@@ -402,7 +407,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
   };
 }
 
-function openInputPopup(geometry) {
+function openInputPopup(polygonId, geometry) {
   var centroid = turf.centroid(geometry);
   var popup = new tt.Popup({ maxWidth: "300px" })
     .setLngLat(centroid.geometry.coordinates)
@@ -412,7 +417,7 @@ function openInputPopup(geometry) {
     document
       .getElementById("save-button")
       .addEventListener("click", function() {
-        saveButtonHandler(geometry);
+        saveButtonHandler(polygonId, geometry);
         popup.remove();
       });
   });
@@ -447,7 +452,7 @@ function openDetailsPopup(geoJson) {
 
 function onSearchPolygonClick(e) {
   var feature = e.features[0].toJSON();
-  openInputPopup(feature.geometry);
+  openInputPopup(feature.source, feature.geometry);
 }
 
 function drawPolygon(id, geoJson, onClick) {
