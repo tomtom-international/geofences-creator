@@ -1,3 +1,14 @@
+// Monkey patch Evented.off() so that it works the same as Leaflet Evented.off(), removing
+// all registered listeners if no listener provided
+var originalEventedOff = tt.Evented.prototype.off;
+tt.Evented.prototype.off = function(type, listener) {
+  if (listener) {
+    originalEventedOff.call(this, type, listener);
+  } else {
+    this._listeners[type] = [];
+  }
+};
+
 var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
 tt.setProductInfo("Fence manager", "2.0");
@@ -157,7 +168,7 @@ function displayFence(data) {
 
   var polygon = new Polygon(data.id, geoJsonData)
     .addTo(map)
-    .bindPopup(detailsPopup(geoJsonData), popupOptions)
+    .bindPopup(detailsPopup(data), popupOptions)
     .on("popupopen", function() {
       document
         .getElementById("remove-button-" + data.id)
@@ -192,7 +203,7 @@ function drawHandler(activeForm, onMouseMove, startDrawing, isPolygon) {
   map.off("click");
   map.on("click", function(event) {
     var drawnShape = Object.create(shape);
-    drawnShape.geoJson = tomtom.L.geoJson().addTo(map);
+    drawnShape.geoJson = new Polygon("temp").addTo(map);
     drawnShape.onMouseMove = onMouseMove;
     drawnShape.startDrawing = startDrawing;
     drawnShape.startDrawing(event, isPolygon);
@@ -243,8 +254,7 @@ var shape = {
     map.off("dblclick");
   },
   redraw: function(geoJsonData) {
-    this.geoJson.clearLayers();
-    this.geoJson.addData(geoJsonData).setStyle(geoJsonOptions.style);
+    this.geoJson.setData(geoJsonData);
   },
   setOneClickMapListeners: function() {
     var self = this;
@@ -307,7 +317,7 @@ function saveButtonHandler(polygon, geometry) {
       },
       polygon
     );
-    polygon.closePopup();
+    polygon.closePopup().off("popupopen");
     document.onkeydown = null;
   } catch (err) {
     displayModal(
@@ -394,21 +404,16 @@ function displayPolygonOnTheMap(additionalDataResult) {
   var bounds = getFitBounds(geometry);
   map.fitBounds(bounds, { animate: false });
 
-  var polygon;
-
-  function onPopupOpen() {
-    document
-      .getElementById("save-button")
-      .addEventListener("click", function() {
-        polygon.off("popupopen", onPopupOpen);
-        saveButtonHandler(polygon, geometry);
-      });
-  }
-
-  polygon = new Polygon(polygonId, geometry)
+  var polygon = new Polygon(polygonId, geometry)
     .addTo(map)
     .bindPopup(inputPopup, popupOptions)
-    .on("popupopen", onPopupOpen)
+    .on("popupopen", function() {
+      document
+        .getElementById("save-button")
+        .addEventListener("click", function() {
+          saveButtonHandler(polygon, geometry);
+        });
+    })
     .openPopup();
 
   document.onkeydown = function(event) {
@@ -483,7 +488,7 @@ document
     drawHandler(
       null,
       function(e) {
-        this.geometry.coordinates[1] = [e.latlng.lng, e.latlng.lat];
+        this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
         var features = turf.featureCollection([
           turf.point(this.geometry.coordinates[0]),
           turf.point(this.geometry.coordinates[1])
@@ -495,7 +500,7 @@ document
         this.geometry = {
           type: "MultiPoint",
           shapeType: "Rectangle",
-          coordinates: [[event.latlng.lng, event.latlng.lat]]
+          coordinates: [[event.lngLat.lng, event.lngLat.lat]]
         };
         this.setOneClickMapListeners();
       }
