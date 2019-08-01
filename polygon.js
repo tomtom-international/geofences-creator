@@ -117,6 +117,7 @@ Polygon.prototype.getPopup = function() {
 };
 
 Polygon.prototype.bindPopup = function(content, popupOptions) {
+  this._popup && this._popup.remove();
   this._popup = new tt.Popup(popupOptions).setHTML(content);
   return this;
 };
