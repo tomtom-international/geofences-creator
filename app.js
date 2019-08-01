@@ -188,19 +188,6 @@ function removeFence(id) {
     });
 }
 
-function drawHandler(activeForm, onMouseMove, startDrawing, isPolygon) {
-  setActiveForm(activeForm);
-  map.off("click");
-  map.on("click", function(event) {
-    var drawnShape = Object.create(shape);
-    drawnShape.geoJson = new Polygon().addTo(map);
-    drawnShape.onMouseMove = onMouseMove;
-    drawnShape.startDrawing = startDrawing;
-    drawnShape.startDrawing(event, isPolygon);
-    drawnShape.setEscapeHandler();
-  });
-}
-
 function searchHandler() {
   setActiveForm("search-form");
   document
@@ -217,80 +204,12 @@ function setActiveForm(formName) {
   }
 }
 
-var shape = {
-  setEscapeHandler: function() {
-    var self = this;
-    document.onkeydown = function(event) {
-      if (event.key === "Escape" || event.key === "Esc") {
-        cancelDrawing(self.geoJson);
-      }
-    };
-  },
-  endDrawing: function() {
-    var self = this;
-    map.off("mousemove");
-    map.off("click");
-
-    this.geoJson
-      .bindPopup(inputPopup)
-      .on("popupopen", function() {
-        document
-          .getElementById("save-button")
-          .addEventListener("click", function() {
-            saveButtonHandler(self.geoJson, self.geometry);
-            self.geoJson = null;
-          });
-      })
-      .openPopup();
-    map.off("dblclick");
-  },
-  redraw: function(geoJsonData) {
-    this.geoJson.setData(geoJsonData);
-  },
-  setOneClickMapListeners: function() {
-    var self = this;
-    map.on("mousemove", function(e) {
-      self.onMouseMove(e);
-    });
-    map.off("click");
-    map.on("click", function() {
-      self.endDrawing(self.geometry, self.geoJson);
-    });
-  },
-  setDblClickMapListeners: function() {
-    var self = this;
-    map.on("mousemove", function(e) {
-      self.onMouseMove(e);
-    });
-    map.off("click");
-    map.on("click", function(event) {
-      var oneBeforeLastCoordinate =
-        self.geometry.coordinates[self.geometry.coordinates.length - 2];
-      if (
-        oneBeforeLastCoordinate[0] != event.latlng.lng &&
-        oneBeforeLastCoordinate[1] != event.latlng.lat
-      ) {
-        self.geometry.coordinates.push([event.latlng.lng, event.latlng.lat]);
-      }
-    });
-  }
-};
-
 function convertLineStringToPolygon(geometry) {
   geometry.coordinates[geometry.coordinates.length - 1] =
     geometry.coordinates[0];
   geometry.type = "Polygon";
   geometry.coordinates = [geometry.coordinates];
   return geometry;
-}
-
-function cancelDrawing(geoJson) {
-  map.off("mousemove");
-  map.off("click");
-  geoJson.remove();
-  geoJson = tomtom.L.geoJson();
-  map.off("dblclick");
-  document.onkeydown = null;
 }
 
 function saveButtonHandler(polygon, geometry) {
@@ -451,7 +370,7 @@ getFences()
   });
 
 document.getElementById("circle-button").addEventListener("click", function() {
-  drawHandler(
+  new DrawHandler(
     null,
     function(event) {
       this.geometry.radius = turf.distance(
@@ -480,7 +399,7 @@ document.getElementById("circle-button").addEventListener("click", function() {
 document
   .getElementById("rectangle-button")
   .addEventListener("click", function() {
-    drawHandler(
+    new DrawHandler(
       null,
       function(e) {
         this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
@@ -505,47 +424,45 @@ document
 document
   .getElementById("corridor-button")
   .addEventListener("click", function() {
-    drawHandler(
+    new DrawHandler(
       "corridor-form",
       function(e) {
         this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-          e.latlng.lng,
-          e.latlng.lat
+          e.lngLat.lng,
+          e.lngLat.lat
         ];
+
         var geoJsonData = turf.buffer(
           this.geometry,
           this.geometry.radius,
           turfOptions
         );
+
         this.redraw(geoJsonData);
       },
       function(event) {
-        var self = this;
         this.geometry = {
           type: "LineString",
           shapeType: "Corridor",
           radius: parseFloat(document.getElementById("corridor-radius").value),
           coordinates: [
-            [event.latlng.lng, event.latlng.lat],
-            [event.latlng.lng, event.latlng.lat]
+            [event.lngLat.lng, event.lngLat.lat],
+            [event.lngLat.lng, event.lngLat.lat]
           ]
         };
         this.setDblClickMapListeners();
-        map.on("dblclick", function() {
-          self.geometry.coordinates.pop();
-          self.endDrawing(self.geometry, self.geoJson);
-        });
+        map.on("dblclick", this.finishPolygon);
       }
     );
   });
 
 document.getElementById("polygon-button").addEventListener("click", function() {
-  drawHandler(
+  new DrawHandler(
     null,
     function(e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-        e.latlng.lng,
-        e.latlng.lat
+        e.lngLat.lng,
+        e.lngLat.lat
       ];
       this.geometry.type = "LineString";
       this.redraw(this.geometry);
@@ -554,17 +471,18 @@ document.getElementById("polygon-button").addEventListener("click", function() {
       var self = this;
       this.geometry = {
         coordinates: [
-          [event.latlng.lng, event.latlng.lat],
-          [event.latlng.lng, event.latlng.lat]
+          [event.lngLat.lng, event.lngLat.lat],
+          [event.lngLat.lng, event.lngLat.lat]
         ]
       };
       this.setDblClickMapListeners();
       map.on("dblclick", function() {
         self.geometry = convertLineStringToPolygon(self.geometry);
         self.redraw(self.geometry);
-        self.endDrawing(self.geometry, self.geoJson);
+        self.endDrawing();
       });
-    }
+    },
+    true
   );
 });
 
@@ -577,3 +495,107 @@ var modalContent = document.getElementById("modal-content");
 modal.addEventListener("click", function() {
   modal.style.display = "none";
 });
+
+function DrawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
+  setActiveForm(activeForm);
+
+  if (DrawHandler.activeHandler) {
+    DrawHandler.activeHandler.cancelDrawing();
+  }
+  DrawHandler.activeHandler = this;
+
+  this.startDrawing = this.startDrawing.bind(this);
+  this.endDrawing = this.endDrawing.bind(this);
+  this.addVertex = this.addVertex.bind(this);
+  this.finishPolygon = this.finishPolygon.bind(this);
+  this.onMouseMove = onMouseMove.bind(this);
+  this.onStartDrawing = onStartDrawing.bind(this);
+
+  this.isPolygon = isPolygon;
+
+  map.on("click", this.startDrawing);
+}
+
+DrawHandler.prototype.startDrawing = function(event) {
+  this.polygon = new Polygon().addTo(map);
+  this.onStartDrawing(event);
+  this.setEscapeHandler();
+};
+
+DrawHandler.prototype.endDrawing = function() {
+  var self = this;
+
+  map.off("mousemove", this.onMouseMove);
+  map.off("click", this.addVertex);
+  map.off("click", this.endDrawing);
+  map.off("dblclick", this.finishPolygon);
+
+  this.polygon
+    .bindPopup(inputPopup)
+    .on("popupopen", function() {
+      document
+        .getElementById("save-button")
+        .addEventListener("click", function() {
+          saveButtonHandler(self.polygon, self.geometry);
+          self.polygon = null;
+        });
+    })
+    .openPopup();
+};
+
+DrawHandler.prototype.cancelDrawing = function() {
+  map.off("mousemove", this.onMouseMove);
+  map.off("click", this.startDrawing);
+  map.off("click", this.endDrawing);
+  map.off("click", this.addVertex);
+  map.off("dblclick", this.finishPolygon);
+  this.polygon && this.polygon.remove();
+  document.onkeydown = null;
+};
+
+DrawHandler.prototype.setOneClickMapListeners = function() {
+  map.off("click", this.startDrawing);
+  map.on("mousemove", this.onMouseMove);
+  map.on("click", this.endDrawing);
+};
+
+DrawHandler.prototype.setDblClickMapListeners = function() {
+  map.off("click", this.startDrawing);
+  map.on("mousemove", this.onMouseMove);
+  map.on("click", this.addVertex);
+};
+
+DrawHandler.prototype.addVertex = function(event) {
+  var oneBeforeLastCoordinate = this.geometry.coordinates[
+    this.geometry.coordinates.length - 2
+  ];
+  if (
+    oneBeforeLastCoordinate[0] != event.lngLat.lng &&
+    oneBeforeLastCoordinate[1] != event.lngLat.lat
+  ) {
+    this.geometry.coordinates.push([event.lngLat.lng, event.lngLat.lat]);
+  }
+};
+
+DrawHandler.prototype.finishPolygon = function() {
+  if (this.isPolygon) {
+    this.geometry = convertLineStringToPolygon(this.geometry);
+    this.redraw();
+  } else {
+    this.geometry.coordinates.pop();
+  }
+  this.endDrawing();
+};
+
+DrawHandler.prototype.redraw = function(geoJsonData) {
+  this.polygon.setData(geoJsonData);
+};
+
+DrawHandler.prototype.setEscapeHandler = function() {
+  var self = this;
+  document.onkeydown = function(event) {
+    if (event.key === "Escape" || event.key === "Esc") {
+      self.cancelDrawing();
+    }
+  };
+};
