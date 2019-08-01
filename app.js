@@ -36,22 +36,6 @@ var inputPopup =
   "</div>" +
   "</div>";
 
-var fenceStyle = {
-  fillPaint: {
-    "fill-color": "#2FAAFF",
-    "fill-opacity": 0.2
-  },
-  linePaint: {
-    "line-color": "#2FAAFF",
-    "line-opacity": 0.8,
-    "line-width": 3
-  },
-  lineLayout: {
-    "line-join": "round",
-    "line-cap": "round"
-  }
-};
-
 var turfOptions = {
   steps: 60,
   units: "meters"
@@ -188,6 +172,108 @@ function removeFence(id) {
     });
 }
 
+var drawnShape;
+
+function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
+  setActiveForm(activeForm);
+
+  if (drawnShape) {
+    drawnShape.cancelDrawing();
+  }
+
+  drawnShape = Object.create(shape);
+  drawnShape.startDrawing = drawnShape.startDrawing.bind(drawnShape);
+  drawnShape.endDrawing = drawnShape.endDrawing.bind(drawnShape);
+  drawnShape.addVertex = drawnShape.addVertex.bind(drawnShape);
+  drawnShape.finishPolygon = drawnShape.finishPolygon.bind(drawnShape);
+  drawnShape.onMouseMove = onMouseMove.bind(drawnShape);
+  drawnShape.onStartDrawing = onStartDrawing.bind(drawnShape);
+  drawnShape.isPolygon = isPolygon;
+
+  map.on("click", drawnShape.startDrawing);
+}
+
+var shape = {
+  startDrawing: function(event) {
+    this.polygon = new Polygon().addTo(map);
+    this.setEscapeHandler();
+    this.onStartDrawing(event);
+  },
+  endDrawing: function() {
+    var self = this;
+
+    map.off("mousemove", this.onMouseMove);
+    map.off("click", this.addVertex);
+    map.off("click", this.endDrawing);
+    map.off("dblclick", this.finishPolygon);
+
+    function onPopupOpen() {
+      document
+        .getElementById("save-button")
+        .addEventListener("click", function() {
+          self.polygon.off("popupopen", onPopupOpen);
+          saveButtonHandler(self.polygon, self.geometry);
+          self.polygon = null;
+        });
+    }
+
+    this.polygon
+      .bindPopup(inputPopup)
+      .on("popupopen", onPopupOpen)
+      .openPopup();
+  },
+  cancelDrawing: function() {
+    map.off("mousemove", this.onMouseMove);
+    map.off("click", this.startDrawing);
+    map.off("click", this.endDrawing);
+    map.off("click", this.addVertex);
+    map.off("dblclick", this.finishPolygon);
+    this.polygon && this.polygon.remove();
+    document.onkeydown = null;
+  },
+  setOneClickMapListeners: function() {
+    map.off("click", this.startDrawing);
+    map.on("mousemove", this.onMouseMove);
+    map.on("click", this.endDrawing);
+  },
+  setDblClickMapListeners: function() {
+    map.off("click", this.startDrawing);
+    map.on("mousemove", this.onMouseMove);
+    map.on("click", this.addVertex);
+  },
+  addVertex: function(event) {
+    var oneBeforeLastCoordinate = this.geometry.coordinates[
+      this.geometry.coordinates.length - 2
+    ];
+    if (
+      oneBeforeLastCoordinate[0] != event.lngLat.lng &&
+      oneBeforeLastCoordinate[1] != event.lngLat.lat
+    ) {
+      this.geometry.coordinates.push([event.lngLat.lng, event.lngLat.lat]);
+    }
+  },
+  finishPolygon: function() {
+    if (this.isPolygon) {
+      this.geometry = convertLineStringToPolygon(this.geometry);
+      this.redraw();
+    } else {
+      this.geometry.coordinates.pop();
+    }
+    this.endDrawing();
+  },
+  redraw: function(geoJsonData) {
+    this.polygon.setData(geoJsonData);
+  },
+  setEscapeHandler: function() {
+    var self = this;
+    document.onkeydown = function(event) {
+      if (event.key === "Escape" || event.key === "Esc") {
+        self.cancelDrawing();
+      }
+    };
+  }
+};
+
 function searchHandler() {
   setActiveForm("search-form");
   document
@@ -255,7 +341,7 @@ function saveFence(fenceData, polygon) {
           document
             .getElementById("remove-button-" + response.data.id)
             .addEventListener("click", function() {
-              newPolygon.remove();
+              polygon.remove();
               removeFence(response.data.id);
             });
         });
@@ -370,7 +456,7 @@ getFences()
   });
 
 document.getElementById("circle-button").addEventListener("click", function() {
-  new DrawHandler(
+  drawHandler(
     null,
     function(event) {
       this.geometry.radius = turf.distance(
@@ -399,7 +485,7 @@ document.getElementById("circle-button").addEventListener("click", function() {
 document
   .getElementById("rectangle-button")
   .addEventListener("click", function() {
-    new DrawHandler(
+    drawHandler(
       null,
       function(e) {
         this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
@@ -424,7 +510,7 @@ document
 document
   .getElementById("corridor-button")
   .addEventListener("click", function() {
-    new DrawHandler(
+    drawHandler(
       "corridor-form",
       function(e) {
         this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
@@ -457,7 +543,7 @@ document
   });
 
 document.getElementById("polygon-button").addEventListener("click", function() {
-  new DrawHandler(
+  drawHandler(
     null,
     function(e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
@@ -495,107 +581,3 @@ var modalContent = document.getElementById("modal-content");
 modal.addEventListener("click", function() {
   modal.style.display = "none";
 });
-
-function DrawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
-  setActiveForm(activeForm);
-
-  if (DrawHandler.activeHandler) {
-    DrawHandler.activeHandler.cancelDrawing();
-  }
-  DrawHandler.activeHandler = this;
-
-  this.startDrawing = this.startDrawing.bind(this);
-  this.endDrawing = this.endDrawing.bind(this);
-  this.addVertex = this.addVertex.bind(this);
-  this.finishPolygon = this.finishPolygon.bind(this);
-  this.onMouseMove = onMouseMove.bind(this);
-  this.onStartDrawing = onStartDrawing.bind(this);
-
-  this.isPolygon = isPolygon;
-
-  map.on("click", this.startDrawing);
-}
-
-DrawHandler.prototype.startDrawing = function(event) {
-  this.polygon = new Polygon().addTo(map);
-  this.onStartDrawing(event);
-  this.setEscapeHandler();
-};
-
-DrawHandler.prototype.endDrawing = function() {
-  var self = this;
-
-  map.off("mousemove", this.onMouseMove);
-  map.off("click", this.addVertex);
-  map.off("click", this.endDrawing);
-  map.off("dblclick", this.finishPolygon);
-
-  this.polygon
-    .bindPopup(inputPopup)
-    .on("popupopen", function() {
-      document
-        .getElementById("save-button")
-        .addEventListener("click", function() {
-          saveButtonHandler(self.polygon, self.geometry);
-          self.polygon = null;
-        });
-    })
-    .openPopup();
-};
-
-DrawHandler.prototype.cancelDrawing = function() {
-  map.off("mousemove", this.onMouseMove);
-  map.off("click", this.startDrawing);
-  map.off("click", this.endDrawing);
-  map.off("click", this.addVertex);
-  map.off("dblclick", this.finishPolygon);
-  this.polygon && this.polygon.remove();
-  document.onkeydown = null;
-};
-
-DrawHandler.prototype.setOneClickMapListeners = function() {
-  map.off("click", this.startDrawing);
-  map.on("mousemove", this.onMouseMove);
-  map.on("click", this.endDrawing);
-};
-
-DrawHandler.prototype.setDblClickMapListeners = function() {
-  map.off("click", this.startDrawing);
-  map.on("mousemove", this.onMouseMove);
-  map.on("click", this.addVertex);
-};
-
-DrawHandler.prototype.addVertex = function(event) {
-  var oneBeforeLastCoordinate = this.geometry.coordinates[
-    this.geometry.coordinates.length - 2
-  ];
-  if (
-    oneBeforeLastCoordinate[0] != event.lngLat.lng &&
-    oneBeforeLastCoordinate[1] != event.lngLat.lat
-  ) {
-    this.geometry.coordinates.push([event.lngLat.lng, event.lngLat.lat]);
-  }
-};
-
-DrawHandler.prototype.finishPolygon = function() {
-  if (this.isPolygon) {
-    this.geometry = convertLineStringToPolygon(this.geometry);
-    this.redraw();
-  } else {
-    this.geometry.coordinates.pop();
-  }
-  this.endDrawing();
-};
-
-DrawHandler.prototype.redraw = function(geoJsonData) {
-  this.polygon.setData(geoJsonData);
-};
-
-DrawHandler.prototype.setEscapeHandler = function() {
-  var self = this;
-  document.onkeydown = function(event) {
-    if (event.key === "Escape" || event.key === "Esc") {
-      self.cancelDrawing();
-    }
-  };
-};
