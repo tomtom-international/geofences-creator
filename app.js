@@ -1,15 +1,9 @@
 var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
-tt.setProductInfo("Fence manager", "2.0");
+tt.setProductInfo("Fence manager", "2.1");
 var map = tt.map({
   container: "map",
   key: apiKey,
-  basePath: "https://api.tomtom.com/maps-sdk-for-web/5.x/5.22.0/examples/sdk",
-  theme: {
-    style: "main",
-    layer: "basic",
-    source: "vector"
-  },
   attributionControlPosition: "bottom-left"
 });
 
@@ -365,8 +359,7 @@ function fuzzySearch(query) {
     .fuzzySearch({
       key: apiKey,
       query: query
-    })
-    .go();
+    });
 }
 
 function getAdditionalData(response) {
@@ -376,8 +369,7 @@ function getAdditionalData(response) {
       key: apiKey,
       geometries: [geometryId],
       geometriesZoom: 12
-    })
-    .go();
+    });
 }
 
 function processAdditionalDataResponse(additionalDataResponse) {
