@@ -389,7 +389,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
   }
 
   var bounds = getFitBounds(geometry);
-  map.fitBounds(bounds, { animate: false });
+  map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
 
   var polygon;
 
@@ -438,7 +438,7 @@ getFences()
   .then(function(fences) {
     var geoJson = turf.featureCollection(fences);
     var bounds = getFitBounds(geoJson);
-    map.fitBounds(bounds, { animate: false });
+    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
     return fences;
   })
   .then(function(fences) {
