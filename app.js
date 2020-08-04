@@ -58,9 +58,7 @@ function getFences() {
     });
 }
 
-function getFenceDetails(fence) {
-  var counter =
-    arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+function getFenceDetails(fence, counter = 0) {
   var retryTimes = 5;
   return axios
     .get(geofencingApiURL + "fences/" + fence.id + "?key=" + apiKey)
