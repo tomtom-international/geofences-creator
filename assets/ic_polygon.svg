@@ -6,8 +6,8 @@
         <path id="Path_264" data-name="Path 264" d="M0,0,19.085,18.131,37.216,0V36.262H0Z" transform="translate(1719.404 99.521) rotate(-45)" fill="#e4e5e6"/>
         <g id="Symbol_2_14" data-name="Symbol 2 – 14" transform="translate(184.795 14.003)">
           <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
-            <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#bcdf00" stroke-width="3"/>
-            <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#bcdf00" stroke-width="3"/>
+            <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#df1b12" stroke-width="3"/>
+            <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#df1b12" stroke-width="3"/>
           </g>
           <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
           <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>

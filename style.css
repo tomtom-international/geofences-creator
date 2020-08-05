@@ -164,12 +164,11 @@ body {
 
 .btn-submit,
 .tt-foldable input[type="button"].btn-submit {
-  background: #bdd731;
+  background: #e5e5e5;
   border: none;
   -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
   box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
-  border-radius: 33px;
-  color: #fff;
+  color: #000;
   height: 30px !important;
   font-family: Gotham, Helvetica, Arial, sans-serif;
   font-weight: 600;
@@ -231,6 +230,7 @@ body {
 
 .btn-submit--remove {
   background-color: #d73131;
+  color: #fff;
 }
 
 .btn-submit--search {

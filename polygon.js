@@ -4,7 +4,7 @@ function Polygon(data, options) {
   var defaultOptions = {
     style: {
       stroke: true,
-      color: "#2FAAFF",
+      color: "#61ade0",
       opacity: 0.8,
       fillOpacity: 0.2,
       lineJoin: "round",
