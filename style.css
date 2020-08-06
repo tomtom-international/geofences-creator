@@ -27,7 +27,6 @@ body {
   border-radius: 1px;
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.16);
   font-family: Gotham, Helvetica, Arial, sans-serif;
-  padding: 24px 16px;
   z-index: 1;
 }
 
@@ -164,17 +163,17 @@ body {
 
 .btn-submit,
 .tt-foldable input[type="button"].btn-submit {
-  background: #e5e5e5;
+  background: #8dc3eb;
   border: none;
   -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
   box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
-  color: #000;
+  color: #fff;
   height: 30px !important;
   font-family: Gotham, Helvetica, Arial, sans-serif;
   font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
-  width: 200px;
+  width: 100%;
   -ms-flex-item-align: center;
   align-self: center;
 }
@@ -298,6 +297,10 @@ body {
   padding: 20px;
   text-align: center;
   width: 20%;
+}
+
+.settings-modal {
+  display: "block";
 }
 
 .-background-gray {
