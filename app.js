@@ -171,6 +171,7 @@ function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
 
   if (drawnShape) {
     drawnShape.cancelDrawing();
+    clearButtonsState();
   }
 
   drawnShape = Object.create(shape);
@@ -261,12 +262,16 @@ var shape = {
     document.onkeydown = function(event) {
       if (event.key === "Escape" || event.key === "Esc") {
         self.cancelDrawing();
+        clearButtonsState();
       }
     };
+    document.getElementById("search-button").addEventListener("click", function() {self.cancelDrawing()});
   }
 };
 
-function searchHandler() {
+function searchHandler(e) {
+  clearButtonsState();
+  setButtonActive(e.target);
   setActiveForm("search-form");
   document
     .getElementById("search-action-button")
@@ -425,6 +430,16 @@ function displayModal(message) {
   modal.style.display = "block";
 }
 
+function clearButtonsState() {
+  document.getElementsByClassName("choice-button").forEach(button => {
+    button.classList.remove("active");
+  })
+}
+
+function setButtonActive(button) {
+  button.classList.add("active");
+}
+
 getFences()
   .then(function(fences) {
     return Promise.all(
@@ -445,7 +460,7 @@ getFences()
     });
   });
 
-document.getElementById("circle-button").addEventListener("click", function() {
+document.getElementById("circle-button").addEventListener("click", function(e) {
   drawHandler(
     null,
     function(event) {
@@ -470,11 +485,10 @@ document.getElementById("circle-button").addEventListener("click", function() {
       this.setOneClickMapListeners();
     }
   );
+  setButtonActive(e.target);
 });
 
-document
-  .getElementById("rectangle-button")
-  .addEventListener("click", function() {
+document.getElementById("rectangle-button").addEventListener("click", function(e) {
     drawHandler(
       null,
       function(e) {
@@ -495,11 +509,10 @@ document
         this.setOneClickMapListeners();
       }
     );
+    setButtonActive(e.target);
   });
 
-document
-  .getElementById("corridor-button")
-  .addEventListener("click", function() {
+document.getElementById("corridor-button").addEventListener("click", function(e) {
     drawHandler(
       "corridor-form",
       function(e) {
@@ -530,9 +543,10 @@ document
         map.on("dblclick", this.finishPolygon);
       }
     );
+    setButtonActive(e.target);
   });
 
-document.getElementById("polygon-button").addEventListener("click", function() {
+document.getElementById("polygon-button").addEventListener("click", function(e) {
   drawHandler(
     null,
     function(e) {
@@ -560,6 +574,7 @@ document.getElementById("polygon-button").addEventListener("click", function() {
     },
     true
   );
+  setButtonActive(e.target);
 });
 
 document

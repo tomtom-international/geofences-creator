@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+svg {
+  pointer-events: none;
+}
+
 body {
   height: 100vh;
   margin: 0;
@@ -156,9 +160,15 @@ body {
 
 .fence-choice__label {
   font-family: Gotham, Helvetica, Arial, sans-serif;
-  font-size: 1.23em;
-  padding: 13px 0 13px 23px;
-  color: #707070;
+  font-size: 18px;
+  line-height: 1.22;
+  letter-spacing: -0.25px;
+  font-weight: bold;
+  padding: 48px 0 13px 24px;
+}
+
+.fence-choice__content {
+  padding: 0 20px 24px 20px;
 }
 
 .btn-submit,
@@ -183,13 +193,13 @@ body {
   background: #fff no-repeat top center;
   border: none;
   border-radius: 0;
+  outline: none;
   color: #000;
   font-family: Gotham, Helvetica, Arial, sans-serif;
   font-weight: lighter;
   font-size: 0.95em;
   height: 100px !important;
   margin-top: 0;
-  padding-top: 75px;
   -webkit-transition: -webkit-box-shadow 0.3s ease-out;
   transition: -webkit-box-shadow 0.3s ease-out;
   transition: box-shadow 0.3s ease-out;
@@ -197,35 +207,32 @@ body {
   width: 75px;
 }
 
-.tt-foldable input[type="button"].btn:hover {
+
+.tt-foldable button.btn:hover .icon-fill{
+  fill: #61ade0;
   -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
   box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
 }
 
-.tt-foldable input[type="button"].btn:active {
+.tt-foldable button.btn:hover .icon-stroke{
+  stroke: #61ade0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
+  box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
+}
+
+
+.tt-foldable button.btn.active .icon-fill{
+  fill: #8dc3eb;
   -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
 
-.tt-foldable input[type="button"].btn--circle {
-  background-image: url("assets/ic_circle.svg");
+.tt-foldable button.btn.active .icon-stroke{
+  stroke: #8dc3eb;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
 
-.tt-foldable input[type="button"].btn--corridor {
-  background-image: url("assets/ic_corridor.svg");
-}
-
-.tt-foldable input[type="button"].btn--rectangle {
-  background-image: url("assets/ic_rectangle.svg");
-}
-
-.tt-foldable input[type="button"].btn--search {
-  background-image: url("assets/ic_search.svg");
-}
-
-.tt-foldable input[type="button"].btn--polygon {
-  background-image: url("assets/ic_polygon.svg");
-}
 
 .btn-submit--remove {
   background-color: #d73131;
