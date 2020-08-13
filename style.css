@@ -106,7 +106,7 @@ body {
 }
 
 .tt-foldable.-folded {
-  max-height: 0;
+  max-height: 45px;
   max-width: 32px;
   padding-left: 24px;
   padding-right: 24px;
@@ -178,7 +178,7 @@ body {
   -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
   box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
   color: #fff;
-  height: 30px !important;
+  height: 30px;
   font-family: Gotham, Helvetica, Arial, sans-serif;
   font-weight: 600;
   line-height: normal;
@@ -243,6 +243,7 @@ body {
 }
 
 .btn-submit--search {
+  height: 40px !important;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
