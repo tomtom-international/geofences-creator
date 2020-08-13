@@ -243,6 +243,8 @@ body {
 }
 
 .btn-submit--search {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
   height: 40px !important;
   -ms-flex-item-align: end;
   align-self: flex-end;
