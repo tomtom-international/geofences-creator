@@ -233,6 +233,9 @@ body {
   box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
 
+.tt-foldable button.btn.active {
+  font-weight: bold;
+}
 
 .btn-submit--remove {
   background-color: #d73131;
@@ -252,6 +255,11 @@ body {
   font-size: 1.23em;
 }
 
+.form--borders {
+  border-top: 2px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
 .form__row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -260,7 +268,7 @@ body {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding: 23px;
+  padding: 24px;
 }
 
 .form__row--compact {
@@ -275,11 +283,13 @@ body {
   font-weight: lighter;
   margin-top: 5px;
   padding: 10px 15px;
-  width: 90%;
+  width: 100%;
+  color: #707070;
 }
 
 .form__label {
-  color: #707070;
+  /*color: #707070;*/
+  font-weight: bold;
   padding-bottom: 15px;
 }
 
@@ -308,10 +318,6 @@ body {
 
 .settings-modal {
   display: "block";
-}
-
-.-background-gray {
-  background: #f4f6f8;
 }
 
 .mapboxgl-popup .mapboxgl-popup-close-button {
