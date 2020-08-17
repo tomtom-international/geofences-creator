@@ -185,8 +185,6 @@ body {
 .tt-foldable input[type="button"].btn-submit {
   background: #8dc3eb;
   border: none;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
-  box-shadow: rgba(0, 0, 0, 0.14) 0 3px 6px;
   color: #fff;
   height: 30px;
   font-family: Gotham, Helvetica, Arial, sans-serif;
@@ -210,10 +208,6 @@ body {
   font-size: 0.95em;
   height: 100px !important;
   margin-top: 0;
-  -webkit-transition: -webkit-box-shadow 0.3s ease-out;
-  transition: -webkit-box-shadow 0.3s ease-out;
-  transition: box-shadow 0.3s ease-out;
-  transition: box-shadow 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
   width: 75px;
 }
 
@@ -225,27 +219,19 @@ body {
 
 .tt-foldable button.btn:hover .icon-fill{
   fill: #61ade0;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
-  box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
 }
 
 .tt-foldable button.btn:hover .icon-stroke{
   stroke: #61ade0;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
-  box-shadow: rgba(0, 0, 0, 0.14) 0 0 6px;
 }
 
 
 .tt-foldable button.btn.active .icon-fill{
   fill: #8dc3eb;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
 
 .tt-foldable button.btn.active .icon-stroke{
   stroke: #8dc3eb;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
 
 .tt-foldable button.btn.active {
