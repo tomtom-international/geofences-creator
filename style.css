@@ -25,7 +25,65 @@ body {
   width: 100vw;
 }
 
+#config-form {
+  background: #8dc3eb;
+  position: relative;
+  height: 100vh;
+}
+
+#worek {
+  position: relative;
+  width: 980px;
+  height: 682px;
+  margin: auto;
+  top: 183px;
+}
+
+.tab {
+  display: none;
+  background: #fff;
+}
+
+input.invalid {
+  background-color: #ffdddd;
+}
+
+#progress {
+  position: relative;
+}
+
+#progress::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+hr {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+}
+
+[id*="step-"] {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  float: left;
+  font-size: 24px;
+  font-family: Gotham;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  line-height: 50px;
+  background: #8dc3eb;
+  margin: 60px 138px;
+}
+
 #map {
+  display: none;
   height: 100vh;
   font-family: Gotham, Helvetica, Arial, sans-serif;
   width: 100vw;

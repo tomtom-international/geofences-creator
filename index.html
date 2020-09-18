@@ -203,6 +203,60 @@
     <div id="modal" class="modal">
       <div id="modal-content" class="modal__text -background-gray"></div>
     </div>
+    <div id="config-form">
+      <div id="worek">
+        <div id="progress">
+          <hr>
+          <div id="step-1">1</div>
+          <div id="step-2">2</div>
+          <div id="step-3">3</div>
+        </div>
+        <div id="api-key-form" class="tab">
+          <h1>1. Provide TomTom API key</h1>
+          <p>If you're a registered user you can copy your API key from the <a href="https://developer.tomtom.com/user/me/apps">Dashboard</a></p>
+          <label>API key
+            <input type="text" id="api-key" class="form__input">
+          </label>
+          <button id="how-to-get-api-key">
+            I need help with finding my API key
+            <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+          </button>
+          <button id="save-api-key">
+            Save & continue
+            <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+          </button>
+        </div>
+        <div id="admin-key-form" class="tab">
+          <h1>2. Provide a geofencing admin key</h1>
+          <p>Check <i>admin key</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-configuration-service/register-admin-key">Geofencing documentation</a></p>
+          <label>Admin key
+            <input type="text" id="admin-key" class="form__input">
+          </label>
+          <button id="back-to-api-key">
+            <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+            API key
+          </button>
+          <button id="save-admin-key">
+            Save & continue
+            <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+          </button>
+        </div>
+        <div id="project-id-form" class="tab">
+          <h1>3. Provide a project ID</h1>
+          <p>Check <i>project ID</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-projecty">Geofencing documentation</a></p>
+          <label>Project ID
+            <input type="text" id="project-id" class="form__input">
+          </label>
+          <button id="back-to-admin-key">
+            <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+            Admin Key
+          </button>
+          <button id="save-project-id">
+            Save & finish
+          </button>
+        </div>
+      </div>
+    </div>
     <script src="config.js"></script>
     <script src="app.js"></script>
   </body>

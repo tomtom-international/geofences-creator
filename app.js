@@ -1,20 +1,11 @@
+var currentTab = "api-key-form";
+
+showTab(currentTab);
+
 var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
 tt.setProductInfo("Fence manager", "2.1");
-var map = tt.map({
-  container: "map",
-  key: apiKey,
-  attributionControlPosition: "bottom-left"
-});
-
-var attributions = [
-  '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
-];
-map.getAttributionControl().addAttribution(attributions);
-
-map.addControl(new tt.NavigationControl(), "top-left");
-
-new Foldable(".js-foldable", "top-right");
+var map;
 
 var inputPopup =
   '<div class="form">' +
@@ -38,6 +29,209 @@ var turfOptions = {
 var popupOptions = {
   maxWidth: "300px"
 };
+
+function showTab(tabId) {
+  document.getElementById(currentTab).style.display = "none";
+  document.getElementById(tabId).style.display = "block";
+  currentTab = tabId;
+}
+
+function validateForm() {
+  var currentTabElem = document.getElementById(currentTab);
+  var fields = currentTabElem.getElementsByTagName("input");
+  var i, valid = true;
+  for (i = 0; i < fields.length; i++) {
+    fields[i].addEventListener("input", function() {
+      this.classList.remove("invalid");
+    })
+    if (fields[i].value == "") {
+      fields[i].classList.add("invalid");
+      valid = false;
+    }
+  }
+  return valid;
+}
+
+document.getElementById("save-api-key").addEventListener("click", function() {
+  if (validateForm()) {
+    apiKey = document.getElementById("api-key").value;
+    showTab("admin-key-form");
+  };
+})
+
+document.getElementById("save-admin-key").addEventListener("click", function() {
+  if (validateForm()) {
+    geofencingAdminKey = document.getElementById("admin-key").value;
+    showTab("project-id-form");
+  };
+})
+
+document.getElementById("save-project-id").addEventListener("click", function() {
+  if (validateForm()) {
+    geofencingProjectId = document.getElementById("project-id").value;
+    hideConfigForm();
+  };
+})
+
+function hideConfigForm() {
+  document.getElementById("config-form").style.display = "none";
+  document.getElementById("map").style.display = "block";
+  map = tt.map({
+    container: "map",
+    key: apiKey,
+    attributionControlPosition: "bottom-left"
+  });
+  
+  var attributions = [
+    '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
+  ];
+  map.getAttributionControl().addAttribution(attributions);
+  
+  map.addControl(new tt.NavigationControl(), "top-left");
+  
+  new Foldable(".js-foldable", "top-right");
+
+  document.getElementById("circle-button").addEventListener("click", function(e) {
+    drawHandler(
+      null,
+      function(event) {
+        this.geometry.radius = turf.distance(
+          this.geometry.coordinates,
+          [event.lngLat.lng, event.lngLat.lat],
+          { units: "meters" }
+        );
+        var geoJsonData = turf.circle(
+          this.geometry.coordinates,
+          this.geometry.radius,
+          turfOptions
+        );
+        this.redraw(geoJsonData);
+      },
+      function(event) {
+        this.geometry = {
+          type: "Point",
+          shapeType: "Circle",
+          coordinates: [event.lngLat.lng, event.lngLat.lat]
+        };
+        this.setOneClickMapListeners();
+      }
+    );
+    setButtonActive(e.target);
+  });
+  
+  document.getElementById("rectangle-button").addEventListener("click", function(e) {
+      drawHandler(
+        null,
+        function(e) {
+          this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
+          var features = turf.featureCollection([
+            turf.point(this.geometry.coordinates[0]),
+            turf.point(this.geometry.coordinates[1])
+          ]);
+          var geoJsonData = turf.envelope(features);
+          this.redraw(geoJsonData);
+        },
+        function(event) {
+          this.geometry = {
+            type: "MultiPoint",
+            shapeType: "Rectangle",
+            coordinates: [[event.lngLat.lng, event.lngLat.lat]]
+          };
+          this.setOneClickMapListeners();
+        }
+      );
+      setButtonActive(e.target);
+    });
+  
+  document.getElementById("corridor-button").addEventListener("click", function(e) {
+      drawHandler(
+        "corridor-form",
+        function(e) {
+          this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
+            e.lngLat.lng,
+            e.lngLat.lat
+          ];
+  
+          var geoJsonData = turf.buffer(
+            this.geometry,
+            this.geometry.radius,
+            turfOptions
+          );
+  
+          this.redraw(geoJsonData);
+        },
+        function(event) {
+          this.geometry = {
+            type: "LineString",
+            shapeType: "Corridor",
+            radius: parseFloat(document.getElementById("corridor-radius").value),
+            coordinates: [
+              [event.lngLat.lng, event.lngLat.lat],
+              [event.lngLat.lng, event.lngLat.lat]
+            ]
+          };
+          this.setDblClickMapListeners();
+          map.on("dblclick", this.finishPolygon);
+        }
+      );
+      setButtonActive(e.target);
+    });
+  
+  document.getElementById("polygon-button").addEventListener("click", function(e) {
+    drawHandler(
+      null,
+      function(e) {
+        this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
+          e.lngLat.lng,
+          e.lngLat.lat
+        ];
+        this.geometry.type = "LineString";
+        this.redraw(this.geometry);
+      },
+      function(event) {
+        var self = this;
+        this.geometry = {
+          coordinates: [
+            [event.lngLat.lng, event.lngLat.lat],
+            [event.lngLat.lng, event.lngLat.lat]
+          ]
+        };
+        this.setDblClickMapListeners();
+        map.on("dblclick", function() {
+          self.geometry = convertLineStringToPolygon(self.geometry);
+          self.redraw(self.geometry);
+          self.endDrawing();
+        });
+      },
+      true
+    );
+    setButtonActive(e.target);
+  });
+  
+  document
+    .getElementById("search-button")
+    .addEventListener("click", searchHandler);
+
+    getFences()
+  .then(function(fences) {
+    return Promise.all(
+      fences.map(function(fence) {
+        return getFenceDetails(fence);
+      })
+    );
+  })
+  .then(function(fences) {
+    var geoJson = turf.featureCollection(fences);
+    var bounds = getFitBounds(geoJson);
+    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
+    return fences;
+  })
+  .then(function(fences) {
+    fences.forEach(function(fence) {
+      displayFence(fence);
+    });
+  });
+}
 
 function getFences() {
   return axios
@@ -439,147 +633,6 @@ function clearButtonsState() {
 function setButtonActive(button) {
   button.classList.add("active");
 }
-
-getFences()
-  .then(function(fences) {
-    return Promise.all(
-      fences.map(function(fence) {
-        return getFenceDetails(fence);
-      })
-    );
-  })
-  .then(function(fences) {
-    var geoJson = turf.featureCollection(fences);
-    var bounds = getFitBounds(geoJson);
-    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
-    return fences;
-  })
-  .then(function(fences) {
-    fences.forEach(function(fence) {
-      displayFence(fence);
-    });
-  });
-
-document.getElementById("circle-button").addEventListener("click", function(e) {
-  drawHandler(
-    null,
-    function(event) {
-      this.geometry.radius = turf.distance(
-        this.geometry.coordinates,
-        [event.lngLat.lng, event.lngLat.lat],
-        { units: "meters" }
-      );
-      var geoJsonData = turf.circle(
-        this.geometry.coordinates,
-        this.geometry.radius,
-        turfOptions
-      );
-      this.redraw(geoJsonData);
-    },
-    function(event) {
-      this.geometry = {
-        type: "Point",
-        shapeType: "Circle",
-        coordinates: [event.lngLat.lng, event.lngLat.lat]
-      };
-      this.setOneClickMapListeners();
-    }
-  );
-  setButtonActive(e.target);
-});
-
-document.getElementById("rectangle-button").addEventListener("click", function(e) {
-    drawHandler(
-      null,
-      function(e) {
-        this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
-        var features = turf.featureCollection([
-          turf.point(this.geometry.coordinates[0]),
-          turf.point(this.geometry.coordinates[1])
-        ]);
-        var geoJsonData = turf.envelope(features);
-        this.redraw(geoJsonData);
-      },
-      function(event) {
-        this.geometry = {
-          type: "MultiPoint",
-          shapeType: "Rectangle",
-          coordinates: [[event.lngLat.lng, event.lngLat.lat]]
-        };
-        this.setOneClickMapListeners();
-      }
-    );
-    setButtonActive(e.target);
-  });
-
-document.getElementById("corridor-button").addEventListener("click", function(e) {
-    drawHandler(
-      "corridor-form",
-      function(e) {
-        this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-          e.lngLat.lng,
-          e.lngLat.lat
-        ];
-
-        var geoJsonData = turf.buffer(
-          this.geometry,
-          this.geometry.radius,
-          turfOptions
-        );
-
-        this.redraw(geoJsonData);
-      },
-      function(event) {
-        this.geometry = {
-          type: "LineString",
-          shapeType: "Corridor",
-          radius: parseFloat(document.getElementById("corridor-radius").value),
-          coordinates: [
-            [event.lngLat.lng, event.lngLat.lat],
-            [event.lngLat.lng, event.lngLat.lat]
-          ]
-        };
-        this.setDblClickMapListeners();
-        map.on("dblclick", this.finishPolygon);
-      }
-    );
-    setButtonActive(e.target);
-  });
-
-document.getElementById("polygon-button").addEventListener("click", function(e) {
-  drawHandler(
-    null,
-    function(e) {
-      this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-        e.lngLat.lng,
-        e.lngLat.lat
-      ];
-      this.geometry.type = "LineString";
-      this.redraw(this.geometry);
-    },
-    function(event) {
-      var self = this;
-      this.geometry = {
-        coordinates: [
-          [event.lngLat.lng, event.lngLat.lat],
-          [event.lngLat.lng, event.lngLat.lat]
-        ]
-      };
-      this.setDblClickMapListeners();
-      map.on("dblclick", function() {
-        self.geometry = convertLineStringToPolygon(self.geometry);
-        self.redraw(self.geometry);
-        self.endDrawing();
-      });
-    },
-    true
-  );
-  setButtonActive(e.target);
-});
-
-document
-  .getElementById("search-button")
-  .addEventListener("click", searchHandler);
 
 var modal = document.getElementById("modal");
 var modalContent = document.getElementById("modal-content");
