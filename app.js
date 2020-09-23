@@ -33,6 +33,14 @@ var popupOptions = {
 function showTab(tabId) {
   document.getElementById(currentTab).style.display = "none";
   document.getElementById(tabId).style.display = "block";
+  var icons = document.getElementsByClassName("progress-icon");
+  icons.forEach(function(icon) {
+    icon.style.background = "#8dc3eb";
+    icon.style.color = "#fff";
+  });
+  var selectedIcon = document.querySelector("div[for=" + tabId + "]");
+  selectedIcon.style.background = "#fff";
+  selectedIcon.style.color = "#8dc3eb";
   currentTab = tabId;
 }
 
@@ -57,21 +65,31 @@ document.getElementById("save-api-key").addEventListener("click", function() {
     apiKey = document.getElementById("api-key").value;
     showTab("admin-key-form");
   };
-})
+});
 
 document.getElementById("save-admin-key").addEventListener("click", function() {
   if (validateForm()) {
     geofencingAdminKey = document.getElementById("admin-key").value;
     showTab("project-id-form");
   };
-})
+});
 
 document.getElementById("save-project-id").addEventListener("click", function() {
   if (validateForm()) {
     geofencingProjectId = document.getElementById("project-id").value;
     hideConfigForm();
   };
-})
+});
+
+document.getElementById("back-to-api-key").addEventListener("click", function() {
+  showTab("api-key-form");
+});
+
+document.getElementById("back-to-admin-key").addEventListener("click", function() {
+  showTab("admin-key-form");
+});
+
+document.getElementById("how-to-get-api-key").addEventListener("click", function () {location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"});
 
 function hideConfigForm() {
   document.getElementById("config-form").style.display = "none";

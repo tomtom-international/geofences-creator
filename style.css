@@ -4,8 +4,8 @@
 }
 
 @font-face {
-  font-family: Gotham;
-  src: url(assets/gotham_ssm_book.woff);
+  font-family: "Gotham Bold";
+  src: url(assets/Gotham_bold.woff2);
 }
 
 * {
@@ -27,8 +27,8 @@ body {
 
 #config-form {
   background: #8dc3eb;
-  position: relative;
   height: 100vh;
+  min-height: 785px;
 }
 
 #worek {
@@ -36,12 +36,60 @@ body {
   width: 980px;
   height: 682px;
   margin: auto;
-  top: 183px;
+  top: 70px;
+}
+
+#tooltips {
+  padding: 25px;
+  color: #df1b12;
+  font-family: Noway;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+#tooltips span {
+  font-weight: bold;
+}
+
+#tooltips img {
+  width: 219px;
+  height: 131px;
+  margin-bottom: 25px;
+}
+
+.flex-container {
+  display: flex;
+  height: 545px;
+}
+
+#tooltips {
+  width: 273px;
+  margin-right: 1px;
+  background-color: #fff;
 }
 
 .tab {
+  flex-grow: 1;
+  padding: 79px;
   display: none;
   background: #fff;
+  width: auto;
+}
+
+h1 {
+  font-family: Gotham Bold;
+  font-size: 20px;
+}
+
+.tab p {
+  font-family: Noway;
+  font-size: 16px;
+  margin: 35px 0 31px 0;
+}
+
+.tab label {
+  font-family: Gotham Bold;
+  font-size: 16px;
 }
 
 input.invalid {
@@ -63,16 +111,16 @@ hr {
   top: 50%;
   right: 0;
   left: 0;
+  border: 1px solid #fff;
 }
 
-[id*="step-"] {
+.progress-icon {
   position: relative;
   width: 50px;
   height: 50px;
   float: left;
   font-size: 24px;
-  font-family: Gotham;
-  font-weight: bold;
+  font-family: Gotham Bold;
   color: #fff;
   text-align: center;
   border-radius: 50%;
@@ -82,10 +130,44 @@ hr {
   margin: 60px 138px;
 }
 
+.tab button {
+  border: 0px;
+  font-family: Gotham Bold;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+#how-to-get-api-key {
+  background: #fff;
+  margin-top: 32px;
+}
+
+#how-to-get-api-key svg {
+  color: #df1b12;
+}
+
+.navigation-buttons {
+  position: absolute;
+  right: 77px;
+  bottom: 54px;
+}
+
+.tab button[id*="save"] {
+  background: #df1b12;
+  color: #fff;
+  padding: 25px 16px;
+}
+
+.tab button[id*="back-to"] {
+  background: #e5e5e5;
+  padding: 25px 16px;
+  margin-right: 12px;
+}
+
 #map {
   display: none;
   height: 100vh;
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   width: 100vw;
 }
 
@@ -98,7 +180,7 @@ hr {
   background-color: #ffffff;
   border-radius: 1px;
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.16);
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   z-index: 1;
 }
 
@@ -227,11 +309,10 @@ hr {
 }
 
 .fence-choice__label {
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.22;
   letter-spacing: -0.25px;
-  font-weight: bold;
   padding: 48px 0 13px 24px;
 }
 
@@ -245,7 +326,7 @@ hr {
   border: none;
   color: #fff;
   height: 30px;
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
@@ -261,7 +342,7 @@ hr {
   border-radius: 0;
   outline: none;
   color: #000;
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   font-weight: lighter;
   font-size: 0.95em;
   height: 100px !important;
@@ -349,9 +430,8 @@ hr {
 }
 
 .form__label {
-  font-family: Gotham;
+  font-family: Gotham Bold;
   font-size: 14px;
-  font-weight: bold;
   padding-bottom: 15px;
 }
 
@@ -370,7 +450,7 @@ hr {
 .modal__text {
   border: 1px solid #888;
   color: #555;
-  font-family: Gotham, Helvetica, Arial, sans-serif;
+  font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   font-weight: bold;
   margin: 15% auto;
   padding: 20px;
