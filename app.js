@@ -355,18 +355,17 @@ function generateAdminKey(secret) {
       return response.data.adminKey;
     })
     .catch(function(err) {
-      // if (err.message == "Network Error") {
-      //   displayModal(
-      //     "Network error. Check your API key."
-      //   )
-      // }
-      // else {
-      //   displayModal(
-      //     "There was an error while registering your Admin Key: " + err.response.data.message
-      //   );
-      // }
-      // throw err;
-      return "blablabla";
+      if (err.message == "Network Error") {
+        displayModal(
+          "Network error. Check your API key."
+        )
+      }
+      else {
+        displayModal(
+          "There was an error while registering your Admin Key: " + err.response.data.message
+        );
+      }
+      throw err;
     });
 }
 
