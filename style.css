@@ -70,7 +70,7 @@ body {
 
 .tab {
   flex-grow: 1;
-  padding: 79px;
+  padding: 79px 79px 0;
   display: none;
   background: #fff;
   width: auto;
@@ -106,7 +106,7 @@ input.invalid {
   display: table;
 }
 
-hr {
+#progress hr {
   position: absolute;
   top: 50%;
   right: 0;
@@ -130,11 +130,12 @@ hr {
   margin: 60px 138px;
 }
 
-.tab button {
+.navigation-buttons button, #how-to-get-api-key, #gen-admin-key  {
   border: 0px;
   font-family: Gotham Bold;
   font-size: 14px;
   text-transform: uppercase;
+  padding: 16px 25px;
 }
 
 #how-to-get-api-key {
@@ -148,20 +149,62 @@ hr {
 
 .navigation-buttons {
   position: absolute;
-  right: 77px;
-  bottom: 54px;
+  right: 50px;
+  bottom: 0px;
 }
 
 .tab button[id*="save"] {
   background: #df1b12;
   color: #fff;
-  padding: 25px 16px;
 }
 
 .tab button[id*="back-to"] {
   background: #e5e5e5;
-  padding: 25px 16px;
   margin-right: 12px;
+}
+
+.select-button {
+  padding: 13px;
+  /*margin: 54px 0 13px 0;*/
+  margin-top: 40px;
+  font-family: Noway;
+  font-size: 14px;
+  /*line-height: 21px;*/
+  color: #666;
+  border: none;
+  background: #fff;
+}
+
+.select-button.selected {
+  color: #000;
+  border-bottom: 5px solid #df1b12;
+}
+
+#admin-key-form hr {
+  margin-bottom: 40px;
+  border-width: 0 0 1px 0;
+  border-color: #e5e5e5;
+}
+
+label[for="secret"], label[for="generated-admin-key"] {
+  display: none;
+}
+
+#gen-admin-key {
+  background: #000;
+  color: #fff;
+  margin-top: 23px;
+  width: 100%;
+}
+
+label[for="generated-admin-key"] {
+  font-family: Noway;
+  font-size: 16px;
+  line-height: 21px;
+}
+
+#generated-admin-key {
+  font-weight: bold;
 }
 
 #map {
@@ -436,7 +479,7 @@ hr {
 }
 
 .modal {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: none;
   height: 100%;
   left: 0;
@@ -449,7 +492,7 @@ hr {
 
 .modal__text {
   border: 1px solid #888;
-  color: #555;
+  color: #fff;
   font-family: Gotham Bold, Helvetica, Arial, sans-serif;
   font-weight: bold;
   margin: 15% auto;

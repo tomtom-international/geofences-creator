@@ -48,13 +48,22 @@ function validateForm() {
   var currentTabElem = document.getElementById(currentTab);
   var fields = currentTabElem.getElementsByTagName("input");
   var i, valid = true;
+  if (document.querySelector("[for='generated-admin-key']").style.display == "block") {
+    valid = true;
+  }
   for (i = 0; i < fields.length; i++) {
     fields[i].addEventListener("input", function() {
       this.classList.remove("invalid");
     })
-    if (fields[i].value == "") {
-      fields[i].classList.add("invalid");
-      valid = false;
+    // Check if field is visible
+    if (fields[i].offsetWidth > 0 && fields[i].offsetHeight > 0) {
+      if (fields[i].id == "secret") {
+        valid = false;
+      }
+      if (fields[i].value == "") {
+        fields[i].classList.add("invalid");
+        valid = false;
+      }
     }
   }
   return valid;
@@ -69,14 +78,22 @@ document.getElementById("save-api-key").addEventListener("click", function() {
 
 document.getElementById("save-admin-key").addEventListener("click", function() {
   if (validateForm()) {
-    geofencingAdminKey = document.getElementById("admin-key").value;
+    var style = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
+    if ( style.getPropertyValue('display') != "none" ) {
+      geofencingAdminKey = document.getElementById("generated-admin-key").innerText;
+    }
+    else {
+      geofencingAdminKey = document.getElementById("admin-key").value;
+    }
+    retrieveProjects();
     showTab("project-id-form");
   };
 });
 
 document.getElementById("save-project-id").addEventListener("click", function() {
   if (validateForm()) {
-    geofencingProjectId = document.getElementById("project-id").value;
+    var select = document.getElementById("project-id");
+    geofencingProjectId = select.options[select.selectedIndex].value;
     hideConfigForm();
   };
 });
@@ -89,7 +106,74 @@ document.getElementById("back-to-admin-key").addEventListener("click", function(
   showTab("admin-key-form");
 });
 
+document.getElementById("provide-admin-key-tab").addEventListener("click", function() {
+  if (document.querySelector("[for='generated-admin-key']").style.display != "block") {
+    document.getElementById("gen-admin-key-tab").classList.remove("selected");
+    this.classList.add("selected");
+    document.querySelector("[for='secret']").style.display = "none";
+    document.querySelector("[for='admin-key']").style.display = "block";
+  }
+})
+
+document.getElementById("gen-admin-key-tab").addEventListener("click", function() {
+  if (document.querySelector("[for='generated-admin-key']").style.display != "block") {
+    document.getElementById("provide-admin-key-tab").classList.remove("selected");
+    this.classList.add("selected");
+    document.querySelector("[for='admin-key']").style.display = "none";
+    document.querySelector("[for='secret']").style.display = "block";
+  }
+})
+
+document.getElementById("gen-admin-key").addEventListener("click", function() {
+  var secret = document.getElementById("secret").value;
+  generateAdminKey(secret).then(function(key) {displayAdminKey(key)});
+})
+
 document.getElementById("how-to-get-api-key").addEventListener("click", function () {location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"});
+
+function retrieveProjects() {
+  axios
+  .get(
+    geofencingApiURL + 
+    "projects?key=" +
+    apiKey
+  )
+  .then(function(response) {
+    var selectElement = document.getElementById("project-id");
+    if (response.data.projects.length > 0) {
+      response.data.projects.forEach(function(project) {
+        var option = document.createElement("option")
+        option.value = project.id;
+        option.innerText = project.name;
+        selectElement.appendChild(option)
+      })
+    }
+    else {
+      //create project
+      axios
+      .post(
+        geofencingApiURL +
+        "projects/project?key=" +
+        apiKey +
+        "&adminKey=" +
+        geofencingAdminKey,
+        {
+          name: "Geofences creator"
+        }
+      )
+      .then(function(response) {
+        var option = document.createElement("option")
+        option.value = response.data.id;
+        option.innerText = response.data.name;
+        selectElement.appendChild(option)
+      })
+      .catch(function(err) {
+        console.log(err);
+        displayModal("There was an error while retrieving project list: " + err.response.data.message);
+      })
+    }
+  })
+}
 
 function hideConfigForm() {
   document.getElementById("config-form").style.display = "none";
@@ -241,6 +325,12 @@ function hideConfigForm() {
   .then(function(fences) {
     var geoJson = turf.featureCollection(fences);
     var bounds = getFitBounds(geoJson);
+    if ( bounds[0][0] == Infinity && bounds[0][1] == Infinity && bounds[1][0] == -Infinity && bounds[1][1] == -Infinity ) {
+      bounds[0][0] = 180;
+      bounds[0][1] = 90;
+      bounds[1][0] = -180;
+      bounds[1][1] = -90;
+    }
     map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
     return fences;
   })
@@ -249,6 +339,35 @@ function hideConfigForm() {
       displayFence(fence);
     });
   });
+}
+
+function generateAdminKey(secret) {
+  return axios
+    .post(
+      geofencingApiURL + 
+      "register?key=" + 
+      apiKey,
+      {
+        secret: secret 
+      }
+    )
+    .then(function(response) {
+      return response.data.adminKey;
+    })
+    .catch(function(err) {
+      // if (err.message == "Network Error") {
+      //   displayModal(
+      //     "Network error. Check your API key."
+      //   )
+      // }
+      // else {
+      //   displayModal(
+      //     "There was an error while registering your Admin Key: " + err.response.data.message
+      //   );
+      // }
+      // throw err;
+      return "blablabla";
+    });
 }
 
 function getFences() {
@@ -278,7 +397,7 @@ function getFenceDetails(fence, counter = 0) {
       return response.data;
     })
     .catch(function(err) {
-      if (err.response.status == 403 && counter < retryTimes) {
+      if ((err.response.status == 403 || err.response.status == 429) && counter < retryTimes) {
         counter++;
         return new Promise(function(resolve, reject) {
           setTimeout(function() {
@@ -640,6 +759,12 @@ function getFitBounds(geoJson) {
 function displayModal(message) {
   modalContent.innerText = message;
   modal.style.display = "block";
+}
+
+function displayAdminKey(generatedAdminKey) {
+  document.getElementById("generated-admin-key").innerText = generatedAdminKey;
+  document.querySelector("label[for='secret']").style.display = "none";
+  document.querySelector("label[for='generated-admin-key']").style.display = "block";
 }
 
 function clearButtonsState() {

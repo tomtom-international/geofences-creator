@@ -235,9 +235,20 @@
           </div>
           <div id="admin-key-form" class="tab">
             <h1>2. Provide a geofencing admin key</h1>
-            <p>Check <i>admin key</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-configuration-service/register-admin-key">Geofencing documentation</a></p>
-            <label>Admin key
+            <button id="provide-admin-key-tab" class="select-button selected">Provide an existing admin key</button>
+            <button id="gen-admin-key-tab" class="select-button">Generate an admin key</button>
+            <hr>
+            <label for="admin-key">Admin key
               <input type="text" id="admin-key" class="form__input">
+            </label>
+            <label for="secret">Secret
+              <input type="text" id="secret" class="form__input">
+              <button id="gen-admin-key">Generate admin key</button>
+            </label>
+            <label for="generated-admin-key">Your generated key:
+              <div id="generated-admin-key"></div>
+              <br>
+              Remember that you can always regenerate this key using your geofencing secret.
             </label>
             <div class="navigation-buttons">
               <button id="back-to-api-key">
@@ -254,7 +265,8 @@
             <h1>3. Provide a project ID</h1>
             <p>Check <i>project ID</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-projecty">Geofencing documentation</a></p>
             <label>Project ID
-              <input type="text" id="project-id" class="form__input">
+              <select id="project-id">
+              </select>
             </label>
             <div class="navigation-buttons">
               <button id="back-to-admin-key">
