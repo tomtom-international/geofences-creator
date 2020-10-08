@@ -314,7 +314,7 @@ function hideConfigForm() {
     .getElementById("search-button")
     .addEventListener("click", searchHandler);
 
-    getFences()
+  getFences()
   .then(function(fences) {
     return Promise.all(
       fences.map(function(fence) {
@@ -323,22 +323,16 @@ function hideConfigForm() {
     );
   })
   .then(function(fences) {
-    var geoJson = turf.featureCollection(fences);
-    var bounds = getFitBounds(geoJson);
-    if ( bounds[0][0] == Infinity && bounds[0][1] == Infinity && bounds[1][0] == -Infinity && bounds[1][1] == -Infinity ) {
-      bounds[0][0] = 180;
-      bounds[0][1] = 90;
-      bounds[1][0] = -180;
-      bounds[1][1] = -90;
-    }
-    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
-    return fences;
-  })
-  .then(function(fences) {
+    var transformedFences = [];
     fences.forEach(function(fence) {
+      fence = transformFenceToGeoJson(fence);
+      transformedFences.push(fence);
       displayFence(fence);
-    });
-  });
+    })
+    var geoJson = turf.featureCollection(transformedFences);
+    var bounds = getBounds(geoJson);
+    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
+  })
 }
 
 function generateAdminKey(secret) {
@@ -436,10 +430,9 @@ function detailsPopup(data) {
   );
 }
 
-function displayFence(data) {
-  var geoJsonData;
+function transformFenceToGeoJson(data) {
   if (data.geometry.type == "Polygon" || data.geometry.type == "MultiPolygon") {
-    geoJsonData = data;
+    return data;
   } else {
     switch (data.geometry.shapeType) {
       case "Circle":
@@ -448,21 +441,26 @@ function displayFence(data) {
           data.geometry.radius,
           turfOptions
         );
-        break;
+        data.geometry = geoJsonData.geometry;
+        return data;
       case "Rectangle":
         geoJsonData = turf.envelope(data.geometry);
-        break;
+        data.geometry = geoJsonData.geometry;
+        return data;
       case "Corridor":
-        geoJsonData = turf.buffer(
+        geoJsonData =  turf.buffer(
           data.geometry,
           data.geometry.radius,
           turfOptions
         );
-        break;
+        data.geometry = geoJsonData.geometry;
+        return data;
     }
   }
+}
 
-  var polygon = new Polygon(geoJsonData)
+function displayFence(data) {
+  var polygon = new Polygon(data)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
     .on("popupopen", function() {
@@ -721,7 +719,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
     geometry = turf.buffer(geometry, buffer, turfOptions).geometry;
   }
 
-  var bounds = getFitBounds(geometry);
+  var bounds = getBounds(geometry);
   map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
 
   var polygon;
@@ -749,10 +747,15 @@ function displayPolygonOnTheMap(additionalDataResult) {
   };
 }
 
-function getFitBounds(geoJson) {
+function getBounds(geoJson) {
   var envelope = turf.envelope(geoJson);
   var coordinates = envelope.geometry.coordinates;
-  return [coordinates[0][0], coordinates[0][2]];
+  if (coordinates[0][0][0] == Infinity && coordinates[0][0][1] == Infinity && coordinates[0][2][0] == -Infinity && coordinates[0][2][1] == -Infinity) {
+    return [[180,90],[-180,-90]];
+  }
+  else {
+    return [coordinates[0][0], coordinates[0][2]];
+  }
 }
 
 function displayModal(message) {
