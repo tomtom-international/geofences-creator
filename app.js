@@ -85,7 +85,9 @@ document.getElementById("save-admin-key").addEventListener("click", function() {
     else {
       geofencingAdminKey = document.getElementById("admin-key").value;
     }
-    retrieveProjects();
+    if (document.querySelector("#project-id option") == null) {
+      retrieveProjects();
+    }
     showTab("project-id-form");
   };
 });
@@ -139,17 +141,12 @@ function retrieveProjects() {
     apiKey
   )
   .then(function(response) {
-    var selectElement = document.getElementById("project-id");
     if (response.data.projects.length > 0) {
       response.data.projects.forEach(function(project) {
-        var option = document.createElement("option")
-        option.value = project.id;
-        option.innerText = project.name;
-        selectElement.appendChild(option)
+        addProjectToProjectsList(project);
       })
     }
     else {
-      //create project
       axios
       .post(
         geofencingApiURL +
@@ -162,17 +159,24 @@ function retrieveProjects() {
         }
       )
       .then(function(response) {
-        var option = document.createElement("option")
-        option.value = response.data.id;
-        option.innerText = response.data.name;
-        selectElement.appendChild(option)
+        addProjectToProjectsList(response.data);
       })
       .catch(function(err) {
-        console.log(err);
-        displayModal("There was an error while retrieving project list: " + err.response.data.message);
+        displayModal("There was an error while creating a new project: " + err.response.data);
       })
     }
   })
+  .catch(function(err) {
+    displayModal("There was an error while retrieving project list: " + err.response.data)
+  })
+}
+
+function addProjectToProjectsList(project) {
+  var selectElement = document.getElementById("project-id");
+  var option = document.createElement("option")
+  option.value = project.id;
+  option.innerText = project.name;
+  selectElement.appendChild(option)
 }
 
 function hideConfigForm() {
