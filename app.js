@@ -162,12 +162,12 @@ function retrieveProjects() {
         addProjectToProjectsList(response.data);
       })
       .catch(function(err) {
-        displayModal("There was an error while creating a new project: " + err.response.data);
+        displayModal("error","There was an error while creating a new project: " + err.response.data);
       })
     }
   })
   .catch(function(err) {
-    displayModal("There was an error while retrieving project list: " + err.response.data)
+    displayModal("error","There was an error while retrieving project list: " + err.response.data)
   })
 }
 
@@ -354,12 +354,12 @@ function generateAdminKey(secret) {
     })
     .catch(function(err) {
       if (err.message == "Network Error") {
-        displayModal(
+        displayModal("error",
           "Network error. Check your API key."
         )
       }
       else {
-        displayModal(
+        displayModal("error",
           "There was an error while registering your Admin Key: " + err.response.data.message
         );
       }
@@ -380,7 +380,7 @@ function getFences() {
       return response.data.fences;
     })
     .catch(function(err) {
-      displayModal(
+      displayModal("error",
         "There was an error while fetching fences: " + err.response.data
       );
     });
@@ -402,7 +402,7 @@ function getFenceDetails(fence, counter = 0) {
           }, 1000);
         });
       } else {
-        displayModal(
+        displayModal("error",
           "There was an error while fetching fence: " + err.response.data
         );
       }
@@ -490,13 +490,21 @@ function removeFence(id) {
     )
     .then(console.log("Fence deleted"))
     .catch(function(err) {
-      displayModal(
+      displayModal("error",
         "There was an error while deleting fence: " + err.response.data.message
       );
     });
 }
 
 var drawnShape;
+
+function onPopupOpen(self) {
+  document
+    .getElementById("save-button")
+    .addEventListener("click", function() {
+      saveButtonHandler(self);
+    });
+}
 
 function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
   setActiveForm(activeForm);
@@ -532,19 +540,11 @@ var shape = {
     map.off("click", this.endDrawing);
     map.off("dblclick", this.finishPolygon);
 
-    function onPopupOpen() {
-      document
-        .getElementById("save-button")
-        .addEventListener("click", function() {
-          self.polygon.off("popupopen", onPopupOpen);
-          saveButtonHandler(self.polygon, self.geometry);
-          self.polygon = null;
-        });
-    }
-
     this.polygon
       .bindPopup(inputPopup)
-      .on("popupopen", onPopupOpen)
+      .once("popupopen", function () {
+        onPopupOpen(self);
+      })
       .openPopup();
   },
   cancelDrawing: function() {
@@ -627,7 +627,7 @@ function convertLineStringToPolygon(geometry) {
   return geometry;
 }
 
-function saveButtonHandler(polygon, geometry) {
+function saveButtonHandler(self) {
   var name = document.getElementById("input-name").value;
   try {
     var properties = JSON.parse(
@@ -637,22 +637,26 @@ function saveButtonHandler(polygon, geometry) {
       {
         name: name,
         type: "Feature",
-        geometry: geometry,
+        geometry: self.geometry,
         properties: properties
       },
-      polygon
-    );
-    polygon.closePopup();
-    document.onkeydown = null;
+      self.polygon
+    )
+    .then(function() {
+      self.polygon.closePopup();
+      document.onkeydown = null;
+      self.polygon = null;
+      clearButtonsState();
+    });
   } catch (err) {
-    displayModal(
+    displayModal("error",
       "Error while parsing JSON properties.\nExample input:\n{'key': 'value',\n'key2': 'value2'}"
     );
   }
 }
 
 function saveFence(fenceData, polygon) {
-  axios
+  return axios
     .post(
       geofencingApiURL +
         "projects/" +
@@ -676,7 +680,7 @@ function saveFence(fenceData, polygon) {
         });
     })
     .catch(function(err) {
-      displayModal(
+      displayModal("error",
         "There was an error while saving fences: " + err.response.data.message
       );
     });
@@ -717,30 +721,22 @@ function processAdditionalDataResponse(additionalDataResponse) {
 }
 
 function displayPolygonOnTheMap(additionalDataResult) {
-  var geometry = additionalDataResult.geometryData.features[0].geometry;
+  var self = {};
+  self.geometry = additionalDataResult.geometryData.features[0].geometry;
   var buffer = parseInt(document.getElementById("buffer-text").value);
   if (buffer != 0) {
-    geometry = turf.buffer(geometry, buffer, turfOptions).geometry;
+    self.geometry = turf.buffer(self.geometry, buffer, turfOptions).geometry;
   }
 
-  var bounds = getBounds(geometry);
+  var bounds = getBounds(self.geometry);
   map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
 
-  var polygon;
-
-  function onPopupOpen() {
-    document
-      .getElementById("save-button")
-      .addEventListener("click", function() {
-        polygon.off("popupopen", onPopupOpen);
-        saveButtonHandler(polygon, geometry);
-      });
-  }
-
-  polygon = new Polygon(geometry)
+  self.polygon = new Polygon(self.geometry)
     .addTo(map)
     .bindPopup(inputPopup, popupOptions)
-    .on("popupopen", onPopupOpen)
+    .once("popupopen", function _listener() {
+      onPopupOpen(self);
+    })
     .openPopup();
 
   document.onkeydown = function(event) {
@@ -762,9 +758,16 @@ function getBounds(geoJson) {
   }
 }
 
-function displayModal(message) {
-  modalContent.innerText = message;
+function displayModal(type, message) {
+  if (type == "error") {
+    modal.classList.add("error");
+  }
+    modalContent.innerText = message;
   modal.style.display = "block";
+  document.querySelector("body").addEventListener("click", function() {
+    modal.style.display = "none";
+    modal.classList.remove("error");
+  })
 }
 
 function displayAdminKey(generatedAdminKey) {
@@ -785,6 +788,3 @@ function setButtonActive(button) {
 
 var modal = document.getElementById("modal");
 var modalContent = document.getElementById("modal-content");
-modal.addEventListener("click", function() {
-  modal.style.display = "none";
-});

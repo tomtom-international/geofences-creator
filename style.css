@@ -479,26 +479,36 @@ label[for="generated-admin-key"] {
 }
 
 .modal {
-  background-color: rgba(0, 0, 0, 0.7);
   display: none;
-  height: 100%;
-  left: 0;
   overflow: auto;
   position: fixed;
-  top: 0;
-  width: 100%;
   z-index: 1100;
+  width: 450px;
+  right: 50px;
+  top: 50px;
+  padding: 16px;
 }
 
 .modal__text {
-  border: 1px solid #888;
+  display: flex;
   color: #fff;
   font-family: Gotham Bold, Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  margin: 15% auto;
-  padding: 20px;
-  text-align: center;
-  width: 20%;
+}
+
+.modal__text:before {
+  flex-shrink: 0;
+  position: relative;
+  bottom: -2px;
+  margin-right: 16px;
+  width: 16px;
+  height: 16px;
+  content: "";
+  background: url("assets/error-symbol.svg") no-repeat;
+  background-size: 16px 16px;
+}
+
+.modal.error {
+  background-color: #df1b12;
 }
 
 .settings-modal {
