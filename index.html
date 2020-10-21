@@ -200,6 +200,23 @@
           </div>
         </div>
       </div>
+      <div class="tt-overlay-panel -left-top">
+        <button id="config">
+          <?xml version="1.0" encoding="utf-8"?>
+          <svg viewBox="0 0 40 40" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd">
+              <rect x="0.18" y="0.045" width="39.775" height="39.82" style="fill: rgb(0, 0, 0); fill-opacity: 0.11;" rx="5.377" ry="5.377"/>
+              <rect x="2.299" y="1.943" width="35.363" height="35.631" class="icon-fill" style="fill: rgb(255, 255, 255);" rx="4.655" ry="4.655"/>
+              <g transform="matrix(1, 0, 0, 1, 11.089888, 10.325843)">
+                <mask id="b" fill="#fff">
+                  <path d="M0 0h18v18H0z" transform="matrix(1, 0, 0, 1, 0, 0)"/>
+                </mask>
+                <path d="M3.258 17.365V7.796c.49-.118.79-.376 1.127-.742.397-.432.615-.986.615-1.56 0-.574-.218-1.128-.615-1.56-.336-.367-.638-.625-1.127-.743V.635c0-.35-.44-.635-.805-.635-.365 0-.805.285-.805.635v2.581C.598 3.51 0 4.434 0 5.494c0 1.059.598 1.983 1.648 2.278v9.593c0 .35.44.635.805.635.365 0 .805-.285.805-.635M9.757 17.365v-.467c.49-.118.792-.376 1.127-.742.397-.432.616-.986.616-1.56 0-.575-.219-1.129-.616-1.561-.335-.366-.637-.624-1.127-.742L9.786.635c0-.35-.468-.635-.833-.635-.365 0-.804.285-.804.635v11.682c-1.051.295-1.649 1.219-1.649 2.278 0 1.06.598 1.984 1.649 2.278v.492c0 .35.439.635.804.635.365 0 .804-.285.804-.635M14.62.635l.028 4.061C13.598 4.99 13 5.915 13 6.974s.598 1.983 1.648 2.278v8.113c0 .35.44.635.805.635.365 0 .804-.285.804-.635V9.276c.49-.118.792-.376 1.128-.742.396-.432.615-.986.615-1.56 0-.574-.219-1.128-.615-1.56-.336-.366-.638-.625-1.128-.743V.635c0-.35-.44-.635-.804-.635-.365 0-.833.285-.833.635" mask="url(#b)" style="fill: rgb(51, 51, 51);"/>
+              </g>
+            </g>
+          </svg>
+        </button>
+      </div>
     </div>
     <div id="modal" class="modal">
       <div id="modal-content" class="modal__text -background-gray"></div>
@@ -215,11 +232,11 @@
         <div class="flex-container">
           <div id="tooltips">
             <img src="assets/tooltips.png">
-            <span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the API Key Guide.
+            <span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the <a href="https://developer.tomtom.com/geofencing-api/tutorials/fence-creation" target="_blank">Tutorial</a>.
           </div>
           <div id="api-key-form" class="tab">
             <h1>1. Provide TomTom API key</h1>
-            <p>If you're a registered user you can copy your API key from the <a href="https://developer.tomtom.com/user/me/apps">Dashboard</a></p>
+            <p>If you're a registered user you can copy your API key from the <a href="https://developer.tomtom.com/user/me/apps" target="_blank">Dashboard</a></p>
             <label>API key
               <input type="text" id="api-key" class="form__input">
             </label>
@@ -264,7 +281,7 @@
           </div>
           <div id="project-id-form" class="tab">
             <h1>3. Provide a project ID</h1>
-            <p>Check <i>project ID</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-projecty">Geofencing documentation</a></p>
+            <p>Check <i>project ID</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-projecty" target="_blank">Geofencing documentation</a></p>
             <label>Project ID
               <select id="project-id">
               </select>

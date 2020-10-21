@@ -31,6 +31,19 @@ var popupOptions = {
 };
 
 function showTab(tabId) {
+  var tooltip = "<img src='assets/tooltips.png'>";
+  switch (tabId) {
+    case "api-key-form":
+      tooltip += "<span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the <a href='https://developer.tomtom.com/geofencing-api/tutorials/fence-creation' target='_blank'>Tutorial</a>.";
+      break;
+    case "admin-key-form":
+      tooltip += "Check <i>project ID</i> details in <a href='https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-configuration-service/register-admin-key' target='_blank'>geofencing documentation</a>";
+      break;
+    case "project-id-form":
+      tooltip += "Check <i>admin</i> key details in <a href='https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-project' target='_blank'>geofencing documentation</a>";
+      break;
+  }
+  document.getElementById("tooltips").innerHTML = tooltip;
   document.getElementById(currentTab).style.display = "none";
   document.getElementById(tabId).style.display = "block";
   var icons = document.getElementsByClassName("progress-icon");
@@ -85,9 +98,8 @@ document.getElementById("save-admin-key").addEventListener("click", function() {
     else {
       geofencingAdminKey = document.getElementById("admin-key").value;
     }
-    if (document.querySelector("#project-id option") == null) {
-      retrieveProjects();
-    }
+    clearProjectsList();
+    retrieveProjects();
     showTab("project-id-form");
   };
 });
@@ -133,6 +145,8 @@ document.getElementById("gen-admin-key").addEventListener("click", function() {
 
 document.getElementById("how-to-get-api-key").addEventListener("click", function () {location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"});
 
+document.getElementById("config").addEventListener("click", showConfigForm);
+
 function retrieveProjects() {
   axios
   .get(
@@ -162,13 +176,17 @@ function retrieveProjects() {
         addProjectToProjectsList(response.data);
       })
       .catch(function(err) {
-        displayModal("error","There was an error while creating a new project: " + err.response.data);
+        displayModal("error", createProjectErrorMsg(err));
       })
     }
   })
   .catch(function(err) {
-    displayModal("error","There was an error while retrieving project list: " + err.response.data)
+    displayModal("error",retrieveProjectsErrorMsg(err))
   })
+}
+
+function clearProjectsList() {
+  document.getElementById("project-id").innerHTML = "";
 }
 
 function addProjectToProjectsList(project) {
@@ -177,6 +195,14 @@ function addProjectToProjectsList(project) {
   option.value = project.id;
   option.innerText = project.name;
   selectElement.appendChild(option)
+}
+
+function showConfigForm() {
+  map.remove();
+  map = null;
+  document.getElementById("config-form").style.display = "block";
+  document.getElementById("map").style.display = "none";
+  showTab("api-key-form");
 }
 
 function hideConfigForm() {
@@ -353,16 +379,7 @@ function generateAdminKey(secret) {
       return response.data.adminKey;
     })
     .catch(function(err) {
-      if (err.message == "Network Error") {
-        displayModal("error",
-          "Network error. Check your API key."
-        )
-      }
-      else {
-        displayModal("error",
-          "There was an error while registering your Admin Key: " + err.response.data.message
-        );
-      }
+      displayModal("error", generateAdminKeyErrosMsg(err));
       throw err;
     });
 }
@@ -380,9 +397,7 @@ function getFences() {
       return response.data.fences;
     })
     .catch(function(err) {
-      displayModal("error",
-        "There was an error while fetching fences: " + err.response.data
-      );
+      displayModal("error", fetchFencesErrorMsg(err));
     });
 }
 
@@ -402,9 +417,7 @@ function getFenceDetails(fence, counter = 0) {
           }, 1000);
         });
       } else {
-        displayModal("error",
-          "There was an error while fetching fence: " + err.response.data
-        );
+        displayModal("error", fetchFenceErrorMsg(err));
       }
     });
 }
@@ -471,8 +484,9 @@ function displayFence(data) {
       document
         .getElementById("remove-button-" + data.id)
         .addEventListener("click", function() {
-          polygon.remove();
-          removeFence(data.id);
+          removeFence(data.id).then(
+            polygon.remove
+            );
         });
     });
 }
@@ -488,11 +502,8 @@ function removeFence(id) {
         "&adminKey=" +
         geofencingAdminKey
     )
-    .then(console.log("Fence deleted"))
     .catch(function(err) {
-      displayModal("error",
-        "There was an error while deleting fence: " + err.response.data.message
-      );
+      displayModal("error", deleteFenceErrorMsg(err));
     });
 }
 
@@ -648,10 +659,9 @@ function saveButtonHandler(self) {
       self.polygon = null;
       clearButtonsState();
     });
-  } catch (err) {
-    displayModal("error",
-      "Error while parsing JSON properties.\nExample input:\n{'key': 'value',\n'key2': 'value2'}"
-    );
+  }
+  catch (err) {
+    displayModal("error", invalidJsonErrorMsg());
   }
 }
 
@@ -674,15 +684,15 @@ function saveFence(fenceData, polygon) {
           document
             .getElementById("remove-button-" + response.data.id)
             .addEventListener("click", function() {
-              polygon.remove();
-              removeFence(response.data.id);
+              removeFence(response.data.id).then(
+                polygon.remove()
+                );
             });
         });
     })
     .catch(function(err) {
-      displayModal("error",
-        "There was an error while saving fences: " + err.response.data.message
-      );
+      displayModal("error", saveFenceErrorMsg(err));
+      polygon.remove();
     });
 }
 

@@ -25,6 +25,10 @@ body {
   width: 100vw;
 }
 
+a {
+  color: inherit;
+}
+
 #config-form {
   background: #8dc3eb;
   height: 100vh;
@@ -165,11 +169,9 @@ input.invalid {
 
 .select-button {
   padding: 13px;
-  /*margin: 54px 0 13px 0;*/
   margin-top: 40px;
   font-family: Noway;
   font-size: 14px;
-  /*line-height: 21px;*/
   color: #666;
   border: none;
   background: #fff;
@@ -254,9 +256,11 @@ label[for="generated-admin-key"] {
 }
 
 .tt-overlay-panel.-left-top {
-  left: 16px;
+  background: none;
+  box-shadow: none;
+  left: 8px;
   position: absolute;
-  top: 16px;
+  top: 105px;
 }
 
 .tt-overlay-panel.-right-top {
@@ -393,26 +397,36 @@ label[for="generated-admin-key"] {
   width: 75px;
 }
 
+#config {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button#config:hover .icon-fill {
+  fill: #F2F2F2 !important;
+}
+
 .choice-button {
   font-size: 12px;
   font-family: Noway;
 }
 
 
-.tt-foldable button.btn:hover .icon-fill{
+.tt-foldable button.btn:hover .icon-fill {
   fill: #61ade0;
 }
 
-.tt-foldable button.btn:hover .icon-stroke{
+.tt-foldable button.btn:hover .icon-stroke {
   stroke: #61ade0;
 }
 
 
-.tt-foldable button.btn.active .icon-fill{
+.tt-foldable button.btn.active .icon-fill {
   fill: #8dc3eb;
 }
 
-.tt-foldable button.btn.active .icon-stroke{
+.tt-foldable button.btn.active .icon-stroke {
   stroke: #8dc3eb;
 }
 
