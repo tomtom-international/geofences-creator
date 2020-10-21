@@ -484,8 +484,9 @@ function displayFence(data) {
       document
         .getElementById("remove-button-" + data.id)
         .addEventListener("click", function() {
+          this.disabled = true;
           removeFence(data.id).then(
-            polygon.remove
+            polygon.remove()
             );
         });
     });
@@ -513,6 +514,7 @@ function onPopupOpen(self) {
   document
     .getElementById("save-button")
     .addEventListener("click", function() {
+      this.disabled = true;
       saveButtonHandler(self);
     });
 }
@@ -684,6 +686,7 @@ function saveFence(fenceData, polygon) {
           document
             .getElementById("remove-button-" + response.data.id)
             .addEventListener("click", function() {
+              this.disabled = true;
               removeFence(response.data.id).then(
                 polygon.remove()
                 );
