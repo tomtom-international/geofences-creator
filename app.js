@@ -30,6 +30,8 @@ var popupOptions = {
   maxWidth: "300px"
 };
 
+var drawState;
+
 function showTab(tabId) {
   var tooltip = "<img src='assets/tooltips.png'>";
   switch (tabId) {
@@ -224,22 +226,23 @@ function hideConfigForm() {
   new Foldable(".js-foldable", "top-right");
 
   document.getElementById("circle-button").addEventListener("click", function(e) {
-    drawHandler(
-      null,
-      function(event) {
-        this.geometry.radius = turf.distance(
-          this.geometry.coordinates,
-          [event.lngLat.lng, event.lngLat.lat],
-          { units: "meters" }
-        );
-        var geoJsonData = turf.circle(
-          this.geometry.coordinates,
-          this.geometry.radius,
-          turfOptions
-        );
-        this.redraw(geoJsonData);
-      },
-      function(event) {
+    drawState = "circle";
+    let activeForm = null;
+    let onMouseMove = function(event) {
+      this.geometry.radius = turf.distance(
+        this.geometry.coordinates,
+        [event.lngLat.lng, event.lngLat.lat],
+        { units: "meters" }
+      );
+      var geoJsonData = turf.circle(
+        this.geometry.coordinates,
+        this.geometry.radius,
+        turfOptions
+      );
+      this.redraw(geoJsonData);
+    };
+    let onStartDrawing = function(event) {
+      if (drawState != "cancel") {
         this.geometry = {
           type: "Point",
           shapeType: "Circle",
@@ -247,80 +250,95 @@ function hideConfigForm() {
         };
         this.setOneClickMapListeners();
       }
-    );
+      else {
+        this.cancelDrawing();
+      }
+    };
+    drawHandler(activeForm, onMouseMove, onStartDrawing);
     setButtonActive(e.target);
   });
   
   document.getElementById("rectangle-button").addEventListener("click", function(e) {
-      drawHandler(
-        null,
-        function(e) {
-          this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
-          var features = turf.featureCollection([
-            turf.point(this.geometry.coordinates[0]),
-            turf.point(this.geometry.coordinates[1])
-          ]);
-          var geoJsonData = turf.envelope(features);
-          this.redraw(geoJsonData);
-        },
-        function(event) {
-          this.geometry = {
-            type: "MultiPoint",
-            shapeType: "Rectangle",
-            coordinates: [[event.lngLat.lng, event.lngLat.lat]]
-          };
-          this.setOneClickMapListeners();
-        }
-      );
-      setButtonActive(e.target);
-    });
+    drawState = "rectangle";
+    let activeForm = null;
+    let onMouseMove = function(e) {
+      this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
+      var features = turf.featureCollection([
+        turf.point(this.geometry.coordinates[0]),
+        turf.point(this.geometry.coordinates[1])
+      ]);
+      var geoJsonData = turf.envelope(features);
+      this.redraw(geoJsonData);
+    };
+    let onStartDrawing = function(event) {
+      if (drawState != "cancel") {
+        this.geometry = {
+          type: "MultiPoint",
+          shapeType: "Rectangle",
+          coordinates: [[event.lngLat.lng, event.lngLat.lat]]
+        };
+        this.setOneClickMapListeners();
+      }
+      else {
+        this.cancelDrawing();
+      }
+    };
+    drawHandler(activeForm, onMouseMove, onStartDrawing);
+    setButtonActive(e.target);
+  });
   
   document.getElementById("corridor-button").addEventListener("click", function(e) {
-      drawHandler(
-        "corridor-form",
-        function(e) {
-          this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-            e.lngLat.lng,
-            e.lngLat.lat
-          ];
-  
-          var geoJsonData = turf.buffer(
-            this.geometry,
-            this.geometry.radius,
-            turfOptions
-          );
-  
-          this.redraw(geoJsonData);
-        },
-        function(event) {
-          this.geometry = {
-            type: "LineString",
-            shapeType: "Corridor",
-            radius: parseFloat(document.getElementById("corridor-radius").value),
-            coordinates: [
-              [event.lngLat.lng, event.lngLat.lat],
-              [event.lngLat.lng, event.lngLat.lat]
-            ]
-          };
-          this.setDblClickMapListeners();
-          map.on("dblclick", this.finishPolygon);
-        }
+    drawState = "corridor";
+    let activeForm = "corridor-form";
+    let onMouseMove = function(e) {
+      this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
+        e.lngLat.lng,
+        e.lngLat.lat
+      ];
+
+      var geoJsonData = turf.buffer(
+        this.geometry,
+        this.geometry.radius,
+        turfOptions
       );
-      setButtonActive(e.target);
-    });
+
+      this.redraw(geoJsonData);
+    };
+    let onStartDrawing = function(event) {
+      if (drawState != "cancel") {
+        this.geometry = {
+          type: "LineString",
+          shapeType: "Corridor",
+          radius: parseFloat(document.getElementById("corridor-radius").value),
+          coordinates: [
+            [event.lngLat.lng, event.lngLat.lat],
+            [event.lngLat.lng, event.lngLat.lat]
+          ]
+        };
+        this.setDblClickMapListeners();
+        map.on("dblclick", this.finishPolygon);
+      }
+      else {
+        this.cancelDrawing();
+      }
+    };
+    drawHandler(activeForm, onMouseMove, onStartDrawing);
+    setButtonActive(e.target);
+  });
   
   document.getElementById("polygon-button").addEventListener("click", function(e) {
-    drawHandler(
-      null,
-      function(e) {
-        this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
-          e.lngLat.lng,
-          e.lngLat.lat
-        ];
-        this.geometry.type = "LineString";
-        this.redraw(this.geometry);
-      },
-      function(event) {
+    drawState = "polygon";
+    let activeForm = null;
+    let onMouseMove = function(e) {
+      this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
+        e.lngLat.lng,
+        e.lngLat.lat
+      ];
+      this.geometry.type = "LineString";
+      this.redraw(this.geometry);
+    };
+    let onStartDrawing = function(event) {
+      if (drawState != "cancel") {
         var self = this;
         this.geometry = {
           coordinates: [
@@ -334,9 +352,13 @@ function hideConfigForm() {
           self.redraw(self.geometry);
           self.endDrawing();
         });
-      },
-      true
-    );
+      }
+      else {
+        this.cancelDrawing();
+      }
+    };
+    let isPolygon = true;
+    drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon);
     setButtonActive(e.target);
   });
   
@@ -606,15 +628,19 @@ var shape = {
     var self = this;
     document.onkeydown = function(event) {
       if (event.key === "Escape" || event.key === "Esc") {
+        drawState = "cancel";
         self.cancelDrawing();
         clearButtonsState();
       }
     };
-    document.getElementById("search-button").addEventListener("click", function() {self.cancelDrawing()});
+    document.getElementById("search-button").addEventListener("click", function() {
+      self.cancelDrawing();
+    }, {once: true});
   }
 };
 
 function searchHandler(e) {
+  drawState = "cancel";
   clearButtonsState();
   setButtonActive(e.target);
   setActiveForm("search-form");
@@ -754,7 +780,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
 
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
-      polygon.remove();
+      self.polygon.remove();
       document.onkeydown = null;
     }
   };
