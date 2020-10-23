@@ -543,10 +543,10 @@ function onPopupOpen(self) {
 
 function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
   setActiveForm(activeForm);
+  clearButtonsState();
 
   if (drawnShape) {
     drawnShape.cancelDrawing();
-    clearButtonsState();
   }
 
   drawnShape = Object.create(shape);
@@ -589,6 +589,7 @@ var shape = {
     map.off("click", this.addVertex);
     map.off("dblclick", this.finishPolygon);
     this.polygon && this.polygon.remove();
+    drawnShape = null;
     document.onkeydown = null;
   },
   setOneClickMapListeners: function() {
@@ -684,6 +685,7 @@ function saveButtonHandler(self) {
     .then(function() {
       self.polygon.closePopup();
       document.onkeydown = null;
+      drawnShape = null;
       self.polygon = null;
       clearButtonsState();
     });
