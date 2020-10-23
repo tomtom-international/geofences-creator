@@ -634,13 +634,13 @@ var shape = {
         clearButtonsState();
       }
     };
-    document.getElementById("search-button").addEventListener("click", function() {
-      self.cancelDrawing();
-    }, {once: true});
   }
 };
 
 function searchHandler(e) {
+  if (drawnShape) {
+    drawnShape.cancelDrawing();
+  }
   drawState = "cancel";
   clearButtonsState();
   setButtonActive(e.target);
@@ -728,6 +728,9 @@ function saveFence(fenceData, polygon) {
 }
 
 function findGeometry() {
+  if (drawnShape) {
+    drawnShape.cancelDrawing();
+  }
   var query = document.getElementById("search-text").value;
   fuzzySearch(query)
     .then(getAdditionalData)
@@ -779,6 +782,11 @@ function displayPolygonOnTheMap(additionalDataResult) {
       onPopupOpen(self);
     })
     .openPopup();
+
+  self.cancelDrawing = function() {
+    self.polygon.remove();
+  }
+  drawnShape = self;
 
   document.onkeydown = function(event) {
     if (event.key === "Escape" || event.key === "Esc") {
