@@ -145,7 +145,9 @@ document.getElementById("gen-admin-key").addEventListener("click", function() {
   generateAdminKey(secret).then(function(key) {displayAdminKey(key)});
 })
 
-document.getElementById("how-to-get-api-key").addEventListener("click", function () {location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"});
+document.getElementById("how-to-get-api-key").addEventListener("click", function() {
+  location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"
+});
 
 document.getElementById("config").addEventListener("click", showConfigForm);
 
@@ -487,7 +489,7 @@ function transformFenceToGeoJson(data) {
         data.geometry = geoJsonData.geometry;
         return data;
       case "Corridor":
-        geoJsonData =  turf.buffer(
+        geoJsonData = turf.buffer(
           data.geometry,
           data.geometry.radius,
           turfOptions
