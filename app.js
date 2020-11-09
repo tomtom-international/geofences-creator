@@ -94,7 +94,7 @@ document.getElementById("save-api-key").addEventListener("click", function() {
 document.getElementById("save-admin-key").addEventListener("click", function() {
   if (validateForm()) {
     var style = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
-    if ( style.getPropertyValue('display') != "none" ) {
+    if ( style.getPropertyValue('display') !== "none" ) {
       geofencingAdminKey = document.getElementById("generated-admin-key").innerText;
     }
     else {
@@ -123,7 +123,7 @@ document.getElementById("back-to-admin-key").addEventListener("click", function(
 });
 
 document.getElementById("provide-admin-key-tab").addEventListener("click", function() {
-  if (document.querySelector("[for='generated-admin-key']").style.display != "block") {
+  if (document.querySelector("[for='generated-admin-key']").style.display !== "block") {
     document.getElementById("gen-admin-key-tab").classList.remove("selected");
     this.classList.add("selected");
     document.querySelector("[for='secret']").style.display = "none";
@@ -132,7 +132,7 @@ document.getElementById("provide-admin-key-tab").addEventListener("click", funct
 })
 
 document.getElementById("gen-admin-key-tab").addEventListener("click", function() {
-  if (document.querySelector("[for='generated-admin-key']").style.display != "block") {
+  if (document.querySelector("[for='generated-admin-key']").style.display !== "block") {
     document.getElementById("provide-admin-key-tab").classList.remove("selected");
     this.classList.add("selected");
     document.querySelector("[for='admin-key']").style.display = "none";
@@ -244,7 +244,7 @@ function hideConfigForm() {
       this.redraw(geoJsonData);
     };
     let onStartDrawing = function(event) {
-      if (drawState != "cancel") {
+      if (drawState !== "cancel") {
         this.geometry = {
           type: "Point",
           shapeType: "Circle",
@@ -273,7 +273,7 @@ function hideConfigForm() {
       this.redraw(geoJsonData);
     };
     let onStartDrawing = function(event) {
-      if (drawState != "cancel") {
+      if (drawState !== "cancel") {
         this.geometry = {
           type: "MultiPoint",
           shapeType: "Rectangle",
@@ -307,7 +307,7 @@ function hideConfigForm() {
       this.redraw(geoJsonData);
     };
     let onStartDrawing = function(event) {
-      if (drawState != "cancel") {
+      if (drawState !== "cancel") {
         this.geometry = {
           type: "LineString",
           shapeType: "Corridor",
@@ -340,7 +340,7 @@ function hideConfigForm() {
       this.redraw(this.geometry);
     };
     let onStartDrawing = function(event) {
-      if (drawState != "cancel") {
+      if (drawState !== "cancel") {
         var self = this;
         this.geometry = {
           coordinates: [
@@ -609,8 +609,8 @@ var shape = {
       this.geometry.coordinates.length - 2
     ];
     if (
-      oneBeforeLastCoordinate[0] != event.lngLat.lng &&
-      oneBeforeLastCoordinate[1] != event.lngLat.lat
+      oneBeforeLastCoordinate[0] !== event.lngLat.lng &&
+      oneBeforeLastCoordinate[1] !== event.lngLat.lat
     ) {
       this.geometry.coordinates.push([event.lngLat.lng, event.lngLat.lat]);
     }
@@ -770,7 +770,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
   var self = {};
   self.geometry = additionalDataResult.geometryData.features[0].geometry;
   var buffer = parseInt(document.getElementById("buffer-text").value);
-  if (buffer != 0) {
+  if (buffer !== 0) {
     self.geometry = turf.buffer(self.geometry, buffer, turfOptions).geometry;
   }
 
