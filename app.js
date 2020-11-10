@@ -32,6 +32,8 @@ var popupOptions = {
 
 var drawState;
 
+var drawnShape;
+
 function showTab(tabId) {
   var tooltip = "<img src='assets/tooltips.png'>";
   switch (tabId) {
@@ -62,11 +64,11 @@ function showTab(tabId) {
 function validateForm() {
   var currentTabElem = document.getElementById(currentTab);
   var fields = currentTabElem.getElementsByTagName("input");
-  var i, valid = true;
+  var valid = true;
   if (document.querySelector("[for='generated-admin-key']").style.display == "block") {
     valid = true;
   }
-  for (i = 0; i < fields.length; i++) {
+  for (let i = 0; i < fields.length; i++) {
     fields[i].addEventListener("input", function() {
       this.classList.remove("invalid");
     })
@@ -93,7 +95,7 @@ document.getElementById("save-api-key").addEventListener("click", function() {
 
 document.getElementById("save-admin-key").addEventListener("click", function() {
   if (validateForm()) {
-    var style = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
+    let style = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
     if ( style.getPropertyValue('display') !== "none" ) {
       geofencingAdminKey = document.getElementById("generated-admin-key").innerText;
     }
@@ -108,7 +110,7 @@ document.getElementById("save-admin-key").addEventListener("click", function() {
 
 document.getElementById("save-project-id").addEventListener("click", function() {
   if (validateForm()) {
-    var select = document.getElementById("project-id");
+    let select = document.getElementById("project-id");
     geofencingProjectId = select.options[select.selectedIndex].value;
     hideConfigForm();
   };
@@ -141,7 +143,7 @@ document.getElementById("gen-admin-key-tab").addEventListener("click", function(
 })
 
 document.getElementById("gen-admin-key").addEventListener("click", function() {
-  var secret = document.getElementById("secret").value;
+  let secret = document.getElementById("secret").value;
   generateAdminKey(secret).then(function(key) {displayAdminKey(key)});
 })
 
@@ -236,7 +238,7 @@ function hideConfigForm() {
         [event.lngLat.lng, event.lngLat.lat],
         { units: "meters" }
       );
-      var geoJsonData = turf.circle(
+      let geoJsonData = turf.circle(
         this.geometry.coordinates,
         this.geometry.radius,
         turfOptions
@@ -265,11 +267,11 @@ function hideConfigForm() {
     let activeForm = null;
     let onMouseMove = function(e) {
       this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
-      var features = turf.featureCollection([
+      let features = turf.featureCollection([
         turf.point(this.geometry.coordinates[0]),
         turf.point(this.geometry.coordinates[1])
       ]);
-      var geoJsonData = turf.envelope(features);
+      let geoJsonData = turf.envelope(features);
       this.redraw(geoJsonData);
     };
     let onStartDrawing = function(event) {
@@ -297,13 +299,11 @@ function hideConfigForm() {
         e.lngLat.lng,
         e.lngLat.lat
       ];
-
-      var geoJsonData = turf.buffer(
+      let geoJsonData = turf.buffer(
         this.geometry,
         this.geometry.radius,
         turfOptions
       );
-
       this.redraw(geoJsonData);
     };
     let onStartDrawing = function(event) {
@@ -383,8 +383,8 @@ function hideConfigForm() {
       transformedFences.push(fence);
       displayFence(fence);
     })
-    var geoJson = turf.featureCollection(transformedFences);
-    var bounds = getBounds(geoJson);
+    let geoJson = turf.featureCollection(transformedFences);
+    let bounds = getBounds(geoJson);
     map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
   })
 }
@@ -447,7 +447,7 @@ function getFenceDetails(fence, counter = 0) {
 }
 
 function detailsPopup(data) {
-  var prop = JSON.stringify(data.properties, null, 4).replace(/\n/g, "<br>");
+  let prop = JSON.stringify(data.properties, null, 4).replace(/\n/g, "<br>");
   return (
     '<div class="form">' +
     '<div class="form__row form__row--compact">' +
@@ -531,8 +531,6 @@ function removeFence(id) {
       displayModal("error", deleteFenceErrorMsg(err));
     });
 }
-
-var drawnShape;
 
 function onPopupOpen(self) {
   document
@@ -774,7 +772,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
     self.geometry = turf.buffer(self.geometry, buffer, turfOptions).geometry;
   }
 
-  var bounds = getBounds(self.geometry);
+  let bounds = getBounds(self.geometry);
   map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
 
   self.polygon = new Polygon(self.geometry)
@@ -799,7 +797,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
 }
 
 function getBounds(geoJson) {
-  var envelope = turf.envelope(geoJson);
+  let envelope = turf.envelope(geoJson);
   var coordinates = envelope.geometry.coordinates;
   if (coordinates[0][0][0] == Infinity && coordinates[0][0][1] == Infinity && coordinates[0][2][0] == -Infinity && coordinates[0][2][1] == -Infinity) {
     return [[180,90],[-180,-90]];
