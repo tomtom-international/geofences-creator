@@ -37,15 +37,14 @@ var drawnShape;
 function showTab(tabId) {
   var tooltip = "<img src='assets/tooltips.png'>";
   switch (tabId) {
-    case "api-key-form":
-      tooltip += "<span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the <a href='https://developer.tomtom.com/geofencing-api/tutorials/fence-creation' target='_blank'>Tutorial</a>.";
-      break;
     case "admin-key-form":
       tooltip += "Check <i>project ID</i> details in <a href='https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-configuration-service/register-admin-key' target='_blank'>geofencing documentation</a>";
       break;
     case "project-id-form":
       tooltip += "Check <i>admin</i> key details in <a href='https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-project' target='_blank'>geofencing documentation</a>";
       break;
+    default:
+      tooltip += "<span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the <a href='https://developer.tomtom.com/geofencing-api/tutorials/fence-creation' target='_blank'>Tutorial</a>.";
   }
   document.getElementById("tooltips").innerHTML = tooltip;
   document.getElementById(currentTab).style.display = "none";
