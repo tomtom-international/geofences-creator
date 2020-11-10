@@ -30,6 +30,9 @@ var popupOptions = {
   maxWidth: "300px"
 };
 
+var colorWhite = "#fff";
+var colorBrandBlue = "#8dc3eb"
+
 var drawState;
 
 var drawnShape;
@@ -51,12 +54,12 @@ function showTab(tabId) {
   document.getElementById(tabId).style.display = "block";
   var icons = document.getElementsByClassName("progress-icon");
   icons.forEach(function(icon) {
-    icon.style.background = "#8dc3eb";
-    icon.style.color = "#fff";
+    icon.style.background = colorBrandBlue;
+    icon.style.color = colorWhite;
   });
   var selectedIcon = document.querySelector("div[for=" + tabId + "]");
-  selectedIcon.style.background = "#fff";
-  selectedIcon.style.color = "#8dc3eb";
+  selectedIcon.style.background = colorWhite;
+  selectedIcon.style.color = colorBrandBlue;
   currentTab = tabId;
 }
 
