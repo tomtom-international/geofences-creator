@@ -60,7 +60,7 @@ function showTab(tabId) {
     icon.style.background = colorBrandBlue;
     icon.style.color = colorWhite;
   });
-  var selectedIcon = document.querySelector("div[for=" + tabId + "]");
+  var selectedIcon = document.querySelector(`div[for=${tabId}]`);
   selectedIcon.style.background = colorWhite;
   selectedIcon.style.color = colorBrandBlue;
   currentTab = tabId;
@@ -161,9 +161,7 @@ document.getElementById("config").addEventListener("click", showConfigForm);
 function retrieveProjects() {
   axios
   .get(
-    geofencingApiURL + 
-    "projects?key=" +
-    apiKey
+    `${geofencingApiURL}projects?key=${apiKey}`
   )
   .then(function(response) {
     if (response.data.projects.length > 0) {
@@ -174,11 +172,7 @@ function retrieveProjects() {
     else {
       axios
       .post(
-        geofencingApiURL +
-        "projects/project?key=" +
-        apiKey +
-        "&adminKey=" +
-        geofencingAdminKey,
+        `${geofencingApiURL}projects/project?key=${apiKey}&adminKey=${geofencingAdminKey}`,
         {
           name: "Geofences creator"
         }
@@ -397,9 +391,7 @@ function hideConfigForm() {
 function generateAdminKey(secret) {
   return axios
     .post(
-      geofencingApiURL + 
-      "register?key=" + 
-      apiKey,
+      `${geofencingApiURL}register?key=${apiKey}`,
       {
         secret: secret 
       }
@@ -416,11 +408,7 @@ function generateAdminKey(secret) {
 function getFences() {
   return axios
     .get(
-      geofencingApiURL +
-        "projects/" +
-        geofencingProjectId +
-        "/fences?key=" +
-        apiKey
+      `${geofencingApiURL}projects/${geofencingProjectId}/fences?key=${apiKey}`
     )
     .then(function(response) {
       return response.data.fences;
@@ -433,7 +421,7 @@ function getFences() {
 function getFenceDetails(fence, counter = 0) {
   var retryTimes = 5;
   return axios
-    .get(geofencingApiURL + "fences/" + fence.id + "?key=" + apiKey)
+    .get(`${geofencingApiURL}fences/${fence.id}?key=${apiKey}`)
     .then(function(response) {
       return response.data;
     })
@@ -453,26 +441,15 @@ function getFenceDetails(fence, counter = 0) {
 
 function detailsPopup(data) {
   let prop = JSON.stringify(data.properties, null, 4).replace(/\n/g, "<br>");
-  return (
-    '<div class="form">' +
-    '<div class="form__row form__row--compact">' +
-    "Name: " +
-    data.name +
-    "</div>" +
-    '<div class="form__row form__row--compact">' +
-    "Id: " +
-    data.id +
-    "</div>" +
-    '<div class="form__row form__row--compact">' +
-    "Properties: <br>" +
-    prop +
-    "</div>" +
-    '<div class="form__row form__row--compact">' +
-    '<input type="button" id="remove-button-' +
-    data.id +
-    '" class="btn-submit btn-submit--remove" value="Remove">' +
-    "</div>" +
-    "</div>"
+  return (`
+    <div class="form">
+      <div class="form__row form__row--compact">Name: ${data.name}</div>
+      <div class="form__row form__row--compact">Id: ${data.id}</div>
+      <div class="form__row form__row--compact">Properties: <br>${prop}</div>
+      <div class="form__row form__row--compact">
+        <input type="button" id="remove-button-${data.id}" class="btn-submit btn-submit--remove" value="Remove">
+      </div>
+    </div>`
   );
 }
 
@@ -511,7 +488,7 @@ function displayFence(data) {
     .bindPopup(detailsPopup(data), popupOptions)
     .on("popupopen", function() {
       document
-        .getElementById("remove-button-" + data.id)
+        .getElementById(`remove-button-${data.id}`)
         .addEventListener("click", function() {
           this.disabled = true;
           removeFence(data.id).then(
@@ -524,13 +501,7 @@ function displayFence(data) {
 function removeFence(id) {
   return axios
     .delete(
-      geofencingApiURL +
-        "fences/" +
-        id +
-        "?key=" +
-        apiKey +
-        "&adminKey=" +
-        geofencingAdminKey
+      `${geofencingApiURL}fences/${id}?key=${apiKey}&adminKey=${geofencingAdminKey}`
     )
     .catch(function(err) {
       displayModal("error", deleteFenceErrorMsg(err));
@@ -703,13 +674,7 @@ function saveButtonHandler(self) {
 function saveFence(fenceData, polygon) {
   return axios
     .post(
-      geofencingApiURL +
-        "projects/" +
-        geofencingProjectId +
-        "/fence?key=" +
-        apiKey +
-        "&adminKey=" +
-        geofencingAdminKey,
+      `${geofencingApiURL}projects/${geofencingProjectId}/fence?key=${apiKey}&adminKey=${geofencingAdminKey}`,
       fenceData
     )
     .then(function(response) {
@@ -717,7 +682,7 @@ function saveFence(fenceData, polygon) {
         .bindPopup(detailsPopup(response.data))
         .on("popupopen", function() {
           document
-            .getElementById("remove-button-" + response.data.id)
+            .getElementById(`remove-button-${response.data.id}`)
             .addEventListener("click", function() {
               this.disabled = true;
               removeFence(response.data.id).then(
