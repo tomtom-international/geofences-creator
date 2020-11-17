@@ -7,19 +7,22 @@ var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 tt.setProductInfo("Fence manager", "2.1");
 var map;
 
-var inputPopup =
-  '<div class="form">' +
-  '<div class="form__row form__row--compact">' +
-  '<label class="form__label">Name <input type="text" id="input-name" class="form__input"></label>' +
-  "</div>" +
-  '<div class="form__row form__row--compact">' +
-  '<label class="form__label">Additional JSON properties (optional)' +
-  '<textarea id="input-properties" class="form__input" cols="40" rows="5">{}</textarea></label>' +
-  "</div>" +
-  '<div class="form__row form__row--compact">' +
-  '<input type="button" id="save-button" class="btn-submit btn-submit--save" value="Save">' +
-  "</div>" +
-  "</div>";
+var inputPopup =`
+  <div class="form">
+    <div class="form__row form__row--compact">
+      <label class="form__label">Name 
+        <input type="text" id="input-name" class="form__input">
+      </label>
+    </div>
+    <div class="form__row form__row--compact">
+      <label class="form__label">Additional JSON properties (optional)
+        <textarea id="input-properties" class="form__input" cols="40" rows="5">{}</textarea>
+      </label>
+    </div>
+    <div class="form__row form__row--compact">
+      <input type="button" id="save-button" class="btn-submit btn-submit--save" value="Save">
+    </div>
+  </div>`;
 
 var turfOptions = {
   steps: 60,
