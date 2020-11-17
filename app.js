@@ -225,8 +225,6 @@ function hideConfigForm() {
   map.getAttributionControl().addAttribution(attributions);
   
   map.addControl(new tt.NavigationControl(), "top-left");
-  
-  new Foldable(".js-foldable", "top-right");
 
   document.getElementById("circle-button").addEventListener("click", function(e) {
     drawState = "circle";
