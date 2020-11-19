@@ -158,6 +158,28 @@ document.getElementById("how-to-get-api-key").addEventListener("click", function
 
 document.getElementById("config").addEventListener("click", showConfigForm);
 
+var searchBoxOptions = {
+  searchOptions: {
+    key: apiKey,
+    idxSet: 'Geo,POI',
+    limit: 5
+  },
+  autocompleteOptions: {
+    key: apiKey
+  }
+}
+var ttSearchBox = new tt.plugins.SearchBox(tt.services, searchBoxOptions);
+var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+document.getElementById("search-label").appendChild(searchBoxHTML);
+
+ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
+  getAdditionalData(event.data.result)
+  .then(processAdditionalDataResponse)
+  .catch(function(err) {
+    displayModal("error",err);
+  });
+});
+
 function retrieveProjects() {
   axios
   .get(
@@ -218,6 +240,16 @@ function hideConfigForm() {
     key: apiKey,
     attributionControlPosition: "bottom-left"
   });
+
+  searchBoxOptions.searchOptions.key = apiKey;
+  searchBoxOptions.autocompleteOptions.key = apiKey;
+
+  map.on("moveend", function() {
+    searchBoxOptions.searchOptions.center = map.getCenter();
+    ttSearchBox.updateOptions(searchBoxOptions);
+  })
+
+  map.on("click", closeModal);
   
   var attributions = [
     '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
@@ -619,10 +651,6 @@ function searchHandler(e) {
   clearButtonsState();
   setButtonActive(e.target);
   setActiveForm("search-form");
-  document
-    .getElementById("search-action-button")
-    .addEventListener("click", findGeometry);
-  map.off("click");
 }
 
 function setActiveForm(formName) {
@@ -695,16 +723,6 @@ function saveFence(fenceData, polygon) {
     });
 }
 
-function findGeometry() {
-  if (drawnShape) {
-    drawnShape.cancelDrawing();
-  }
-  var query = document.getElementById("search-text").value;
-  fuzzySearch(query)
-    .then(getAdditionalData)
-    .then(processAdditionalDataResponse);
-}
-
 function fuzzySearch(query) {
   return tt.services
     .fuzzySearch({
@@ -714,13 +732,18 @@ function fuzzySearch(query) {
 }
 
 function getAdditionalData(response) {
-  var geometryId = response.results[0].dataSources.geometry.id;
-  return tt.services
-    .additionalData({
-      key: apiKey,
-      geometries: [geometryId],
-      geometriesZoom: 12
+  if (response.dataSources !== undefined && response.dataSources.geometry !== undefined) {
+    var geometryId = response.dataSources.geometry.id;
+    return tt.services
+      .additionalData({
+        key: apiKey,
+        geometries: [geometryId],
+        geometriesZoom: 12
     });
+  }
+  else {
+    return Promise.reject('Selected search result doesn\'t have geometry');
+  }
 }
 
 function processAdditionalDataResponse(additionalDataResponse) {
@@ -779,12 +802,15 @@ function displayModal(type, message) {
   if (type == "error") {
     modal.classList.add("error");
   }
-    modalContent.innerText = message;
+  modalContent.innerText = message;
   modal.style.display = "block";
-  document.querySelector("body").addEventListener("click", function() {
-    modal.style.display = "none";
-    modal.classList.remove("error");
-  })
+}
+
+function closeModal() {
+  if (modal.style.display === "block") {
+        modal.style.display = "none";
+        modal.classList.remove("error");
+    }
 }
 
 function displayAdminKey(generatedAdminKey) {
