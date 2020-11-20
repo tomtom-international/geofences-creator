@@ -100,6 +100,10 @@ input.invalid {
   background-color: #ffdddd;
 }
 
+input {
+  outline: none;
+}
+
 #progress {
   position: relative;
 }
@@ -373,6 +377,11 @@ button#config:hover .icon-fill {
   height: 40px !important;
   -ms-flex-item-align: end;
   align-self: flex-end;
+}
+
+.tt-search-box-input-container.-focused {
+  box-shadow: none !important;
+  border: 1px solid #ddd !important;
 }
 
 .form {
