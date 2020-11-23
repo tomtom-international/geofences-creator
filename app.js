@@ -5,7 +5,7 @@ const geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 tt.setProductInfo("Fence manager", "2.1");
 let map;
 
-const inputPopup =`
+const inputPopup = `
   <div class="form">
     <div class="form__row form__row--compact">
       <label class="form__label">Name 
@@ -60,7 +60,7 @@ function showTab(tabId) {
   document.getElementById(currentTab).style.display = "none";
   document.getElementById(tabId).style.display = "block";
   const icons = document.getElementsByClassName("progress-icon");
-  icons.forEach(function(icon) {
+  icons.forEach(function (icon) {
     icon.style.background = colorBrandBlue;
     icon.style.color = colorWhite;
   });
@@ -78,7 +78,7 @@ function validateForm() {
     valid = true;
   }
   for (let i = 0; i < fields.length; i++) {
-    fields[i].addEventListener("input", function() {
+    fields[i].addEventListener("input", function () {
       this.classList.remove("invalid");
     })
     // Check if field is visible
@@ -95,17 +95,17 @@ function validateForm() {
   return valid;
 }
 
-document.getElementById("save-api-key").addEventListener("click", function() {
+document.getElementById("save-api-key").addEventListener("click", function () {
   if (validateForm()) {
     apiKey = document.getElementById("api-key").value;
     showTab("admin-key-form");
   };
 });
 
-document.getElementById("save-admin-key").addEventListener("click", function() {
+document.getElementById("save-admin-key").addEventListener("click", function () {
   if (validateForm()) {
     const generatedAdminKeyStyle = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
-    if ( generatedAdminKeyStyle.getPropertyValue('display') !== "none" ) {
+    if (generatedAdminKeyStyle.getPropertyValue('display') !== "none") {
       geofencingAdminKey = document.getElementById("generated-admin-key").innerText;
     }
     else {
@@ -117,7 +117,7 @@ document.getElementById("save-admin-key").addEventListener("click", function() {
   };
 });
 
-document.getElementById("save-project-id").addEventListener("click", function() {
+document.getElementById("save-project-id").addEventListener("click", function () {
   if (validateForm()) {
     const projectIdList = document.getElementById("project-id");
     geofencingProjectId = projectIdList.options[projectIdList.selectedIndex].value;
@@ -125,15 +125,15 @@ document.getElementById("save-project-id").addEventListener("click", function() 
   };
 });
 
-document.getElementById("back-to-api-key").addEventListener("click", function() {
+document.getElementById("back-to-api-key").addEventListener("click", function () {
   showTab("api-key-form");
 });
 
-document.getElementById("back-to-admin-key").addEventListener("click", function() {
+document.getElementById("back-to-admin-key").addEventListener("click", function () {
   showTab("admin-key-form");
 });
 
-document.getElementById("provide-admin-key-tab").addEventListener("click", function() {
+document.getElementById("provide-admin-key-tab").addEventListener("click", function () {
   if (document.querySelector("[for='generated-admin-key']").style.display !== "block") {
     document.getElementById("gen-admin-key-tab").classList.remove("selected");
     this.classList.add("selected");
@@ -142,7 +142,7 @@ document.getElementById("provide-admin-key-tab").addEventListener("click", funct
   }
 })
 
-document.getElementById("gen-admin-key-tab").addEventListener("click", function() {
+document.getElementById("gen-admin-key-tab").addEventListener("click", function () {
   if (document.querySelector("[for='generated-admin-key']").style.display !== "block") {
     document.getElementById("provide-admin-key-tab").classList.remove("selected");
     this.classList.add("selected");
@@ -151,13 +151,13 @@ document.getElementById("gen-admin-key-tab").addEventListener("click", function(
   }
 })
 
-document.getElementById("gen-admin-key").addEventListener("click", function() {
+document.getElementById("gen-admin-key").addEventListener("click", function () {
   const secret = document.getElementById("secret").value;
-  generateAdminKey(secret).then(function(key) {displayAdminKey(key)});
+  generateAdminKey(secret).then(function (key) { displayAdminKey(key) });
 })
 
-document.getElementById("how-to-get-api-key").addEventListener("click", function() {
-  location.href="https://developer.tomtom.com/how-to-get-tomtom-api-key"
+document.getElementById("how-to-get-api-key").addEventListener("click", function () {
+  location.href = "https://developer.tomtom.com/how-to-get-tomtom-api-key"
 });
 
 document.getElementById("config").addEventListener("click", showConfigForm);
@@ -176,44 +176,44 @@ const ttSearchBox = new tt.plugins.SearchBox(tt.services, searchBoxOptions);
 const searchBoxHTML = ttSearchBox.getSearchBoxHTML();
 document.getElementById("search-label").appendChild(searchBoxHTML);
 
-ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
+ttSearchBox.on('tomtom.searchbox.resultselected', function (event) {
   getAdditionalData(event.data.result)
-  .then(processAdditionalDataResponse)
-  .catch(function(err) {
-    displayModal("error",err);
-  });
+    .then(processAdditionalDataResponse)
+    .catch(function (err) {
+      displayModal("error", err);
+    });
 });
 
 function retrieveProjects() {
   axios
-  .get(
-    `${geofencingApiURL}projects?key=${apiKey}`
-  )
-  .then(function(response) {
-    if (response.data.projects.length > 0) {
-      response.data.projects.forEach(function(project) {
-        addProjectToProjectsList(project);
-      })
-    }
-    else {
-      axios
-      .post(
-        `${geofencingApiURL}projects/project?key=${apiKey}&adminKey=${geofencingAdminKey}`,
-        {
-          name: "Geofences creator"
-        }
-      )
-      .then(function(response) {
-        addProjectToProjectsList(response.data);
-      })
-      .catch(function(err) {
-        displayModal("error", createProjectErrorMsg(err));
-      })
-    }
-  })
-  .catch(function(err) {
-    displayModal("error",retrieveProjectsErrorMsg(err))
-  })
+    .get(
+      `${geofencingApiURL}projects?key=${apiKey}`
+    )
+    .then(function (response) {
+      if (response.data.projects.length > 0) {
+        response.data.projects.forEach(function (project) {
+          addProjectToProjectsList(project);
+        })
+      }
+      else {
+        axios
+          .post(
+            `${geofencingApiURL}projects/project?key=${apiKey}&adminKey=${geofencingAdminKey}`,
+            {
+              name: "Geofences creator"
+            }
+          )
+          .then(function (response) {
+            addProjectToProjectsList(response.data);
+          })
+          .catch(function (err) {
+            displayModal("error", createProjectErrorMsg(err));
+          })
+      }
+    })
+    .catch(function (err) {
+      displayModal("error", retrieveProjectsErrorMsg(err))
+    })
 }
 
 function clearProjectsList() {
@@ -248,24 +248,24 @@ function hideConfigForm() {
   searchBoxOptions.searchOptions.key = apiKey;
   searchBoxOptions.autocompleteOptions.key = apiKey;
 
-  map.on("moveend", function() {
+  map.on("moveend", function () {
     searchBoxOptions.searchOptions.center = map.getCenter();
     ttSearchBox.updateOptions(searchBoxOptions);
   })
 
   map.on("click", closeModal);
-  
+
   const attributions = [
     '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
   ];
   map.getAttributionControl().addAttribution(attributions);
-  
+
   map.addControl(new tt.NavigationControl(), "top-left");
 
-  document.getElementById("circle-button").addEventListener("click", function(e) {
+  document.getElementById("circle-button").addEventListener("click", function (e) {
     drawState = "circle";
     const activeForm = null;
-    const onMouseMove = function(event) {
+    const onMouseMove = function (event) {
       this.geometry.radius = turf.distance(
         this.geometry.coordinates,
         [event.lngLat.lng, event.lngLat.lat],
@@ -278,7 +278,7 @@ function hideConfigForm() {
       );
       this.redraw(geoJsonData);
     };
-    const onStartDrawing = function(event) {
+    const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "Point",
@@ -294,11 +294,11 @@ function hideConfigForm() {
     drawHandler(activeForm, onMouseMove, onStartDrawing);
     setButtonActive(e.target);
   });
-  
-  document.getElementById("rectangle-button").addEventListener("click", function(e) {
+
+  document.getElementById("rectangle-button").addEventListener("click", function (e) {
     drawState = "rectangle";
     const activeForm = null;
-    const onMouseMove = function(e) {
+    const onMouseMove = function (e) {
       this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
       const features = turf.featureCollection([
         turf.point(this.geometry.coordinates[0]),
@@ -307,7 +307,7 @@ function hideConfigForm() {
       const geoJsonData = turf.envelope(features);
       this.redraw(geoJsonData);
     };
-    const onStartDrawing = function(event) {
+    const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "MultiPoint",
@@ -323,11 +323,11 @@ function hideConfigForm() {
     drawHandler(activeForm, onMouseMove, onStartDrawing);
     setButtonActive(e.target);
   });
-  
-  document.getElementById("corridor-button").addEventListener("click", function(e) {
+
+  document.getElementById("corridor-button").addEventListener("click", function (e) {
     drawState = "corridor";
     const activeForm = "corridor-form";
-    const onMouseMove = function(e) {
+    const onMouseMove = function (e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
         e.lngLat.lng,
         e.lngLat.lat
@@ -339,7 +339,7 @@ function hideConfigForm() {
       );
       this.redraw(geoJsonData);
     };
-    const onStartDrawing = function(event) {
+    const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "LineString",
@@ -360,11 +360,11 @@ function hideConfigForm() {
     drawHandler(activeForm, onMouseMove, onStartDrawing);
     setButtonActive(e.target);
   });
-  
-  document.getElementById("polygon-button").addEventListener("click", function(e) {
+
+  document.getElementById("polygon-button").addEventListener("click", function (e) {
     drawState = "polygon";
     const activeForm = null;
-    const onMouseMove = function(e) {
+    const onMouseMove = function (e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
         e.lngLat.lng,
         e.lngLat.lat
@@ -372,7 +372,7 @@ function hideConfigForm() {
       this.geometry.type = "LineString";
       this.redraw(this.geometry);
     };
-    const onStartDrawing = function(event) {
+    const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
         const self = this;
         this.geometry = {
@@ -382,7 +382,7 @@ function hideConfigForm() {
           ]
         };
         this.setDblClickMapListeners();
-        map.on("dblclick", function() {
+        map.on("dblclick", function () {
           self.geometry = convertLineStringToPolygon(self.geometry);
           self.redraw(self.geometry);
           self.endDrawing();
@@ -396,30 +396,30 @@ function hideConfigForm() {
     drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon);
     setButtonActive(e.target);
   });
-  
+
   document
     .getElementById("search-button")
     .addEventListener("click", searchHandler);
 
   getFences()
-  .then(function(fences) {
-    return Promise.all(
-      fences.map(function(fence) {
-        return getFenceDetails(fence);
-      })
-    );
-  })
-  .then(function(fences) {
-    const transformedFences = [];
-    fences.forEach(function(fence) {
-      fence = transformFenceToGeoJson(fence);
-      transformedFences.push(fence);
-      displayFence(fence);
+    .then(function (fences) {
+      return Promise.all(
+        fences.map(function (fence) {
+          return getFenceDetails(fence);
+        })
+      );
     })
-    const geoJson = turf.featureCollection(transformedFences);
-    const bounds = getBounds(geoJson);
-    map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
-  })
+    .then(function (fences) {
+      const transformedFences = [];
+      fences.forEach(function (fence) {
+        fence = transformFenceToGeoJson(fence);
+        transformedFences.push(fence);
+        displayFence(fence);
+      })
+      const geoJson = turf.featureCollection(transformedFences);
+      const bounds = getBounds(geoJson);
+      map.fitBounds(bounds, { padding: { top: 15, bottom: 15, left: 15, right: 15 }, animate: false });
+    })
 }
 
 function generateAdminKey(secret) {
@@ -427,13 +427,13 @@ function generateAdminKey(secret) {
     .post(
       `${geofencingApiURL}register?key=${apiKey}`,
       {
-        secret: secret 
+        secret: secret
       }
     )
-    .then(function(response) {
+    .then(function (response) {
       return response.data.adminKey;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       displayModal("error", generateAdminKeyErrosMsg(err));
       throw err;
     });
@@ -444,10 +444,10 @@ function getFences() {
     .get(
       `${geofencingApiURL}projects/${geofencingProjectId}/fences?key=${apiKey}`
     )
-    .then(function(response) {
+    .then(function (response) {
       return response.data.fences;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       displayModal("error", fetchFencesErrorMsg(err));
     });
 }
@@ -456,14 +456,14 @@ function getFenceDetails(fence, counter = 0) {
   const retryTimes = 5;
   return axios
     .get(`${geofencingApiURL}fences/${fence.id}?key=${apiKey}`)
-    .then(function(response) {
+    .then(function (response) {
       return response.data;
     })
-    .catch(function(err) {
+    .catch(function (err) {
       if ((err.response.status == 403 || err.response.status == 429) && counter < retryTimes) {
         counter++;
-        return new Promise(function(resolve, reject) {
-          setTimeout(function() {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
             resolve(getFenceDetails(fence, counter));
           }, 1000);
         });
@@ -520,32 +520,35 @@ function displayFence(data) {
   const polygon = new Polygon(data)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
-    .on("popupopen", function() {
+    .on("popupopen", function () {
       document
         .getElementById(`remove-button-${data.id}`)
-        .addEventListener("click", function() {
-          this.disabled = true;
-          removeFence(data.id).then(
-            polygon.remove()
-            );
+        .addEventListener("click", function () {
+          const button = this;
+          button.disabled = true;
+          removeFence(data.id, polygon, button);
         });
     });
 }
 
-function removeFence(id) {
+function removeFence(id, polygon, button) {
   return axios
     .delete(
       `${geofencingApiURL}fences/${id}?key=${apiKey}&adminKey=${geofencingAdminKey}`
     )
-    .catch(function(err) {
+    .then(function () {
+      polygon.remove();
+    })
+    .catch(function (err) {
+      button.disabled = false;
       displayModal("error", deleteFenceErrorMsg(err));
-    });
+    })
 }
 
 function onPopupOpen(self) {
   document
     .getElementById("save-button")
-    .addEventListener("click", function() {
+    .addEventListener("click", function () {
       this.disabled = true;
       saveButtonHandler(self);
     });
@@ -572,12 +575,12 @@ function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
 }
 
 const shape = {
-  startDrawing: function(event) {
+  startDrawing: function (event) {
     this.polygon = new Polygon().addTo(map);
     this.setEscapeHandler();
     this.onStartDrawing(event);
   },
-  endDrawing: function() {
+  endDrawing: function () {
     const self = this;
 
     map.off("mousemove", this.onMouseMove);
@@ -592,7 +595,7 @@ const shape = {
       })
       .openPopup();
   },
-  cancelDrawing: function() {
+  cancelDrawing: function () {
     map.off("mousemove", this.onMouseMove);
     map.off("click", this.startDrawing);
     map.off("click", this.endDrawing);
@@ -602,17 +605,17 @@ const shape = {
     drawnShape = null;
     document.onkeydown = null;
   },
-  setOneClickMapListeners: function() {
+  setOneClickMapListeners: function () {
     map.off("click", this.startDrawing);
     map.on("mousemove", this.onMouseMove);
     map.on("click", this.endDrawing);
   },
-  setDblClickMapListeners: function() {
+  setDblClickMapListeners: function () {
     map.off("click", this.startDrawing);
     map.on("mousemove", this.onMouseMove);
     map.on("click", this.addVertex);
   },
-  addVertex: function(event) {
+  addVertex: function (event) {
     const oneBeforeLastCoordinate = this.geometry.coordinates[
       this.geometry.coordinates.length - 2
     ];
@@ -623,7 +626,7 @@ const shape = {
       this.geometry.coordinates.push([event.lngLat.lng, event.lngLat.lat]);
     }
   },
-  finishPolygon: function() {
+  finishPolygon: function () {
     if (this.isPolygon) {
       this.geometry = convertLineStringToPolygon(this.geometry);
       this.redraw();
@@ -632,12 +635,12 @@ const shape = {
     }
     this.endDrawing();
   },
-  redraw: function(geoJsonData) {
+  redraw: function (geoJsonData) {
     this.polygon.setData(geoJsonData);
   },
-  setEscapeHandler: function() {
+  setEscapeHandler: function () {
     const self = this;
-    document.onkeydown = function(event) {
+    document.onkeydown = function (event) {
       if (event.key === "Escape" || event.key === "Esc") {
         drawState = "cancel";
         self.cancelDrawing();
@@ -688,13 +691,13 @@ function saveButtonHandler(self) {
       },
       self.polygon
     )
-    .then(function() {
-      self.polygon.closePopup();
-      document.onkeydown = null;
-      drawnShape = null;
-      self.polygon = null;
-      clearButtonsState();
-    });
+      .then(function () {
+        self.polygon.closePopup();
+        document.onkeydown = null;
+        drawnShape = null;
+        self.polygon = null;
+        clearButtonsState();
+      });
   }
   catch (err) {
     displayModal("error", invalidJsonErrorMsg());
@@ -707,21 +710,20 @@ function saveFence(fenceData, polygon) {
       `${geofencingApiURL}projects/${geofencingProjectId}/fence?key=${apiKey}&adminKey=${geofencingAdminKey}`,
       fenceData
     )
-    .then(function(response) {
+    .then(function (response) {
       polygon
         .bindPopup(detailsPopup(response.data))
-        .on("popupopen", function() {
+        .on("popupopen", function () {
           document
             .getElementById(`remove-button-${response.data.id}`)
-            .addEventListener("click", function() {
-              this.disabled = true;
-              removeFence(response.data.id).then(
-                polygon.remove()
-                );
-            });
+            .addEventListener("click", function () {
+              const button = this;
+              button.disabled = true;
+              removeFence(response.data.id, polygon, button);
+           });
         });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       displayModal("error", saveFenceErrorMsg(err));
       polygon.remove();
     });
@@ -743,7 +745,7 @@ function getAdditionalData(response) {
         key: apiKey,
         geometries: [geometryId],
         geometriesZoom: 12
-    });
+      });
   }
   else {
     return Promise.reject('Selected search result doesn\'t have geometry');
@@ -768,7 +770,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
   }
 
   const bounds = getBounds(self.geometry);
-  map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
+  map.fitBounds(bounds, { padding: { top: 15, bottom: 15, left: 15, right: 15 }, animate: false });
 
   self.polygon = new Polygon(self.geometry)
     .addTo(map)
@@ -778,12 +780,12 @@ function displayPolygonOnTheMap(additionalDataResult) {
     })
     .openPopup();
 
-  self.cancelDrawing = function() {
+  self.cancelDrawing = function () {
     self.polygon.remove();
   }
   drawnShape = self;
 
-  document.onkeydown = function(event) {
+  document.onkeydown = function (event) {
     if (event.key === "Escape" || event.key === "Esc") {
       self.polygon.remove();
       document.onkeydown = null;
@@ -795,7 +797,7 @@ function getBounds(geoJson) {
   const envelope = turf.envelope(geoJson);
   const coordinates = envelope.geometry.coordinates;
   if (coordinates[0][0][0] == Infinity && coordinates[0][0][1] == Infinity && coordinates[0][2][0] == -Infinity && coordinates[0][2][1] == -Infinity) {
-    return [[180,90],[-180,-90]];
+    return [[180, 90], [-180, -90]];
   }
   else {
     return [coordinates[0][0], coordinates[0][2]];
@@ -812,9 +814,9 @@ function displayModal(type, message) {
 
 function closeModal() {
   if (modal.style.display === "block") {
-        modal.style.display = "none";
-        modal.classList.remove("error");
-    }
+    modal.style.display = "none";
+    modal.classList.remove("error");
+  }
 }
 
 function displayAdminKey(generatedAdminKey) {
