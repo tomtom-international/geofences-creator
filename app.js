@@ -1,13 +1,11 @@
-var currentTab = "api-key-form";
+let currentTab = "api-key-form";
 
-showTab(currentTab);
-
-var geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
+const geofencingApiURL = "https://api.tomtom.com/geofencing/1/";
 
 tt.setProductInfo("Fence manager", "2.1");
-var map;
+let map;
 
-var inputPopup =`
+const inputPopup =`
   <div class="form">
     <div class="form__row form__row--compact">
       <label class="form__label">Name 
@@ -24,24 +22,30 @@ var inputPopup =`
     </div>
   </div>`;
 
-var turfOptions = {
+const turfOptions = {
   steps: 60,
   units: "meters"
 };
 
-var popupOptions = {
+const popupOptions = {
   maxWidth: "300px"
 };
 
-var colorWhite = "#fff";
-var colorBrandBlue = "#8dc3eb"
+const colorWhite = "#fff";
+const colorBrandBlue = "#8dc3eb"
 
-var drawState;
+let drawState;
 
-var drawnShape;
+let drawnShape;
+
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modal-content");
+
+
+showTab(currentTab);
 
 function showTab(tabId) {
-  var tooltip = "<img src='assets/tooltips.png'>";
+  let tooltip = "<img src='assets/tooltips.png'>";
   switch (tabId) {
     case "admin-key-form":
       tooltip += "Check <i>project ID</i> details in <a href='https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-configuration-service/register-admin-key' target='_blank'>geofencing documentation</a>";
@@ -55,21 +59,21 @@ function showTab(tabId) {
   document.getElementById("tooltips").innerHTML = tooltip;
   document.getElementById(currentTab).style.display = "none";
   document.getElementById(tabId).style.display = "block";
-  var icons = document.getElementsByClassName("progress-icon");
+  const icons = document.getElementsByClassName("progress-icon");
   icons.forEach(function(icon) {
     icon.style.background = colorBrandBlue;
     icon.style.color = colorWhite;
   });
-  var selectedIcon = document.querySelector(`div[for=${tabId}]`);
+  const selectedIcon = document.querySelector(`div[for=${tabId}]`);
   selectedIcon.style.background = colorWhite;
   selectedIcon.style.color = colorBrandBlue;
   currentTab = tabId;
 }
 
 function validateForm() {
-  var currentTabElem = document.getElementById(currentTab);
-  var fields = currentTabElem.getElementsByTagName("input");
-  var valid = true;
+  const currentTabElem = document.getElementById(currentTab);
+  const fields = currentTabElem.getElementsByTagName("input");
+  let valid = true;
   if (document.querySelector("[for='generated-admin-key']").style.display == "block") {
     valid = true;
   }
@@ -100,8 +104,8 @@ document.getElementById("save-api-key").addEventListener("click", function() {
 
 document.getElementById("save-admin-key").addEventListener("click", function() {
   if (validateForm()) {
-    let style = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
-    if ( style.getPropertyValue('display') !== "none" ) {
+    const generatedAdminKeyStyle = window.getComputedStyle(document.querySelector("[for='generated-admin-key']"));
+    if ( generatedAdminKeyStyle.getPropertyValue('display') !== "none" ) {
       geofencingAdminKey = document.getElementById("generated-admin-key").innerText;
     }
     else {
@@ -115,8 +119,8 @@ document.getElementById("save-admin-key").addEventListener("click", function() {
 
 document.getElementById("save-project-id").addEventListener("click", function() {
   if (validateForm()) {
-    let select = document.getElementById("project-id");
-    geofencingProjectId = select.options[select.selectedIndex].value;
+    const projectIdList = document.getElementById("project-id");
+    geofencingProjectId = projectIdList.options[projectIdList.selectedIndex].value;
     hideConfigForm();
   };
 });
@@ -148,7 +152,7 @@ document.getElementById("gen-admin-key-tab").addEventListener("click", function(
 })
 
 document.getElementById("gen-admin-key").addEventListener("click", function() {
-  let secret = document.getElementById("secret").value;
+  const secret = document.getElementById("secret").value;
   generateAdminKey(secret).then(function(key) {displayAdminKey(key)});
 })
 
@@ -158,7 +162,7 @@ document.getElementById("how-to-get-api-key").addEventListener("click", function
 
 document.getElementById("config").addEventListener("click", showConfigForm);
 
-var searchBoxOptions = {
+const searchBoxOptions = {
   searchOptions: {
     key: apiKey,
     idxSet: 'Geo,POI',
@@ -168,8 +172,8 @@ var searchBoxOptions = {
     key: apiKey
   }
 }
-var ttSearchBox = new tt.plugins.SearchBox(tt.services, searchBoxOptions);
-var searchBoxHTML = ttSearchBox.getSearchBoxHTML();
+const ttSearchBox = new tt.plugins.SearchBox(tt.services, searchBoxOptions);
+const searchBoxHTML = ttSearchBox.getSearchBoxHTML();
 document.getElementById("search-label").appendChild(searchBoxHTML);
 
 ttSearchBox.on('tomtom.searchbox.resultselected', function(event) {
@@ -217,8 +221,8 @@ function clearProjectsList() {
 }
 
 function addProjectToProjectsList(project) {
-  var selectElement = document.getElementById("project-id");
-  var option = document.createElement("option")
+  const selectElement = document.getElementById("project-id");
+  const option = document.createElement("option")
   option.value = project.id;
   option.innerText = project.name;
   selectElement.appendChild(option)
@@ -251,7 +255,7 @@ function hideConfigForm() {
 
   map.on("click", closeModal);
   
-  var attributions = [
+  const attributions = [
     '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
   ];
   map.getAttributionControl().addAttribution(attributions);
@@ -260,21 +264,21 @@ function hideConfigForm() {
 
   document.getElementById("circle-button").addEventListener("click", function(e) {
     drawState = "circle";
-    let activeForm = null;
-    let onMouseMove = function(event) {
+    const activeForm = null;
+    const onMouseMove = function(event) {
       this.geometry.radius = turf.distance(
         this.geometry.coordinates,
         [event.lngLat.lng, event.lngLat.lat],
         { units: "meters" }
       );
-      let geoJsonData = turf.circle(
+      const geoJsonData = turf.circle(
         this.geometry.coordinates,
         this.geometry.radius,
         turfOptions
       );
       this.redraw(geoJsonData);
     };
-    let onStartDrawing = function(event) {
+    const onStartDrawing = function(event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "Point",
@@ -293,17 +297,17 @@ function hideConfigForm() {
   
   document.getElementById("rectangle-button").addEventListener("click", function(e) {
     drawState = "rectangle";
-    let activeForm = null;
-    let onMouseMove = function(e) {
+    const activeForm = null;
+    const onMouseMove = function(e) {
       this.geometry.coordinates[1] = [e.lngLat.lng, e.lngLat.lat];
-      let features = turf.featureCollection([
+      const features = turf.featureCollection([
         turf.point(this.geometry.coordinates[0]),
         turf.point(this.geometry.coordinates[1])
       ]);
-      let geoJsonData = turf.envelope(features);
+      const geoJsonData = turf.envelope(features);
       this.redraw(geoJsonData);
     };
-    let onStartDrawing = function(event) {
+    const onStartDrawing = function(event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "MultiPoint",
@@ -322,20 +326,20 @@ function hideConfigForm() {
   
   document.getElementById("corridor-button").addEventListener("click", function(e) {
     drawState = "corridor";
-    let activeForm = "corridor-form";
-    let onMouseMove = function(e) {
+    const activeForm = "corridor-form";
+    const onMouseMove = function(e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
         e.lngLat.lng,
         e.lngLat.lat
       ];
-      let geoJsonData = turf.buffer(
+      const geoJsonData = turf.buffer(
         this.geometry,
         this.geometry.radius,
         turfOptions
       );
       this.redraw(geoJsonData);
     };
-    let onStartDrawing = function(event) {
+    const onStartDrawing = function(event) {
       if (drawState !== "cancel") {
         this.geometry = {
           type: "LineString",
@@ -359,8 +363,8 @@ function hideConfigForm() {
   
   document.getElementById("polygon-button").addEventListener("click", function(e) {
     drawState = "polygon";
-    let activeForm = null;
-    let onMouseMove = function(e) {
+    const activeForm = null;
+    const onMouseMove = function(e) {
       this.geometry.coordinates[this.geometry.coordinates.length - 1] = [
         e.lngLat.lng,
         e.lngLat.lat
@@ -368,9 +372,9 @@ function hideConfigForm() {
       this.geometry.type = "LineString";
       this.redraw(this.geometry);
     };
-    let onStartDrawing = function(event) {
+    const onStartDrawing = function(event) {
       if (drawState !== "cancel") {
-        var self = this;
+        const self = this;
         this.geometry = {
           coordinates: [
             [event.lngLat.lng, event.lngLat.lat],
@@ -388,7 +392,7 @@ function hideConfigForm() {
         this.cancelDrawing();
       }
     };
-    let isPolygon = true;
+    const isPolygon = true;
     drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon);
     setButtonActive(e.target);
   });
@@ -406,14 +410,14 @@ function hideConfigForm() {
     );
   })
   .then(function(fences) {
-    var transformedFences = [];
+    const transformedFences = [];
     fences.forEach(function(fence) {
       fence = transformFenceToGeoJson(fence);
       transformedFences.push(fence);
       displayFence(fence);
     })
-    let geoJson = turf.featureCollection(transformedFences);
-    let bounds = getBounds(geoJson);
+    const geoJson = turf.featureCollection(transformedFences);
+    const bounds = getBounds(geoJson);
     map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
   })
 }
@@ -449,7 +453,7 @@ function getFences() {
 }
 
 function getFenceDetails(fence, counter = 0) {
-  var retryTimes = 5;
+  const retryTimes = 5;
   return axios
     .get(`${geofencingApiURL}fences/${fence.id}?key=${apiKey}`)
     .then(function(response) {
@@ -470,7 +474,7 @@ function getFenceDetails(fence, counter = 0) {
 }
 
 function detailsPopup(data) {
-  let prop = JSON.stringify(data.properties, null, 4).replace(/\n/g, "<br>");
+  const prop = JSON.stringify(data.properties, null, 4).replace(/\n/g, "<br>");
   return (`
     <div class="form">
       <div class="form__row form__row--compact">Name: ${data.name}</div>
@@ -513,7 +517,7 @@ function transformFenceToGeoJson(data) {
 }
 
 function displayFence(data) {
-  var polygon = new Polygon(data)
+  const polygon = new Polygon(data)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
     .on("popupopen", function() {
@@ -567,14 +571,14 @@ function drawHandler(activeForm, onMouseMove, onStartDrawing, isPolygon) {
   map.on("click", drawnShape.startDrawing);
 }
 
-var shape = {
+const shape = {
   startDrawing: function(event) {
     this.polygon = new Polygon().addTo(map);
     this.setEscapeHandler();
     this.onStartDrawing(event);
   },
   endDrawing: function() {
-    var self = this;
+    const self = this;
 
     map.off("mousemove", this.onMouseMove);
     map.off("click", this.addVertex);
@@ -609,7 +613,7 @@ var shape = {
     map.on("click", this.addVertex);
   },
   addVertex: function(event) {
-    var oneBeforeLastCoordinate = this.geometry.coordinates[
+    const oneBeforeLastCoordinate = this.geometry.coordinates[
       this.geometry.coordinates.length - 2
     ];
     if (
@@ -632,7 +636,7 @@ var shape = {
     this.polygon.setData(geoJsonData);
   },
   setEscapeHandler: function() {
-    var self = this;
+    const self = this;
     document.onkeydown = function(event) {
       if (event.key === "Escape" || event.key === "Esc") {
         drawState = "cancel";
@@ -670,9 +674,9 @@ function convertLineStringToPolygon(geometry) {
 }
 
 function saveButtonHandler(self) {
-  var name = document.getElementById("input-name").value;
+  const name = document.getElementById("input-name").value;
   try {
-    var properties = JSON.parse(
+    const properties = JSON.parse(
       document.getElementById("input-properties").value
     );
     saveFence(
@@ -733,7 +737,7 @@ function fuzzySearch(query) {
 
 function getAdditionalData(response) {
   if (response.dataSources !== undefined && response.dataSources.geometry !== undefined) {
-    var geometryId = response.dataSources.geometry.id;
+    const geometryId = response.dataSources.geometry.id;
     return tt.services
       .additionalData({
         key: apiKey,
@@ -756,14 +760,14 @@ function processAdditionalDataResponse(additionalDataResponse) {
 }
 
 function displayPolygonOnTheMap(additionalDataResult) {
-  var self = {};
+  const self = {};
   self.geometry = additionalDataResult.geometryData.features[0].geometry;
-  var buffer = parseInt(document.getElementById("buffer-text").value);
+  const buffer = parseInt(document.getElementById("buffer-text").value);
   if (buffer !== 0) {
     self.geometry = turf.buffer(self.geometry, buffer, turfOptions).geometry;
   }
 
-  let bounds = getBounds(self.geometry);
+  const bounds = getBounds(self.geometry);
   map.fitBounds(bounds, { padding: { top: 15, bottom:15, left: 15, right: 15 }, animate: false });
 
   self.polygon = new Polygon(self.geometry)
@@ -788,8 +792,8 @@ function displayPolygonOnTheMap(additionalDataResult) {
 }
 
 function getBounds(geoJson) {
-  let envelope = turf.envelope(geoJson);
-  var coordinates = envelope.geometry.coordinates;
+  const envelope = turf.envelope(geoJson);
+  const coordinates = envelope.geometry.coordinates;
   if (coordinates[0][0][0] == Infinity && coordinates[0][0][1] == Infinity && coordinates[0][2][0] == -Infinity && coordinates[0][2][1] == -Infinity) {
     return [[180,90],[-180,-90]];
   }
@@ -828,6 +832,3 @@ function clearButtonsState() {
 function setButtonActive(button) {
   button.classList.add("active");
 }
-
-var modal = document.getElementById("modal");
-var modalContent = document.getElementById("modal-content");
