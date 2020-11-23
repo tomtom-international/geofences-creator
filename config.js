@@ -2,8 +2,8 @@ var apiKey = "";
 var geofencingAdminKey = "";
 var geofencingProjectId = "";
 
-function invalidJsonErrorMsg() { return "Error while parsing JSON properties.\nExample input:\n{'key': 'value',\n'key2': 'value2'}"; }
-function saveFenceErrorMsg(err) { return`There was an error while saving the fence: ${err.response.data.message}`; }
+function invalidJsonErrorMsg() { return `Error while parsing JSON properties.\nExample input:\n{"key": "abc",\n'key2': 2}`; }
+function saveFenceErrorMsg(err) { return `There was an error while saving the fence: ${err.response.data.message}`; }
 function createProjectErrorMsg(err) { return `There was an error while creating a new project: ${err.response.data}`; }
 function retrieveProjectsErrorMsg(err) { return `There was an error while retrieving project list: ${(err.response.data == "<h1>Developer Inactive</h1>" ? "Check your API key" : err.response.data)}`; }
 function generateAdminKeyErrosMsg(err) {
