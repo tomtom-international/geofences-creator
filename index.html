@@ -3,42 +3,289 @@
   <head>
     <meta charset="utf-8" />
     <title>Geofences creator</title>
-    <link rel="stylesheet" type="text/css" href="sdk/map.css" />
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/6.x/6.1.2-public-preview.3/maps/maps.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
-	<script src="sdk/tomtom.min.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox.css'/>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/6.x/6.1.2-public-preview.3/maps/maps-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/6.x/6.1.2-public-preview.3/services/services-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js"></script>
+    <script src="polygon.js"></script>
+    <script src="uuidv4.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>    
   </head>
 
   <body>
     <div id="map">
-      <div id="inputs" class="fence-choice">
-        <span class="fence-choice__label">Choose a fence type and start drawing</span>
-        <div class="fence-choice__content">
-          <input type="button" id="circle-button" class="btn btn--circle" value="Circle">
-          <input type="button" id="rectangle-button" class="btn btn--rectangle" value="Rectangle">
-          <input type="button" id="corridor-button" class="btn btn--corridor" value="Corridor">
-          <input type="button" id="polygon-button" class="btn btn--polygon" value="Polygon">
-          <input type="button" id="search-button" class="btn btn--search" value="Search">
-        </div>
-        <div id="search-form" class="form form--search">
-          <div class="form__row -background-gray">
-            <label class="form__label">Search query: <input type="text" id="search-text" class="form__input" value="San Francisco Airport"></label>
-            <label class="form__label">Add buffer to polygon (meters): <input type="text" id="buffer-text" class="form__input" value="0"></label>
+      <div class="tt-overlay-panel -right-top">
+        <div class="fence-choice">
+          <span class="fence-choice__label"
+            >Choose a fence type and start drawing</span
+          >
+          <div class="fence-choice__content">
+            <button type="button" id="circle-button" class="btn choice-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+                <g id="ic_circle" transform="translate(-1465 -69)">
+                  <g id="Group_416" data-name="Group 416" transform="translate(4 1)">
+                    <g id="Group_408" data-name="Group 408" transform="translate(-61.333 4)">
+                      <path id="Path_265" data-name="Path 265" d="M0,0H75V75H0Z" transform="translate(1522.333 64)" fill="#fff"/>
+                      <circle id="Ellipse_37" class="icon-fill" data-name="Ellipse 37" cx="24.833" cy="24.833" r="24.833" transform="translate(1534.333 76)" fill="#ccc"/>
+                      <g id="Symbol_3_23" data-name="Symbol 3 – 23" transform="translate(-5.206 -6.252)">
+                        <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                      </g>
+                      <g id="Symbol_2_11" data-name="Symbol 2 – 11" transform="translate(-6.844 -0.384)">
+                        <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+                          <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                          <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                        </g>
+                        <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                        <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              Circle
+            </button>
+            <button type="button" id="rectangle-button" class="btn choice-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+                <g id="ic_rectangle" transform="translate(-1557 -69)">
+                  <g id="Group_415" data-name="Group 415" transform="translate(20 2.5)">
+                    <g id="Group_407" data-name="Group 407" transform="translate(-63.75 3)">
+                      <path id="Path_266" data-name="Path 266" d="M0,0H75V75H0Z" transform="translate(1600.75 63.5)" fill="#fff"/>
+                      <rect id="Rectangle_304" class="icon-fill" data-name="Rectangle 304" width="46.812" height="46.812" transform="translate(1614.63 79.054)" fill="#ccc"/>
+                      <g id="Symbol_3_24" data-name="Symbol 3 – 24" transform="translate(51 18.407)">
+                        <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                      </g>
+                      <g id="Symbol_2_12" data-name="Symbol 2 – 12" transform="translate(75.949 -6)">
+                        <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+                          <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                          <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                        </g>
+                        <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                        <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              Rectangle
+            </button>
+            <button type="button" id="corridor-button" class="btn choice-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+                <g id="ic_corridor" transform="translate(-1647 -69)">
+                  <g id="Group_419" data-name="Group 419" transform="translate(-2)">
+                    <g id="Group_414" data-name="Group 414" transform="translate(21 3.286)">
+                      <g id="Group_410" data-name="Group 410" transform="translate(25.25 3)">
+                        <path id="Path_267" data-name="Path 267" d="M0,0H75V75H0Z" transform="translate(1602.75 62.714)" fill="#fff"/>
+                        <path id="Path_262" class="icon-stroke" data-name="Path 262" d="M1615,115.345,1632.117,85l8.559,18.674,11.671-10.893,10.374,14.265" transform="translate(-0.499 -0.507)" fill="none" stroke="#ccc" stroke-linejoin="round" stroke-width="5"/>
+                        <g id="Symbol_3_25" data-name="Symbol 3 – 25" transform="translate(50.2 7.788)">
+                          <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                        </g>
+                        <g id="Symbol_3_26" data-name="Symbol 3 – 26" transform="translate(67.339 -21)">
+                          <circle id="Ellipse_39-2" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                        </g>
+                        <g id="Symbol_3_27" data-name="Symbol 3 – 27" transform="translate(75.898 -4.214)">
+                          <circle id="Ellipse_39-3" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                        </g>
+                        <g id="Symbol_3_28" data-name="Symbol 3 – 28" transform="translate(87.569 -13.219)">
+                          <circle id="Ellipse_39-4" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                        </g>
+                        <g id="Symbol_2_13" data-name="Symbol 2 – 13" transform="translate(78.307 22.721)">
+                          <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+                            <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                            <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                          </g>
+                          <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                          <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              Corridor
+            </button>
+            <button type="button" id="polygon-button" class="btn choice-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+                <g id="ic_polygon" transform="translate(-1746 -69)">
+                  <path id="Path_268" data-name="Path 268" d="M0,0H75V75H0Z" transform="translate(1746 69)" fill="#fff"/>
+                  <g id="Group_412" data-name="Group 412" transform="translate(30 1.286)">
+                    <g id="Group_409" data-name="Group 409" transform="translate(7.25 6)">
+                      <path id="Path_264" class="icon-fill" data-name="Path 264" d="M0,0,19.085,18.131,37.216,0V36.262H0Z" transform="translate(1719.404 99.521) rotate(-45)" fill="#ccc"/>
+                      <g id="Symbol_2_14" data-name="Symbol 2 – 14" transform="translate(184.795 14.003)">
+                        <g id="Group_406" data-name="Group 406" transform="translate(1578.944 78.5)">
+                          <line id="Line_1" data-name="Line 1" y2="14.056" transform="translate(7.028)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                          <line id="Line_2" data-name="Line 2" y2="14.056" transform="translate(14.056 7.028) rotate(90)" fill="none" stroke="#df1b12" stroke-width="3"/>
+                        </g>
+                        <rect id="Rectangle_305" data-name="Rectangle 305" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                        <rect id="Rectangle_306" data-name="Rectangle 306" width="3" height="3" transform="translate(1584.5 84)" fill="#fff"/>
+                      </g>
+                      <g id="Symbol_3_29" data-name="Symbol 3 – 29" transform="translate(156 -7.189)">
+                        <circle id="Ellipse_39" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                      </g>
+                      <g id="Symbol_3_30" data-name="Symbol 3 – 30" transform="translate(180.811 -32)">
+                        <circle id="Ellipse_39-2" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                      </g>
+                      <g id="Symbol_3_31" data-name="Symbol 3 – 31" transform="translate(180.811 17.621)">
+                        <circle id="Ellipse_39-3" data-name="Ellipse 39" cx="3" cy="3" r="3" transform="translate(1561.75 103.714)" fill="#000"/>
+                      </g>
+                      <circle id="Ellipse_39-4" data-name="Ellipse 39" cx="2.863" cy="2.863" r="2.863" transform="translate(1742.561 96.524)" fill="#000"/>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              Polygon
+            </button>
+            <button type="button" id="search-button" class="btn choice-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+                <g id="ic_search" transform="translate(-1822 -69)">
+                  <g id="Group_423" data-name="Group 423" transform="translate(-6)">
+                    <g id="Group_422" data-name="Group 422" transform="translate(0 0.286)">
+                      <g id="Group_417" data-name="Group 417" transform="translate(1828 68.714)">
+                        <path id="Path_269" data-name="Path 269" d="M0,0H75V75H0Z" fill="#fff"/>
+                      </g>
+                    </g>
+                    <g id="Group_413" data-name="Group 413" transform="translate(37.691 -1.714)">
+                      <g id="Group_411" data-name="Group 411" transform="translate(-13.128 -30.001)">
+                        <path id="Path_86" class="icon-fill" data-name="Path 86" d="M24,0A24,24,0,0,1,48,24c0,13.255-15.4,26.645-24,31.079C13.872,50.453,0,37.255,0,24A24,24,0,0,1,24,0Z" transform="translate(1817.437 110.715)" fill="#ccc"/>
+                        <ellipse id="Ellipse_4" data-name="Ellipse 4" cx="8.368" cy="8.368" rx="8.368" ry="8.368" transform="translate(1833.754 125.996)" fill="#fff"/>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              Search
+            </button>
           </div>
-          <div class="form__row">
-          <input type="button" id="search-action-button" class="btn-submit btn-submit--search" value="Execute">
+          <div id="search-form" class="form">
+            <div class="form__row form--borders">
+              <label id="search-label" class="form__label"
+                >Search query:
+              </label>
+              <label class="form__label"
+                >Add buffer to polygon (meters):
+                <input
+                  type="text"
+                  id="buffer-text"
+                  class="form__input"
+                  value="0"
+              /></label>
+            </div>
+          </div>
+          <div id="corridor-form" class="form">
+            <div class="form__row form--borders">
+              <label class="form__label"
+                >Corridor radius (meters):
+                <input
+                  type="text"
+                  id="corridor-radius"
+                  class="form__input"
+                  value="30"
+              /></label>
+            </div>
           </div>
         </div>
-        <div id="corridor-form" class="form">
-          <div class="form__row">
-            <label class="form__label">Corridor radius (meters): <input type="text" id="corridor-radius" class="form__input" value="30"></label>
-          </div>
-        </div>
+      </div>
+      <div class="tt-overlay-panel -left-top">
+        <button id="config">
+          <?xml version="1.0" encoding="utf-8"?>
+          <svg viewBox="0 0 40 40" width="33" height="33" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd">
+              <rect x="0.18" y="0.045" width="39.775" height="39.82" style="fill: rgb(0, 0, 0); fill-opacity: 0.11;" rx="5.377" ry="5.377"/>
+              <rect x="2.299" y="1.943" width="35.363" height="35.631" class="icon-fill" style="fill: rgb(255, 255, 255);" rx="4.655" ry="4.655"/>
+              <g transform="matrix(1, 0, 0, 1, 11.089888, 10.325843)">
+                <mask id="b" fill="#fff">
+                  <path d="M0 0h18v18H0z" transform="matrix(1, 0, 0, 1, 0, 0)"/>
+                </mask>
+                <path d="M3.258 17.365V7.796c.49-.118.79-.376 1.127-.742.397-.432.615-.986.615-1.56 0-.574-.218-1.128-.615-1.56-.336-.367-.638-.625-1.127-.743V.635c0-.35-.44-.635-.805-.635-.365 0-.805.285-.805.635v2.581C.598 3.51 0 4.434 0 5.494c0 1.059.598 1.983 1.648 2.278v9.593c0 .35.44.635.805.635.365 0 .805-.285.805-.635M9.757 17.365v-.467c.49-.118.792-.376 1.127-.742.397-.432.616-.986.616-1.56 0-.575-.219-1.129-.616-1.561-.335-.366-.637-.624-1.127-.742L9.786.635c0-.35-.468-.635-.833-.635-.365 0-.804.285-.804.635v11.682c-1.051.295-1.649 1.219-1.649 2.278 0 1.06.598 1.984 1.649 2.278v.492c0 .35.439.635.804.635.365 0 .804-.285.804-.635M14.62.635l.028 4.061C13.598 4.99 13 5.915 13 6.974s.598 1.983 1.648 2.278v8.113c0 .35.44.635.805.635.365 0 .804-.285.804-.635V9.276c.49-.118.792-.376 1.128-.742.396-.432.615-.986.615-1.56 0-.574-.219-1.128-.615-1.56-.336-.366-.638-.625-1.128-.743V.635c0-.35-.44-.635-.804-.635-.365 0-.833.285-.833.635" mask="url(#b)" style="fill: rgb(51, 51, 51);"/>
+              </g>
+            </g>
+          </svg>
+        </button>
       </div>
     </div>
     <div id="modal" class="modal">
       <div id="modal-content" class="modal__text -background-gray"></div>
+    </div>
+    <div id="config-form">
+      <div id="form-container">
+        <div id="progress">
+          <hr>
+          <div class="progress-icon" for="api-key-form">1</div>
+          <div class="progress-icon" for="admin-key-form">2</div>
+          <div class="progress-icon" for="project-id-form">3</div>
+        </div>
+        <div class="flex-container">
+          <div id="tooltips">
+            <img src="assets/tooltips.png">
+            <span>TIP:</span> Remember to check if your API Key is valid for Geofencing API. If your are unsure, consult the <a href="https://developer.tomtom.com/geofencing-api/tutorials/fence-creation" target="_blank">Tutorial</a>.
+          </div>
+          <div id="api-key-form" class="tab">
+            <h1>1. Provide TomTom API key</h1>
+            <p>If you're a registered user you can copy your API key from the <a href="https://developer.tomtom.com/user/me/apps" target="_blank">Dashboard</a></p>
+            <label>API key
+              <input type="text" id="api-key" class="form__input">
+            </label>
+            <button id="how-to-get-api-key">
+              I need help with finding my API key
+              <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+            </button>
+            <div class="navigation-buttons">
+              <button id="save-api-key">
+                Save & continue
+                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+              </button>
+            </div>
+          </div>
+          <div id="admin-key-form" class="tab">
+            <h1>2. Provide a geofencing admin key</h1>
+            <button id="provide-admin-key-tab" class="select-button selected">Provide an existing admin key</button>
+            <button id="gen-admin-key-tab" class="select-button">Generate an admin key</button>
+            <hr>
+            <label for="admin-key">Admin key
+              <input type="text" id="admin-key" class="form__input">
+            </label>
+            <label for="secret">Secret
+              <input type="text" id="secret" class="form__input">
+              <button id="gen-admin-key">Generate admin key</button>
+            </label>
+            <label for="generated-admin-key">Your generated key:
+              <div id="generated-admin-key"></div>
+              <br>
+              Remember that you can always regenerate this key using your geofencing secret.
+            </label>
+            <div class="navigation-buttons">
+              <button id="back-to-api-key">
+                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+                API key
+              </button>
+              <button id="save-admin-key">
+                Save & continue
+                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+              </button>
+            </div>
+          </div>
+          <div id="project-id-form" class="tab">
+            <h1>3. Provide a project ID</h1>
+            <p>Check <i>project ID</i> in <a href="https://developer.tomtom.com/geofencing-api/geofencing-api-documentation-projects-service/add-new-projecty" target="_blank">Geofencing documentation</a></p>
+            <label>Project ID
+              <select id="project-id">
+              </select>
+            </label>
+            <div class="navigation-buttons">
+              <button id="back-to-admin-key">
+                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14" width="14" size="14" viewBox="0 0 24 24" style="vertical-align: middle;"><g stroke="none" fill-rule="evenodd"><polygon transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000)" points="12 16 7 11 7 8 12 13 17 8 17 11"></polygon></g></svg>
+                Admin Key
+              </button>
+              <button id="save-project-id">
+                Save & finish
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="config.js"></script>
     <script src="app.js"></script>
