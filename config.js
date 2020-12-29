@@ -1,6 +1,6 @@
-var apiKey = "";
-var geofencingAdminKey = "";
-var geofencingProjectId = "";
+let apiKey = "";
+let geofencingAdminKey = "";
+let geofencingProjectId = "";
 
 function invalidJsonErrorMsg() { return `Error while parsing JSON properties.\nExample input:\n{"key": "abc",\n'key2': 2}`; }
 function saveFenceErrorMsg(err) { return `There was an error while saving the fence: ${err.response.data.message}`; }
