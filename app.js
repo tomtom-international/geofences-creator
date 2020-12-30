@@ -263,6 +263,7 @@ function hideConfigForm() {
   map.addControl(new tt.NavigationControl(), "top-left");
 
   document.getElementById("circle-button").addEventListener("click", function (e) {
+    displayModal("hint", circleCenterHint);
     drawState = "circle";
     const activeForm = null;
     const onMouseMove = function (event) {
@@ -280,6 +281,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
+        displayModal("hint", circleRadiusHint);
         this.geometry = {
           type: "Point",
           shapeType: "Circle",
@@ -296,6 +298,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("rectangle-button").addEventListener("click", function (e) {
+    displayModal("hint", firstVertexHint);
     drawState = "rectangle";
     const activeForm = null;
     const onMouseMove = function (e) {
@@ -309,6 +312,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
+        displayModal("hint", rectSecondVertexHint);
         this.geometry = {
           type: "MultiPoint",
           shapeType: "Rectangle",
@@ -325,6 +329,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("corridor-button").addEventListener("click", function (e) {
+    displayModal("hint", corridorFirstPointHint);
     drawState = "corridor";
     const activeForm = "corridor-form";
     const onMouseMove = function (e) {
@@ -341,6 +346,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
+        displayModal("hint", corridorNextPointHint);
         this.geometry = {
           type: "LineString",
           shapeType: "Corridor",
@@ -362,6 +368,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("polygon-button").addEventListener("click", function (e) {
+    displayModal("hint", firstVertexHint);
     drawState = "polygon";
     const activeForm = null;
     const onMouseMove = function (e) {
@@ -374,6 +381,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
+        displayModal("hint", polyNextVertexHint);
         const self = this;
         this.geometry = {
           coordinates: [
@@ -642,6 +650,7 @@ const shape = {
     const self = this;
     document.onkeydown = function (event) {
       if (event.key === "Escape" || event.key === "Esc") {
+        closeModal();
         drawState = "cancel";
         self.cancelDrawing();
         clearButtonsState();
@@ -651,6 +660,7 @@ const shape = {
 };
 
 function searchHandler(e) {
+  closeModal();
   if (drawnShape) {
     drawnShape.cancelDrawing();
   }
@@ -787,6 +797,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
 
   document.onkeydown = function (event) {
     if (event.key === "Escape" || event.key === "Esc") {
+      closeModal();
       self.polygon.remove();
       document.onkeydown = null;
     }
@@ -808,6 +819,9 @@ function displayModal(type, message) {
   if (type == "error") {
     modal.classList.add("error");
   }
+  else if (type == "hint") {
+    modal.classList.add("hint");
+  }
   modalContent.innerText = message;
   modal.style.display = "block";
 }
@@ -816,6 +830,7 @@ function closeModal() {
   if (modal.style.display === "block") {
     modal.style.display = "none";
     modal.classList.remove("error");
+    modal.classList.remove("hint");
   }
 }
 

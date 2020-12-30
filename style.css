@@ -462,6 +462,10 @@ button#config:hover .icon-fill {
   background-color: #df1b12;
 }
 
+.modal.hint {
+  background-color: #8dc3eb;
+}
+
 .settings-modal {
   display: "block";
 }

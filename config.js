@@ -2,6 +2,14 @@ let apiKey = "";
 let geofencingAdminKey = "";
 let geofencingProjectId = "";
 
+const circleCenterHint = "Click on a map to select center point.";
+const circleRadiusHint = "Click on a map to set circle radius.";
+const firstVertexHint = "Click on a map to select first vertex.";
+const rectSecondVertexHint = "Click on a map to select opposite vertex.";
+const polyNextVertexHint = "Click on a map to select next vertex. Double click to end drawing.";
+const corridorFirstPointHint = "Click on a map to select starting point.";
+const corridorNextPointHint = "Click on a map to select next point. Double click to end drawing.";
+
 function invalidJsonErrorMsg() { return `Error while parsing JSON properties.\nExample input:\n{"key": "abc",\n'key2': 2}`; }
 function saveFenceErrorMsg(err) { return `There was an error while saving the fence: ${err.response.data.message}`; }
 function createProjectErrorMsg(err) { return `There was an error while creating a new project: ${err.response.data}`; }
