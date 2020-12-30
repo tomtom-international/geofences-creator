@@ -38,13 +38,14 @@ let drawState;
 
 let drawnShape;
 
-const modal = document.getElementById("modal");
-const modalContent = document.getElementById("modal-content");
+const toast = document.getElementById("toast");
+const toastContent = document.getElementById("toast-content");
 
 
 showTab(currentTab);
 
 function showTab(tabId) {
+  closeToast();
   let tooltip = "<img src='assets/tooltips.png'>";
   switch (tabId) {
     case "admin-key-form":
@@ -180,7 +181,7 @@ ttSearchBox.on('tomtom.searchbox.resultselected', function (event) {
   getAdditionalData(event.data.result)
     .then(processAdditionalDataResponse)
     .catch(function (err) {
-      displayModal("error", err);
+      displayToast("error", err);
     });
 });
 
@@ -207,12 +208,12 @@ function retrieveProjects() {
             addProjectToProjectsList(response.data);
           })
           .catch(function (err) {
-            displayModal("error", createProjectErrorMsg(err));
+            displayToast("error", createProjectErrorMsg(err));
           })
       }
     })
     .catch(function (err) {
-      displayModal("error", retrieveProjectsErrorMsg(err))
+      displayToast("error", retrieveProjectsErrorMsg(err))
     })
 }
 
@@ -253,7 +254,7 @@ function hideConfigForm() {
     ttSearchBox.updateOptions(searchBoxOptions);
   })
 
-  map.on("click", closeModal);
+  map.on("click", closeToast);
 
   const attributions = [
     '<a href="https://www.tomtom.com/mapshare/tools/" target="_blank">Report map issue</a>'
@@ -263,7 +264,7 @@ function hideConfigForm() {
   map.addControl(new tt.NavigationControl(), "top-left");
 
   document.getElementById("circle-button").addEventListener("click", function (e) {
-    displayModal("hint", circleCenterHint);
+    displayToast("hint", circleCenterHint);
     drawState = "circle";
     const activeForm = null;
     const onMouseMove = function (event) {
@@ -281,7 +282,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
-        displayModal("hint", circleRadiusHint);
+        displayToast("hint", circleRadiusHint);
         this.geometry = {
           type: "Point",
           shapeType: "Circle",
@@ -298,7 +299,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("rectangle-button").addEventListener("click", function (e) {
-    displayModal("hint", firstVertexHint);
+    displayToast("hint", firstVertexHint);
     drawState = "rectangle";
     const activeForm = null;
     const onMouseMove = function (e) {
@@ -312,7 +313,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
-        displayModal("hint", rectSecondVertexHint);
+        displayToast("hint", rectSecondVertexHint);
         this.geometry = {
           type: "MultiPoint",
           shapeType: "Rectangle",
@@ -329,7 +330,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("corridor-button").addEventListener("click", function (e) {
-    displayModal("hint", corridorFirstPointHint);
+    displayToast("hint", corridorFirstPointHint);
     drawState = "corridor";
     const activeForm = "corridor-form";
     const onMouseMove = function (e) {
@@ -346,7 +347,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
-        displayModal("hint", corridorNextPointHint);
+        displayToast("hint", corridorNextPointHint);
         this.geometry = {
           type: "LineString",
           shapeType: "Corridor",
@@ -368,7 +369,7 @@ function hideConfigForm() {
   });
 
   document.getElementById("polygon-button").addEventListener("click", function (e) {
-    displayModal("hint", firstVertexHint);
+    displayToast("hint", firstVertexHint);
     drawState = "polygon";
     const activeForm = null;
     const onMouseMove = function (e) {
@@ -381,7 +382,7 @@ function hideConfigForm() {
     };
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
-        displayModal("hint", polyNextVertexHint);
+        displayToast("hint", polyNextVertexHint);
         const self = this;
         this.geometry = {
           coordinates: [
@@ -442,7 +443,7 @@ function generateAdminKey(secret) {
       return response.data.adminKey;
     })
     .catch(function (err) {
-      displayModal("error", generateAdminKeyErrosMsg(err));
+      displayToast("error", generateAdminKeyErrosMsg(err));
       throw err;
     });
 }
@@ -456,7 +457,7 @@ function getFences() {
       return response.data.fences;
     })
     .catch(function (err) {
-      displayModal("error", fetchFencesErrorMsg(err));
+      displayToast("error", fetchFencesErrorMsg(err));
     });
 }
 
@@ -476,7 +477,7 @@ function getFenceDetails(fence, counter = 0) {
           }, 1000);
         });
       } else {
-        displayModal("error", fetchFenceErrorMsg(err));
+        displayToast("error", fetchFenceErrorMsg(err));
       }
     });
 }
@@ -549,7 +550,7 @@ function removeFence(id, polygon, button) {
     })
     .catch(function (err) {
       button.disabled = false;
-      displayModal("error", deleteFenceErrorMsg(err));
+      displayToast("error", deleteFenceErrorMsg(err));
     })
 }
 
@@ -650,7 +651,7 @@ const shape = {
     const self = this;
     document.onkeydown = function (event) {
       if (event.key === "Escape" || event.key === "Esc") {
-        closeModal();
+        closeToast();
         drawState = "cancel";
         self.cancelDrawing();
         clearButtonsState();
@@ -660,7 +661,7 @@ const shape = {
 };
 
 function searchHandler(e) {
-  closeModal();
+  closeToast();
   if (drawnShape) {
     drawnShape.cancelDrawing();
   }
@@ -710,7 +711,7 @@ function saveButtonHandler(self) {
       });
   }
   catch (err) {
-    displayModal("error", invalidJsonErrorMsg());
+    displayToast("error", invalidJsonErrorMsg());
   }
 }
 
@@ -734,7 +735,7 @@ function saveFence(fenceData, polygon) {
         });
     })
     .catch(function (err) {
-      displayModal("error", saveFenceErrorMsg(err));
+      displayToast("error", saveFenceErrorMsg(err));
       polygon.remove();
     });
 }
@@ -797,7 +798,7 @@ function displayPolygonOnTheMap(additionalDataResult) {
 
   document.onkeydown = function (event) {
     if (event.key === "Escape" || event.key === "Esc") {
-      closeModal();
+      closeToast();
       self.polygon.remove();
       document.onkeydown = null;
     }
@@ -815,22 +816,22 @@ function getBounds(geoJson) {
   }
 }
 
-function displayModal(type, message) {
+function displayToast(type, message) {
   if (type == "error") {
-    modal.classList.add("error");
+    toast.classList.add("error");
   }
   else if (type == "hint") {
-    modal.classList.add("hint");
+    toast.classList.add("hint");
   }
-  modalContent.innerText = message;
-  modal.style.display = "block";
+  toastContent.innerText = message;
+  toast.style.display = "block";
 }
 
-function closeModal() {
-  if (modal.style.display === "block") {
-    modal.style.display = "none";
-    modal.classList.remove("error");
-    modal.classList.remove("hint");
+function closeToast() {
+  if (toast.style.display === "block") {
+    toast.style.display = "none";
+    toast.classList.remove("error");
+    toast.classList.remove("hint");
   }
 }
 
