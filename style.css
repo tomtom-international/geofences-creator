@@ -429,7 +429,7 @@ button#config:hover .icon-fill {
   padding-bottom: 15px;
 }
 
-.modal {
+.toast {
   display: none;
   overflow: auto;
   position: fixed;
@@ -440,13 +440,13 @@ button#config:hover .icon-fill {
   padding: 16px;
 }
 
-.modal__text {
+.toast__text {
   display: flex;
   color: #fff;
   font-family: Gotham Bold, Helvetica, Arial, sans-serif;
 }
 
-.modal__text:before {
+.toast__text:before {
   flex-shrink: 0;
   position: relative;
   bottom: -2px;
@@ -458,8 +458,12 @@ button#config:hover .icon-fill {
   background-size: 16px 16px;
 }
 
-.modal.error {
+.toast.error {
   background-color: #df1b12;
+}
+
+.toast.hint {
+  background-color: #8dc3eb;
 }
 
 .settings-modal {
