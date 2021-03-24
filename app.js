@@ -521,18 +521,22 @@ function transformFenceToGeoJson(data) {
   }
 }
 
+function setRemoveButtonListener(id, polygon) {
+  document
+    .getElementById(`remove-button-${id}`)
+    .addEventListener("click", function () {
+      const button = this;
+      button.disabled = true;
+      removeFence(id, polygon, button);
+    });
+}
+
 function displayFence(data) {
   const polygon = new Polygon(data)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
     .once("popupopen", function () {
-      document
-        .getElementById(`remove-button-${data.id}`)
-        .addEventListener("click", function () {
-          const button = this;
-          button.disabled = true;
-          removeFence(data.id, polygon, button);
-        });
+      setRemoveButtonListener(data.id, polygon)
     });
 }
 
@@ -721,13 +725,7 @@ function saveFence(fenceData, polygon) {
       polygon
         .bindPopup(detailsPopup(response.data))
         .once("popupopen", function () {
-          document
-            .getElementById(`remove-button-${response.data.id}`)
-            .addEventListener("click", function () {
-              const button = this;
-              button.disabled = true;
-              removeFence(response.data.id, polygon, button);
-           });
+          setRemoveButtonListener(response.data.id, polygon)
         });
     })
     .catch(function (err) {
