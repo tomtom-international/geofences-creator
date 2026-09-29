@@ -60,7 +60,7 @@ function showTab(tabId) {
   document.getElementById("tooltips").innerHTML = tooltip;
   document.getElementById(currentTab).style.display = "none";
   document.getElementById(tabId).style.display = "block";
-  const icons = document.getElementsByClassName("progress-icon");
+  const icons = Array.from(document.getElementsByClassName("progress-icon"));
   icons.forEach(function (icon) {
     icon.style.background = colorBrandBlue;
     icon.style.color = colorWhite;
@@ -383,19 +383,15 @@ function hideConfigForm() {
     const onStartDrawing = function (event) {
       if (drawState !== "cancel") {
         displayToast("hint", polyNextVertexHint);
-        const self = this;
         this.geometry = {
+          type: "LineString",
           coordinates: [
             [event.lngLat.lng, event.lngLat.lat],
             [event.lngLat.lng, event.lngLat.lat]
           ]
         };
         this.setDblClickMapListeners();
-        map.on("dblclick", function () {
-          self.geometry = convertLineStringToPolygon(self.geometry);
-          self.redraw(self.geometry);
-          self.endDrawing();
-        });
+        map.on("dblclick", this.finishPolygon);
       }
       else {
         this.cancelDrawing();
@@ -525,18 +521,22 @@ function transformFenceToGeoJson(data) {
   }
 }
 
+function setRemoveButtonListener(id, polygon) {
+  document
+    .getElementById(`remove-button-${id}`)
+    .addEventListener("click", function () {
+      const button = this;
+      button.disabled = true;
+      removeFence(id, polygon, button);
+    });
+}
+
 function displayFence(data) {
   const polygon = new Polygon(data)
     .addTo(map)
     .bindPopup(detailsPopup(data), popupOptions)
-    .on("popupopen", function () {
-      document
-        .getElementById(`remove-button-${data.id}`)
-        .addEventListener("click", function () {
-          const button = this;
-          button.disabled = true;
-          removeFence(data.id, polygon, button);
-        });
+    .once("popupopen", function () {
+      setRemoveButtonListener(data.id, polygon)
     });
 }
 
@@ -638,7 +638,7 @@ const shape = {
   finishPolygon: function () {
     if (this.isPolygon) {
       this.geometry = convertLineStringToPolygon(this.geometry);
-      this.redraw();
+      this.redraw(this.geometry);
     } else {
       this.geometry.coordinates.pop();
     }
@@ -724,14 +724,8 @@ function saveFence(fenceData, polygon) {
     .then(function (response) {
       polygon
         .bindPopup(detailsPopup(response.data))
-        .on("popupopen", function () {
-          document
-            .getElementById(`remove-button-${response.data.id}`)
-            .addEventListener("click", function () {
-              const button = this;
-              button.disabled = true;
-              removeFence(response.data.id, polygon, button);
-           });
+        .once("popupopen", function () {
+          setRemoveButtonListener(response.data.id, polygon)
         });
     })
     .catch(function (err) {
@@ -842,7 +836,7 @@ function displayAdminKey(generatedAdminKey) {
 }
 
 function clearButtonsState() {
-  document.getElementsByClassName("choice-button").forEach(button => {
+  Array.from(document.getElementsByClassName("choice-button")).forEach(button => {
     button.classList.remove("active");
   })
 }
